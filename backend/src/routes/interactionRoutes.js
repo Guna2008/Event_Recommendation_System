@@ -1,11 +1,17 @@
 const express = require("express");
 
 const {
-  createInteraction
+  saveInteraction,
+  getUserInteractionController,
+  deleteInteractionController,
 } = require("../controllers/interactionController");
 
 const router = express.Router();
 
-router.post("/", createInteraction);
+router.post("/", saveInteraction);
+
+router.get("/user/:userId", getUserInteractionController);
+
+router.delete("/:id", deleteInteractionController);
 
 module.exports = router;

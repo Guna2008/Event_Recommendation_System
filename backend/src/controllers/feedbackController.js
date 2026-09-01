@@ -1,92 +1,147 @@
 const {
   createFeedback,
+  getFeedbackById,
   getUserFeedback,
-  getEventFeedback
+  getEventFeedback,
+  deleteFeedback,
 } = require("../../db/queries/feedbackQueries");
 
 const submitFeedback = async (req, res) => {
   try {
     const {
+      registrationId,
       userId,
       eventId,
-      experience
+      experience,
     } = req.body;
 
-    if (!userId || !eventId || !experience) {
+    if (
+      !registrationId ||
+      !userId ||
+      !eventId ||
+      !experience
+    ) {
       return res.status(400).json({
-        error: "userId, eventId and experience are required"
+        success: false,
+        message:
+          "registrationId, userId, eventId and experience are required",
       });
     }
 
-    const allowed = [
-      "GOOD",
-      "MODERATE",
-      "BAD"
-    ];
-
-    const normalizedExperience =
-      experience.toUpperCase();
-
-    if (!allowed.includes(normalizedExperience)) {
-      return res.status(400).json({
-        error: "Experience must be GOOD, MODERATE or BAD"
-      });
-    }
-
-    const feedback = await createFeedback(
+    const feedback = await createFeedback({
+      registrationId,
       userId,
       eventId,
-      normalizedExperience
-    );
+      experience,
+    });
 
-    res.status(201).json(feedback);
-
+    res.status(201).json({
+      success: true,
+      message: "Feedback submitted successfully",
+      data: feedback,
+    });
   } catch (error) {
     console.error(error);
 
     res.status(500).json({
-      error: "Failed to submit feedback"
+      success: false,
+      message: error.message || "Failed to submit feedback",
     });
   }
 };
 
-const getMyFeedback = async (req, res) => {
+const getFeedback = async (req, res) => {
   try {
-    const feedback = await getUserFeedback(
-      req.params.userId
-    );
+    const feedback = await getFeedbackById(req.params.id);
 
-    res.json(feedback);
+    if (!feedback) {
+      return res.status(404).json({
+        success: false,
+        message: "Feedback not found",
+      });
+    }
 
+    res.status(200).json({
+      success: true,
+      data: feedback,
+    });
   } catch (error) {
     console.error(error);
 
     res.status(500).json({
-      error: "Failed to get feedback"
+      success: false,
+      message: "Failed to fetch feedback",
     });
   }
 };
 
-const getFeedbackForEvent = async (req, res) => {
+const getUserFeedbackController = async (req, res) => {
   try {
-    const feedback = await getEventFeedback(
-      req.params.eventId
-    );
+    const feedback = await getUserFeedback(req.params.userId);
 
-    res.json(feedback);
-
+    res.status(200).json({
+      success: true,
+      data: feedback,
+    });
   } catch (error) {
     console.error(error);
 
     res.status(500).json({
-      error: "Failed to get event feedback"
+      success: false,
+      message: "Failed to fetch user feedback",
+    });
+  }
+};
+
+const getEventFeedbackController = async (req, res) => {
+  try {
+    const feedback = await getEventFeedback(req.params.eventId);
+
+    res.status(200).json({
+      success: true,
+      data: feedback,
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch event feedback",
+    });
+  }
+};
+
+const removeFeedback = async (req, res) => {
+  try {
+    const feedback = await getFeedbackById(req.params.id);
+
+    if (!feedback) {
+      return res.status(404).json({
+        success: false,
+        message: "Feedback not found",
+      });
+    }
+
+    await deleteFeedback(req.params.id);
+
+    res.status(200).json({
+      success: true,
+      message: "Feedback deleted successfully",
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Failed to delete feedback",
     });
   }
 };
 
 module.exports = {
   submitFeedback,
-  getMyFeedback,
-  getFeedbackForEvent
+  getFeedback,
+  getUserFeedbackController,
+  getEventFeedbackController,
+  removeFeedback,
 };
-

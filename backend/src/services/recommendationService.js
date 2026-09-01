@@ -1,57 +1,57 @@
-const {
-  getUserById
-} = require("../../db/queries/userQueries");
+const prisma = require("../../db/connection");
 
-const {
-  getAllEvents
-} = require("../../db/queries/eventQueries");
+const getRecommendations = async (userId) => {
+  const numericUserId = Number(userId);
 
-const {
-  getUserInteractions
-} = require("../../db/queries/interactionQueries");
-
-const {
-  getUserSearchHistory
-} = require("../../db/queries/searchQueries");
-
-const generateRecommendations = async (userId) => {
-  const user = await getUserById(userId);
-
-  if (!user) {
-    throw new Error("User not found");
+  if (!Number.isInteger(numericUserId)) {
+    throw new Error("Invalid user ID");
   }
 
-  const events = await getAllEvents();
+  const [events, interactions, searches] = await Promise.all([
+    prisma.event.findMany({
+      orderBy: {
+        date: "asc",
+      },
+    }),
 
-  const interactions =
-    await getUserInteractions(userId);
+    prisma.interaction.findMany({
+      where: {
+        userId: numericUserId,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    }),
 
-  const searchHistory =
-    await getUserSearchHistory(userId);
+    prisma.searchHistory.findMany({
+      where: {
+        userId: numericUserId,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      take: 20,
+    }),
+  ]);
 
   /*
-    This is where the recommendation engine
-    receives all required information.
+    ML MODEL INTEGRATION GOES HERE.
 
-    Friend 5/6 can plug their algorithm here.
+    Later:
 
-    Inputs:
+    const recommendations = await model.predict({
+      userId: numericUserId,
+      events,
+      interactions,
+      searches
+    });
 
-    user.skills
-    user.interests
-    user.preferredEventType
-    user.preferredMode
-
-    events
-
-    interactions
-
-    searchHistory
+    return recommendations;
   */
 
   return events.slice(0, 20);
 };
 
 module.exports = {
-  generateRecommendations
+  getRecommendations,
 };

@@ -1,7 +1,7 @@
 const prisma = require("../connection");
 
 // Create an interaction
-const createInteraction = async (userId, eventId, type) => {
+const createInteraction = async ({ userId, eventId, type }) => {
   return await prisma.interaction.create({
     data: {
       userId: Number(userId),
@@ -51,9 +51,19 @@ const getUserInteractionsByType = async (userId, type) => {
   });
 };
 
+// Delete an interaction
+const deleteInteraction = async (id) => {
+  return await prisma.interaction.delete({
+    where: {
+      id: Number(id)
+    }
+  });
+};
+
 module.exports = {
   createInteraction,
   getUserInteractions,
   getEventInteractions,
-  getUserInteractionsByType
+  getUserInteractionsByType,
+  deleteInteraction
 };

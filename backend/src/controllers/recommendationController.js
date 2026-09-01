@@ -1,27 +1,27 @@
-const getRecommendations = async (req, res, next) => {
-    try {
-        const userId = Number(req.params.userId);
+const {
+  getRecommendations,
+} = require("../services/recommendationService");
 
-        if (!userId) {
-            return res.status(400).json({
-                success: false,
-                message: "Valid userId is required"
-            });
-        }
+const getUserRecommendations = async (req, res) => {
+  try {
+    const recommendations = await getRecommendations(
+      req.params.userId
+    );
 
-        // Member 5's recommendation engine
-        // will be connected here.
+    res.status(200).json({
+      success: true,
+      data: recommendations,
+    });
+  } catch (error) {
+    console.error(error);
 
-        res.json({
-            success: true,
-            userId,
-            data: []
-        });
-    } catch (error) {
-        next(error);
-    }
+    res.status(500).json({
+      success: false,
+      message: "Failed to generate recommendations",
+    });
+  }
 };
 
 module.exports = {
-    getRecommendations
+  getUserRecommendations,
 };

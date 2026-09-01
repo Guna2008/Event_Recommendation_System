@@ -1,45 +1,102 @@
-const searchHistory = [];
+const {
+  createSearchHistory,
+  getUserSearchHistory,
+  getRecentSearches,
+  deleteUserSearchHistory,
+} = require("../../db/queries/searchQueries");
 
-const saveSearch = (req, res) => {
+const saveSearch = async (req, res) => {
+  try {
     const { userId, query } = req.body;
 
-    if (!userId || !query) {
-        return res.status(400).json({
-            success: false,
-            message: "userId and query are required"
-        });
+    if (!userId || !query || !query.trim()) {
+      return res.status(400).json({
+        success: false,
+        message: "userId and query are required",
+      });
     }
 
-    const search = {
-        id: searchHistory.length + 1,
-        userId,
-        query,
-        createdAt: new Date()
-    };
-
-    searchHistory.push(search);
+    const search = await createSearchHistory({
+      userId,
+      query: query.trim(),
+    });
 
     res.status(201).json({
-        success: true,
-        data: search
+      success: true,
+      data: search,
     });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Failed to save search",
+    });
+  }
 };
 
-const getSearchHistory = (req, res) => {
-    const userId = Number(req.params.userId);
+const getSearchHistory = async (req, res) => {
+  try {
+    const history = await getUserSearchHistory(req.params.userId);
 
-    const searches = searchHistory.filter(
-        (search) => search.userId === userId
+    res.status(200).json({
+      success: true,
+      data: history,
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch search history",
+    });
+  }
+};
+
+const getRecentSearchHistory = async (req, res) => {
+  try {
+    const limit = Number(req.query.limit) || 10;
+
+    const history = await getRecentSearches(
+      req.params.userId,
+      limit
     );
 
-    res.json({
-        success: true,
-        count: searches.length,
-        data: searches
+    res.status(200).json({
+      success: true,
+      data: history,
     });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch recent searches",
+    });
+  }
+};
+
+const clearSearchHistory = async (req, res) => {
+  try {
+    await deleteUserSearchHistory(req.params.userId);
+
+    res.status(200).json({
+      success: true,
+      message: "Search history cleared",
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Failed to clear search history",
+    });
+  }
 };
 
 module.exports = {
-    saveSearch,
-    getSearchHistory
+  saveSearch,
+  getSearchHistory,
+  getRecentSearchHistory,
+  clearSearchHistory,
 };

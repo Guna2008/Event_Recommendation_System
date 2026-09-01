@@ -1,11 +1,11 @@
 const express = require("express");
 
 const {
-  getRecommendations
+  getUserRecommendations,
 } = require("../controllers/recommendationController");
 
 const router = express.Router();
 
-router.get("/:userId", getRecommendations);
+router.get("/:userId", getUserRecommendations);
 
 module.exports = router;

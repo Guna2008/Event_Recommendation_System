@@ -7,8 +7,8 @@ const prisma = require("../connection");
 const getAllEvents = async () => {
   return await prisma.event.findMany({
     orderBy: {
-      date: "asc"
-    }
+      date: "asc",
+    },
   });
 };
 

@@ -6,26 +6,21 @@ datasource db {
   provider = "postgresql"
 }
 
-/*
-==================================================
-USER
-==================================================
-*/
+/// ==================================================
+/// USER
+/// ==================================================
 model User {
   id                 Int      @id @default(autoincrement())
   name               String
   email              String   @unique
-
   department         String?
   year               Int?
-
-  skills             String[]
-  interests          String[]
-  preferredEventType String[]
-  preferredMode      String?
-
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
+  preferredMode      String
+  preferredEventType String[]
+  skills             String[]
+  interests          String[]
 
   interactions  Interaction[]
   searchHistory SearchHistory[]
@@ -33,125 +28,81 @@ model User {
   feedbacks     Feedback[]
 }
 
-
-/*
-==================================================
-EVENT
-==================================================
-*/
+/// ==================================================
+/// EVENT
+/// ==================================================
 model Event {
-  id                   Int      @id @default(autoincrement())
-
+  id                   Int       @id @default(autoincrement())
   title                String
   description          String?
-
-  date                 DateTime?
-  startTime            String?
-  endTime              String?
-
   location             String?
-  mode                 String?
-  domain               String?
-
-  registrationFee      Float?
-  cashPrize            Float?
-  certificateAvailable Boolean  @default(false)
-
-  posterUrl            String?
-
+  date                 DateTime?
   registrationUrl      String?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+  cashPrize            Float?
+  certificateAvailable Boolean   @default(false)
+  contactEmail         String?
+  contactNumber        String?
+  domain               String?
+  endTime              String?
+  organizerDepartment  String?
+  organizerName        String?
+  posterUrl            String?
+  registrationDeadline DateTime?
+  registrationFee      Float?
+  startTime            String?
   whatsappGroupLink    String?
 
-  contactNumber        String?
-  contactEmail         String?
-
-  organizerName        String?
-  organizerDepartment  String?
-
-  registrationDeadline DateTime?
-
-  createdAt            DateTime @default(now())
-  updatedAt            DateTime @updatedAt
-
-  interactions Interaction[]
+  interactions  Interaction[]
   registrations Registration[]
-  feedbacks Feedback[]
-
-  @@index([domain])
-  @@index([location])
-  @@index([date])
-  @@index([registrationDeadline])
+  feedbacks     Feedback[]
 }
 
-
-/*
-==================================================
-COMPLETED EVENT
-==================================================
-
-When an event is completed, we move its important
-information here before removing it from Event.
-==================================================
-*/
-model CompletedEvent {
-  id                   Int      @id @default(autoincrement())
-
-  originalEventId      Int?
-
-  title                String
-  description          String?
-
-  date                 DateTime?
-  startTime            String?
-  endTime              String?
-
-  location             String?
-  mode                 String?
-  domain               String?
-
-  registrationFee      Float?
-  cashPrize            Float?
-  certificateAvailable Boolean  @default(false)
-
-  posterUrl            String?
-
-  organizerName        String?
-  organizerDepartment  String?
-
-  completedAt          DateTime @default(now())
-
-  @@index([organizerName])
-  @@index([domain])
-  @@index([completedAt])
-}
-
-
-/*
-==================================================
-REGISTRATION
-==================================================
-
-Stores which student registered for which event.
-==================================================
-*/
-model Registration {
+/// ==================================================
+/// INTERACTION
+/// ==================================================
+model Interaction {
   id        Int      @id @default(autoincrement())
-
   userId    Int
   eventId   Int
+  type      String
+  createdAt DateTime @default(now())
 
-  registeredAt DateTime @default(now())
-
-  // User can be:
-  // REGISTERED
-  // ATTENDED
-  // NOT_ATTENDED
-  // CANCELLED
-  status String @default("REGISTERED")
-
-  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
   event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  @@index([userId])
+  @@index([eventId])
+}
+
+/// ==================================================
+/// SEARCH HISTORY
+/// ==================================================
+model SearchHistory {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  query     String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+/// ==================================================
+/// REGISTRATION
+/// ==================================================
+model Registration {
+  id           Int       @id @default(autoincrement())
+  userId       Int
+  eventId      Int
+  status       String    @default("REGISTERED")
+  registeredAt DateTime  @default(now())
+  attendedAt   DateTime?
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  event    Event     @relation(fields: [eventId], references: [id], onDelete: Cascade)
   feedback Feedback?
 
   @@unique([userId, eventId])
@@ -159,102 +110,20 @@ model Registration {
   @@index([eventId])
 }
 
-
-/*
-==================================================
-FEEDBACK
-==================================================
-
-After attending an event, the student gives
-experience feedback.
-
-Example:
-GOOD
-MODERATE
-BAD
-
-This information is later used by the
-recommendation engine.
-==================================================
-*/
+/// ==================================================
+/// FEEDBACK
+/// ==================================================
 model Feedback {
-  id        Int      @id @default(autoincrement())
+  id             Int    @id @default(autoincrement())
+  registrationId Int    @unique
+  userId         Int
+  eventId        Int
+  experience     String
 
-  userId    Int
-  eventId   Int
-
-  registrationId Int @unique
-
-  // GOOD / MODERATE / BAD
-  experience String
-
-  // Optional detailed feedback
-  comment String?
-
-  createdAt DateTime @default(now())
-
+  registration Registration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
   user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   event        Event        @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  registration Registration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([eventId])
-  @@index([experience])
-}
-
-
-/*
-==================================================
-INTERACTION
-==================================================
-
-Tracks what users do on the platform.
-
-Examples:
-VIEW
-BOOKMARK
-REGISTER
-SEARCH
-==================================================
-*/
-model Interaction {
-  id        Int      @id @default(autoincrement())
-
-  userId    Int
-  eventId   Int
-
-  type      String
-
-  createdAt DateTime @default(now())
-
-  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
-  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
-
-  @@index([userId])
-  @@index([eventId])
-  @@index([type])
-}
-
-
-/*
-==================================================
-SEARCH HISTORY
-==================================================
-
-Stores previous searches so the recommendation
-engine can understand user intent.
-==================================================
-*/
-model SearchHistory {
-  id        Int      @id @default(autoincrement())
-
-  userId    Int
-  query     String
-
-  createdAt DateTime @default(now())
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([userId])
-  @@index([createdAt])
 }

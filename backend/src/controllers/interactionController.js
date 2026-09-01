@@ -1,63 +1,79 @@
-const interactions = [];
+const {
+  createInteraction,
+  getUserInteractions,
+  deleteInteraction,
+} = require("../../db/queries/interactionQueries");
 
-const saveInteraction = (req, res) => {
-    const {
-        userId,
-        eventId,
-        type
-    } = req.body;
-
-    const allowedTypes = [
-        "view",
-        "bookmark",
-        "register"
-    ];
+const saveInteraction = async (req, res) => {
+  try {
+    const { userId, eventId, type } = req.body;
 
     if (!userId || !eventId || !type) {
-        return res.status(400).json({
-            success: false,
-            message: "userId, eventId and type are required"
-        });
+      return res.status(400).json({
+        success: false,
+        message: "userId, eventId and type are required",
+      });
     }
 
-    if (!allowedTypes.includes(type)) {
-        return res.status(400).json({
-            success: false,
-            message: "Invalid interaction type"
-        });
-    }
-
-    const interaction = {
-        id: interactions.length + 1,
-        userId,
-        eventId,
-        type,
-        createdAt: new Date()
-    };
-
-    interactions.push(interaction);
+    const interaction = await createInteraction({
+      userId,
+      eventId,
+      type,
+    });
 
     res.status(201).json({
-        success: true,
-        data: interaction
+      success: true,
+      message: "Interaction saved successfully",
+      data: interaction,
     });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Failed to save interaction",
+    });
+  }
 };
 
-const getUserInteractions = (req, res) => {
-    const userId = Number(req.params.userId);
+const getUserInteractionController = async (req, res) => {
+  try {
+    const interactions = await getUserInteractions(req.params.userId);
 
-    const userInteractions = interactions.filter(
-        (interaction) => interaction.userId === userId
-    );
-
-    res.json({
-        success: true,
-        count: userInteractions.length,
-        data: userInteractions
+    res.status(200).json({
+      success: true,
+      data: interactions,
     });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch interactions",
+    });
+  }
+};
+
+const deleteInteractionController = async (req, res) => {
+  try {
+    await deleteInteraction(req.params.id);
+
+    res.status(200).json({
+      success: true,
+      message: "Interaction deleted successfully",
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Failed to delete interaction",
+    });
+  }
 };
 
 module.exports = {
-    saveInteraction,
-    getUserInteractions
+  saveInteraction,
+  getUserInteractionController,
+  deleteInteractionController,
 };

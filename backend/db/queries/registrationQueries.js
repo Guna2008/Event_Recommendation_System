@@ -1,5 +1,6 @@
-const { prisma } = require("../connection");
+const prisma = require("../connection");
 
+// Create a registration
 const createRegistration = async (userId, eventId) => {
   return await prisma.registration.create({
     data: {
@@ -13,6 +14,7 @@ const createRegistration = async (userId, eventId) => {
   });
 };
 
+// Get a specific registration
 const getRegistration = async (userId, eventId) => {
   return await prisma.registration.findUnique({
     where: {
@@ -27,6 +29,7 @@ const getRegistration = async (userId, eventId) => {
   });
 };
 
+// Get all registrations of a user
 const getUserRegistrations = async (userId) => {
   return await prisma.registration.findMany({
     where: {
@@ -41,6 +44,7 @@ const getUserRegistrations = async (userId) => {
   });
 };
 
+// Mark registration as attended
 const markAttendance = async (userId, eventId) => {
   return await prisma.registration.update({
     where: {
