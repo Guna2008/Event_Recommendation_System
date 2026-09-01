@@ -1,6 +1,9 @@
 const prisma = require("../connection");
 
-// Get all events
+// ================================
+// GET ALL EVENTS
+// ================================
+
 const getAllEvents = async () => {
   return await prisma.event.findMany({
     orderBy: {
@@ -9,7 +12,11 @@ const getAllEvents = async () => {
   });
 };
 
-// Get event by ID
+
+// ================================
+// GET EVENT BY ID
+// ================================
+
 const getEventById = async (id) => {
   return await prisma.event.findUnique({
     where: {
@@ -18,7 +25,11 @@ const getEventById = async (id) => {
   });
 };
 
-// Search events
+
+// ================================
+// SEARCH EVENTS
+// ================================
+
 const searchEvents = async (search) => {
   return await prisma.event.findMany({
     where: {
@@ -36,19 +47,13 @@ const searchEvents = async (search) => {
           }
         },
         {
-          domain: {
-            contains: search,
-            mode: "insensitive"
-          }
-        },
-        {
           location: {
             contains: search,
             mode: "insensitive"
           }
         },
         {
-          organizerName: {
+          domain: {
             contains: search,
             mode: "insensitive"
           }
@@ -61,12 +66,16 @@ const searchEvents = async (search) => {
   });
 };
 
-// Get events by domain
-const getEventsByDomain = async (domain) => {
+
+// ================================
+// GET EVENTS BY CATEGORY
+// ================================
+
+const getEventsByCategory = async (category) => {
   return await prisma.event.findMany({
     where: {
       domain: {
-        equals: domain,
+        equals: category,
         mode: "insensitive"
       }
     },
@@ -76,24 +85,78 @@ const getEventsByDomain = async (domain) => {
   });
 };
 
-// Create an event
-const createEvent = async (eventData) => {
+
+// ================================
+// CREATE EVENT
+// ================================
+
+const createEvent = async (data) => {
   return await prisma.event.create({
-    data: eventData
+    data: {
+      title: data.title,
+      date: data.date ? new Date(data.date) : null,
+      location: data.location,
+      domain: data.domain,
+      startTime: data.startTime,
+      endTime: data.endTime,
+      registrationFee: data.registrationFee,
+      cashPrize: data.cashPrize,
+      certificateAvailable: data.certificateAvailable || false,
+      posterUrl: data.posterUrl,
+      registrationUrl: data.registrationUrl,
+      whatsappGroupLink: data.whatsappGroupLink,
+      contactNumber: data.contactNumber,
+      contactEmail: data.contactEmail,
+      organizerName: data.organizerName,
+      organizerDepartment: data.organizerDepartment,
+      description: data.description,
+      registrationDeadline: data.registrationDeadline
+        ? new Date(data.registrationDeadline)
+        : null
+    }
   });
 };
 
-// Update an event
-const updateEvent = async (id, eventData) => {
+
+// ================================
+// UPDATE EVENT
+// ================================
+
+const updateEvent = async (id, data) => {
   return await prisma.event.update({
     where: {
       id: Number(id)
     },
-    data: eventData
+    data: {
+      title: data.title,
+      date: data.date ? new Date(data.date) : undefined,
+      location: data.location,
+      domain: data.domain,
+      startTime: data.startTime,
+      endTime: data.endTime,
+      registrationFee: data.registrationFee,
+      cashPrize: data.cashPrize,
+      certificateAvailable: data.certificateAvailable,
+      posterUrl: data.posterUrl,
+      registrationUrl: data.registrationUrl,
+      whatsappGroupLink: data.whatsappGroupLink,
+      contactNumber: data.contactNumber,
+      contactEmail: data.contactEmail,
+      organizerName: data.organizerName,
+      organizerDepartment: data.organizerDepartment,
+      description: data.description,
+      registrationDeadline: data.registrationDeadline
+        ? new Date(data.registrationDeadline)
+        : undefined
+    }
   });
 };
 
-// Delete an event
+
+// ================================
+// DELETE EVENT
+// ================================
+
 const deleteEvent = async (id) => {
   return await prisma.event.delete({
     where: {
@@ -102,22 +165,31 @@ const deleteEvent = async (id) => {
   });
 };
 
-// Delete events whose registration deadline has passed
+
+// ================================
+// DELETE EXPIRED EVENTS
+// ================================
+
 const deleteExpiredEvents = async () => {
   return await prisma.event.deleteMany({
     where: {
-      registrationDeadline: {
+      date: {
         lt: new Date()
       }
     }
   });
 };
 
+
+// ================================
+// EXPORT FUNCTIONS
+// ================================
+
 module.exports = {
   getAllEvents,
   getEventById,
   searchEvents,
-  getEventsByDomain,
+  getEventsByCategory,
   createEvent,
   updateEvent,
   deleteEvent,

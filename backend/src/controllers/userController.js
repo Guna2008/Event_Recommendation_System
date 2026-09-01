@@ -1,90 +1,70 @@
-const users = [];
+const {
+  getUserById,
+  createUserInDB,
+  updateUserInDB
+} = require("../../db/queries/userQueries");
 
-const createUser = (req, res) => {
-    const {
-        name,
-        skills,
-        interests,
-        careerGoal,
-        location
-    } = req.body;
-
-    if (!name) {
-        return res.status(400).json({
-            success: false,
-            message: "Name is required"
-        });
-    }
-
-    const user = {
-        id: users.length + 1,
-        name,
-        skills: skills || [],
-        interests: interests || [],
-        careerGoal: careerGoal || null,
-        location: location || null
-    };
-
-    users.push(user);
-
-    res.status(201).json({
-        success: true,
-        data: user
-    });
-};
-
-const getUserById = (req, res) => {
-    const id = Number(req.params.id);
-
-    const user = users.find((user) => user.id === id);
+const getUser = async (req, res) => {
+  try {
+    const user = await getUserById(
+      Number(req.params.id)
+    );
 
     if (!user) {
-        return res.status(404).json({
-            success: false,
-            message: "User not found"
-        });
+      return res.status(404).json({
+        message: "User not found"
+      });
     }
 
-    res.json({
-        success: true,
-        data: user
+    res.json(user);
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      message: "Failed to fetch user"
     });
+  }
 };
 
-const updateUser = (req, res) => {
-    const id = Number(req.params.id);
+const createUser = async (req, res) => {
+  try {
+    const user = await createUserInDB(req.body);
 
-    const user = users.find((user) => user.id === id);
+    res.status(201).json(user);
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      message: "Failed to create user"
+    });
+  }
+};
+
+const updateUser = async (req, res) => {
+  try {
+    const user = await updateUserInDB(
+      Number(req.params.id),
+      req.body
+    );
 
     if (!user) {
-        return res.status(404).json({
-            success: false,
-            message: "User not found"
-        });
+      return res.status(404).json({
+        message: "User not found"
+      });
     }
 
-    const {
-        name,
-        skills,
-        interests,
-        careerGoal,
-        location
-    } = req.body;
+    res.json(user);
+  } catch (error) {
+    console.error(error);
 
-    if (name !== undefined) user.name = name;
-    if (skills !== undefined) user.skills = skills;
-    if (interests !== undefined) user.interests = interests;
-    if (careerGoal !== undefined) user.careerGoal = careerGoal;
-    if (location !== undefined) user.location = location;
-
-    res.json({
-        success: true,
-        data: user
+    res.status(500).json({
+      message: "Failed to update user"
     });
+  }
 };
 
 module.exports = {
-    createUser,
-    getUserById,
-    updateUser
+  getUser,
+  createUser,
+  updateUser
 };

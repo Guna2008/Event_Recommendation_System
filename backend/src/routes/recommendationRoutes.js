@@ -1,10 +1,10 @@
 const express = require("express");
 
-const router = express.Router();
-
 const {
-    getRecommendations
+  getRecommendations
 } = require("../controllers/recommendationController");
+
+const router = express.Router();
 
 router.get("/:userId", getRecommendations);
 

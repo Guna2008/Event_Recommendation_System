@@ -1,14 +1,11 @@
 const express = require("express");
 
-const router = express.Router();
-
 const {
-    saveSearch,
-    getSearchHistory
+  searchEvents
 } = require("../controllers/searchController");
 
-router.post("/", saveSearch);
+const router = express.Router();
 
-router.get("/:userId", getSearchHistory);
+router.get("/", searchEvents);
 
 module.exports = router;

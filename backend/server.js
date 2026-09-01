@@ -18,7 +18,7 @@ const {
   getUserByEmail,
   updateUser,
   deleteUser
-} = require("./db/queries/userqueries");
+} = require("./db/queries/userQueries");
 
 const {
   getAllEvents,
@@ -29,7 +29,7 @@ const {
   updateEvent,
   deleteEvent,
   deleteExpiredEvents
-} = require("./db/queries/eventqueries");
+} = require("./db/queries/eventQueries");
 
 
 // ================================

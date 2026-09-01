@@ -1,103 +1,61 @@
-const events = [
-    {
-        id: 1,
-        title: "AI Hackathon 2026",
-        category: "Hackathon",
-        location: "Chennai",
-        mode: "Offline",
-        skills: ["Python", "Machine Learning", "AI"],
-        interests: ["AI", "Hackathons"]
-    },
-    {
-        id: 2,
-        title: "Web Development Challenge",
-        category: "Competition",
-        location: "Online",
-        mode: "Online",
-        skills: ["JavaScript", "React", "Node.js"],
-        interests: ["Web Development"]
-    },
-    {
-        id: 3,
-        title: "Data Science Workshop",
-        category: "Workshop",
-        location: "Bangalore",
-        mode: "Offline",
-        skills: ["Python", "SQL", "Data Science"],
-        interests: ["Data Science", "AI"]
-    }
-];
+const {
+  getAllEvents,
+  getEventByIdFromDB,
+  createEventInDB
+} = require("../../db/queries/eventQueries");
 
-const getAllEvents = (req, res) => {
-    res.json({
-        success: true,
-        count: events.length,
-        data: events
+const getEvents = async (req, res) => {
+  try {
+    const events = await getAllEvents();
+
+    res.status(200).json(events);
+  } catch (error) {
+    console.error("Get events error:", error);
+
+    res.status(500).json({
+      message: "Failed to fetch events"
     });
+  }
 };
 
-const getEventById = (req, res) => {
-    const id = Number(req.params.id);
-
-    const event = events.find((event) => event.id === id);
-
-    if (!event) {
-        return res.status(404).json({
-            success: false,
-            message: "Event not found"
-        });
-    }
-
-    res.json({
-        success: true,
-        data: event
-    });
-};
-
-const searchEvents = (req, res) => {
-    const query = req.query.query?.toLowerCase();
-
-    if (!query) {
-        return res.status(400).json({
-            success: false,
-            message: "Search query is required"
-        });
-    }
-
-    const results = events.filter((event) => {
-        return (
-            event.title.toLowerCase().includes(query) ||
-            event.category.toLowerCase().includes(query) ||
-            event.skills.some((skill) =>
-                skill.toLowerCase().includes(query)
-            )
-        );
-    });
-
-    res.json({
-        success: true,
-        count: results.length,
-        data: results
-    });
-};
-
-const getEventsByCategory = (req, res) => {
-    const category = req.params.category.toLowerCase();
-
-    const results = events.filter(
-        (event) => event.category.toLowerCase() === category
+const getEventById = async (req, res) => {
+  try {
+    const event = await getEventByIdFromDB(
+      Number(req.params.id)
     );
 
-    res.json({
-        success: true,
-        count: results.length,
-        data: results
+    if (!event) {
+      return res.status(404).json({
+        message: "Event not found"
+      });
+    }
+
+    res.status(200).json(event);
+  } catch (error) {
+    console.error("Get event error:", error);
+
+    res.status(500).json({
+      message: "Failed to fetch event"
     });
+  }
+};
+
+const createEvent = async (req, res) => {
+  try {
+    const event = await createEventInDB(req.body);
+
+    res.status(201).json(event);
+  } catch (error) {
+    console.error("Create event error:", error);
+
+    res.status(500).json({
+      message: "Failed to create event"
+    });
+  }
 };
 
 module.exports = {
-    getAllEvents,
-    getEventById,
-    searchEvents,
-    getEventsByCategory
+  getEvents,
+  getEventById,
+  createEvent
 };
