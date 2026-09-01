@@ -6,61 +6,62 @@ datasource db {
   provider = "postgresql"
 }
 
+/// ==================================================
+/// USER
+/// ==================================================
 model User {
   id                 Int      @id @default(autoincrement())
   name               String
   email              String   @unique
   department         String?
   year               Int?
-
-  skills             String[]
-  interests          String[]
-  preferredEventType String[]
-  preferredMode      String
-
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
+  preferredMode      String
+  preferredEventType String[]
+  skills             String[]
+  interests          String[]
 
-  interactions       Interaction[]
-  searchHistory      SearchHistory[]
+  interactions  Interaction[]
+  searchHistory SearchHistory[]
+  registrations Registration[]
+  feedbacks     Feedback[]
 }
 
+/// ==================================================
+/// EVENT
+/// ==================================================
 model Event {
-  id                   Int      @id @default(autoincrement())
-
+  id                   Int       @id @default(autoincrement())
   title                String
-  date                 DateTime?
+  description          String?
   location             String?
-  domain               String?
-
-  startTime            String?
-  endTime              String?
-
-  registrationFee      Float?
-  cashPrize            Float?
-  certificateAvailable Boolean  @default(false)
-
-  posterUrl            String?
-
+  date                 DateTime?
   registrationUrl      String?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+  cashPrize            Float?
+  certificateAvailable Boolean   @default(false)
+  contactEmail         String?
+  contactNumber        String?
+  domain               String?
+  endTime              String?
+  organizerDepartment  String?
+  organizerName        String?
+  posterUrl            String?
+  registrationDeadline DateTime?
+  registrationFee      Float?
+  startTime            String?
   whatsappGroupLink    String?
 
-  contactNumber        String?
-  contactEmail         String?
-
-  organizerName        String?
-  organizerDepartment  String?
-
-  description          String?
-
-  registrationDeadline DateTime?
-
-  createdAt            DateTime @default(now())
-  updatedAt            DateTime @updatedAt
-
-  interactions         Interaction[]
+  interactions  Interaction[]
+  registrations Registration[]
+  feedbacks     Feedback[]
 }
 
+/// ==================================================
+/// INTERACTION
+/// ==================================================
 model Interaction {
   id        Int      @id @default(autoincrement())
   userId    Int
@@ -68,13 +69,16 @@ model Interaction {
   type      String
   createdAt DateTime @default(now())
 
-  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
   event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([eventId])
 }
 
+/// ==================================================
+/// SEARCH HISTORY
+/// ==================================================
 model SearchHistory {
   id        Int      @id @default(autoincrement())
   userId    Int
@@ -84,4 +88,42 @@ model SearchHistory {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
+}
+
+/// ==================================================
+/// REGISTRATION
+/// ==================================================
+model Registration {
+  id           Int       @id @default(autoincrement())
+  userId       Int
+  eventId      Int
+  status       String    @default("REGISTERED")
+  registeredAt DateTime  @default(now())
+  attendedAt   DateTime?
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  event    Event     @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  feedback Feedback?
+
+  @@unique([userId, eventId])
+  @@index([userId])
+  @@index([eventId])
+}
+
+/// ==================================================
+/// FEEDBACK
+/// ==================================================
+model Feedback {
+  id             Int    @id @default(autoincrement())
+  registrationId Int    @unique
+  userId         Int
+  eventId        Int
+  experience     String
+
+  registration Registration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  event        Event        @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([eventId])
 }

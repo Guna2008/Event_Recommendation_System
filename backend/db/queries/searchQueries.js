@@ -1,7 +1,7 @@
 const prisma = require("../connection");
 
 // Add a search to search history
-const createSearchHistory = async (userId, query) => {
+const createSearchHistory = async ({ userId, query }) => {
   return await prisma.searchHistory.create({
     data: {
       userId: Number(userId),
@@ -31,7 +31,7 @@ const getRecentSearches = async (userId, limit = 10) => {
     orderBy: {
       createdAt: "desc"
     },
-    take: limit
+    take: Number(limit)
   });
 };
 

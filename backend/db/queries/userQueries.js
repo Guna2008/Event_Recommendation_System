@@ -1,7 +1,7 @@
 const prisma = require("../connection");
 
 // Create a user
-const createUser = async (userData) => {
+const createUserInDB = async (userData) => {
   return await prisma.user.create({
     data: userData
   });
@@ -34,8 +34,8 @@ const getUserByEmail = async (email) => {
   });
 };
 
-// Update user profile
-const updateUser = async (id, userData) => {
+// Update user
+const updateUserInDB = async (id, userData) => {
   return await prisma.user.update({
     where: {
       id: Number(id)
@@ -54,10 +54,10 @@ const deleteUser = async (id) => {
 };
 
 module.exports = {
-  createUser,
+  createUserInDB,
   getAllUsers,
   getUserById,
   getUserByEmail,
-  updateUser,
+  updateUserInDB,
   deleteUser
 };

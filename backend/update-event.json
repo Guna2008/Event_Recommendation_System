@@ -1,0 +1,20 @@
+{
+  "title": "Updated Hackathon",
+  "description": "Updated backend API test event",
+  "location": "Bangalore",
+  "date": "2026-11-20T10:00:00.000Z",
+  "domain": "Technology",
+  "startTime": "9:00 AM",
+  "endTime": "6:00 PM",
+  "registrationFee": 500,
+  "cashPrize": 25000,
+  "certificateAvailable": true,
+  "posterUrl": "https://example.com/updated-poster.jpg",
+  "registrationUrl": "https://example.com/updated-register",
+  "whatsappGroupLink": "https://chat.whatsapp.com/updated",
+  "contactNumber": "9999999999",
+  "contactEmail": "updated@example.com",
+  "organizerName": "Updated Organizer",
+  "organizerDepartment": "Information Technology",
+  "registrationDeadline": "2026-11-15T23:59:59.000Z"
+}
