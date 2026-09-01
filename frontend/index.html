@@ -1,0 +1,4032 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Vectored | Event Recommendation System</title>
+
+<style>
+
+/* =====================================================
+   GLOBAL
+===================================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #f6f7fb;
+    color: #202033;
+}
+
+button,
+input,
+select {
+    font-family: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+
+/* =====================================================
+   SIDEBAR
+===================================================== */
+
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+
+    width: 250px;
+    height: 100vh;
+
+    background: #171329;
+
+    color: white;
+
+    padding: 22px 14px;
+
+    z-index: 1000;
+}
+
+
+/* LOGO */
+
+.logo-area {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 0 10px 30px;
+}
+
+.logo-image {
+    width: 48px;
+    height: 48px;
+
+    border-radius: 12px;
+
+    object-fit: cover;
+}
+
+.logo-text {
+    font-size: 23px;
+    font-weight: 700;
+
+    letter-spacing: 0.5px;
+}
+
+
+/* MENU */
+
+.menu-heading {
+    color: #858197;
+
+    font-size: 11px;
+
+    text-transform: uppercase;
+
+    margin: 12px 12px 10px;
+}
+
+.menu-item {
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    width: 100%;
+
+    padding: 13px 15px;
+
+    margin-bottom: 5px;
+
+    border-radius: 9px;
+
+    color: #b9b5c8;
+
+    transition: 0.2s;
+
+    font-size: 14px;
+}
+
+.menu-item:hover {
+    background: #29233e;
+    color: white;
+}
+
+.menu-item.active {
+    background: #6840d9;
+    color: white;
+}
+
+.menu-icon {
+    width: 23px;
+
+    text-align: center;
+
+    font-size: 17px;
+}
+
+
+/* =====================================================
+   MAIN
+===================================================== */
+
+.main {
+    margin-left: 250px;
+
+    min-height: 100vh;
+}
+
+
+/* =====================================================
+   TOPBAR
+===================================================== */
+
+.topbar {
+    height: 72px;
+
+    background: white;
+
+    border-bottom: 1px solid #e7e6ec;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 0 32px;
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 500;
+}
+
+.page-title {
+    font-size: 21px;
+
+    font-weight: 700;
+}
+
+.top-right {
+    display: flex;
+
+    align-items: center;
+
+    gap: 20px;
+}
+
+
+/* NOTIFICATION */
+
+.notification {
+    width: 40px;
+    height: 40px;
+
+    background: #f2efff;
+
+    border-radius: 10px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    position: relative;
+
+    font-size: 19px;
+}
+
+.notification:hover {
+    background: #e9e3ff;
+}
+
+.notification-dot {
+    position: absolute;
+
+    right: 7px;
+    top: 7px;
+
+    width: 8px;
+    height: 8px;
+
+    background: #ef4444;
+
+    border-radius: 50%;
+}
+
+
+/* USER */
+
+.user-mini {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    font-weight: 600;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+
+    border-radius: 50%;
+
+    background: #ded5ff;
+
+    color: #5d35ca;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-weight: 700;
+}
+
+
+/* =====================================================
+   CONTENT
+===================================================== */
+
+.content {
+    padding: 32px;
+}
+
+.page {
+    display: none;
+}
+
+.page.active {
+    display: block;
+}
+
+
+/* =====================================================
+   WELCOME
+===================================================== */
+
+.welcome {
+    background:
+        linear-gradient(
+            120deg,
+            #4b20b9,
+            #7845df
+        );
+
+    color: white;
+
+    padding: 32px;
+
+    border-radius: 18px;
+
+    margin-bottom: 25px;
+}
+
+.welcome h1 {
+    font-size: 29px;
+
+    margin-bottom: 8px;
+}
+
+.welcome p {
+    color: #e9e6f7;
+
+    line-height: 1.6;
+}
+
+
+/* =====================================================
+   STAT CARDS
+===================================================== */
+
+.stats {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 18px;
+
+    margin-bottom: 32px;
+}
+
+.stat-card {
+    background: white;
+
+    border: 1px solid #e7e5eb;
+
+    border-radius: 14px;
+
+    padding: 20px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+}
+
+.stat-number {
+    font-size: 28px;
+
+    font-weight: 700;
+
+    margin-bottom: 4px;
+}
+
+.stat-label {
+    color: #777487;
+
+    font-size: 13px;
+}
+
+.stat-icon {
+    width: 45px;
+    height: 45px;
+
+    background: #eee9ff;
+
+    color: #6335d4;
+
+    border-radius: 11px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 20px;
+}
+
+
+/* =====================================================
+   SECTION
+===================================================== */
+
+.section {
+    margin-bottom: 35px;
+}
+
+.section-title {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 18px;
+}
+
+.section-title h2 {
+    font-size: 20px;
+}
+
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+
+.primary-btn {
+    border: none;
+
+    background: #6537d7;
+
+    color: white;
+
+    padding: 10px 17px;
+
+    border-radius: 8px;
+
+    font-weight: 600;
+}
+
+.primary-btn:hover {
+    background: #5225c1;
+}
+
+.secondary-btn {
+    border: none;
+
+    background: #eeeaff;
+
+    color: #6031ce;
+
+    padding: 10px 15px;
+
+    border-radius: 8px;
+
+    font-weight: 600;
+}
+
+.danger-btn {
+    border: none;
+
+    background: #ef4444;
+
+    color: white;
+
+    padding: 11px 18px;
+
+    border-radius: 8px;
+
+    font-weight: 600;
+}
+
+
+/* =====================================================
+   EVENT CARDS
+===================================================== */
+
+.event-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 18px;
+}
+
+.event-card {
+    background: white;
+
+    border: 1px solid #e5e4ea;
+
+    border-radius: 15px;
+
+    overflow: hidden;
+
+    transition: 0.2s;
+
+    position: relative;
+}
+
+.event-card:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 10px 25px
+        rgba(0,0,0,0.07);
+}
+
+.event-banner {
+    height: 135px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #4f20b8,
+            #8a51ed
+        );
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: white;
+
+    font-size: 21px;
+
+    font-weight: 700;
+}
+
+.bookmark {
+    position: absolute;
+
+    top: 12px;
+    right: 12px;
+
+    width: 34px;
+    height: 34px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: white;
+
+    font-size: 17px;
+}
+
+.event-content {
+    padding: 17px;
+}
+
+.event-tag {
+    display: inline-block;
+
+    background: #eee9ff;
+
+    color: #6031d0;
+
+    padding: 5px 9px;
+
+    border-radius: 6px;
+
+    font-size: 10px;
+
+    font-weight: 700;
+}
+
+.event-content h3 {
+    font-size: 17px;
+
+    margin: 10px 0;
+}
+
+.event-description {
+    font-size: 13px;
+
+    color: #777;
+
+    line-height: 1.5;
+
+    margin-bottom: 12px;
+}
+
+.event-details {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 6px;
+
+    color: #666477;
+
+    font-size: 12px;
+
+    margin-bottom: 15px;
+}
+
+.event-buttons {
+    display: flex;
+
+    gap: 8px;
+}
+
+.event-buttons button:first-child {
+    flex: 1;
+}
+
+
+/* =====================================================
+   FILTERS
+===================================================== */
+
+.filters {
+    background: white;
+
+    border: 1px solid #e5e4ea;
+
+    border-radius: 14px;
+
+    padding: 18px;
+
+    display: grid;
+
+    grid-template-columns:
+        2fr 1fr 1fr 1fr;
+
+    gap: 10px;
+
+    margin-bottom: 22px;
+}
+
+.input,
+.select {
+    width: 100%;
+
+    border: 1px solid #dddbe4;
+
+    border-radius: 8px;
+
+    padding: 11px;
+
+    outline: none;
+
+    background: white;
+}
+
+.input:focus,
+.select:focus {
+    border-color: #6840d9;
+}
+
+
+/* =====================================================
+   TABLE
+===================================================== */
+
+.table-box {
+    background: white;
+
+    border: 1px solid #e5e4ea;
+
+    border-radius: 14px;
+
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 15px;
+
+    border-bottom: 1px solid #eeeeef;
+
+    text-align: left;
+
+    font-size: 13px;
+}
+
+th {
+    background: #f8f8fb;
+
+    font-weight: 700;
+}
+
+.status {
+    display: inline-block;
+
+    padding: 6px 10px;
+
+    border-radius: 20px;
+
+    font-size: 10px;
+
+    font-weight: 700;
+}
+
+.status.registered {
+    background: #e5f8ed;
+
+    color: #16834d;
+}
+
+.status.completed {
+    background: #eae5ff;
+
+    color: #5e36cc;
+}
+
+
+/* =====================================================
+   PROFILE
+===================================================== */
+
+.profile-card {
+    background: white;
+
+    border: 1px solid #e5e4ea;
+
+    border-radius: 17px;
+
+    padding: 28px;
+
+    max-width: 900px;
+}
+
+.profile-header {
+    display: flex;
+
+    align-items: center;
+
+    gap: 18px;
+
+    padding-bottom: 25px;
+
+    border-bottom: 1px solid #eee;
+
+    margin-bottom: 25px;
+}
+
+.profile-avatar {
+    width: 75px;
+    height: 75px;
+
+    border-radius: 50%;
+
+    background: #ded5ff;
+
+    color: #6031d0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 24px;
+
+    font-weight: 700;
+}
+
+.profile-info-grid {
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 15px;
+}
+
+.info-box {
+    background: #f8f8fa;
+
+    border-radius: 10px;
+
+    padding: 15px;
+}
+
+.info-box label {
+    display: block;
+
+    color: #777;
+
+    font-size: 11px;
+
+    margin-bottom: 7px;
+}
+
+.domain-list {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 8px;
+
+    margin-top: 15px;
+}
+
+.domain {
+    background: #eee9ff;
+
+    color: #6031d0;
+
+    border-radius: 20px;
+
+    padding: 7px 12px;
+
+    font-size: 12px;
+}
+
+
+/* =====================================================
+   FEEDBACK
+===================================================== */
+
+.feedback-card {
+    background: white;
+
+    border: 1px solid #e5e4ea;
+
+    border-radius: 14px;
+
+    padding: 20px;
+
+    margin-bottom: 12px;
+}
+
+.feedback-buttons {
+    display: flex;
+
+    gap: 8px;
+
+    margin-top: 14px;
+}
+
+.feedback-btn {
+    border: 1px solid #ddd;
+
+    background: white;
+
+    padding: 9px 15px;
+
+    border-radius: 8px;
+
+    transition: 0.2s;
+}
+
+.feedback-btn:hover {
+    border-color: #6839d7;
+
+    background: #f3efff;
+}
+
+.feedback-btn.selected {
+    border-color: #6839d7;
+
+    background: #eee8ff;
+
+    color: #6031d0;
+
+    font-weight: 700;
+}
+
+
+/* =====================================================
+   CERTIFICATES
+===================================================== */
+
+.certificate-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap: 18px;
+}
+
+.certificate {
+    background: white;
+
+    border: 1px solid #e5e4ea;
+
+    border-radius: 14px;
+
+    padding: 20px;
+
+    display: flex;
+
+    gap: 15px;
+
+    align-items: center;
+}
+
+.certificate-icon {
+    width: 52px;
+    height: 52px;
+
+    border-radius: 11px;
+
+    background: #eee9ff;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 23px;
+}
+
+
+/* =====================================================
+   MODAL
+===================================================== */
+
+.modal {
+    position: fixed;
+
+    inset: 0;
+
+    background:
+        rgba(0,0,0,0.55);
+
+    display: none;
+
+    align-items: center;
+
+    justify-content: center;
+
+    z-index: 3000;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-content {
+    background: white;
+
+    width: 90%;
+
+    max-width: 570px;
+
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    border-radius: 17px;
+
+    padding: 28px;
+
+    position: relative;
+}
+
+.close {
+    position: absolute;
+
+    right: 18px;
+
+    top: 12px;
+
+    border: none;
+
+    background: none;
+
+    font-size: 25px;
+}
+
+.domain-selection {
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 9px;
+
+    margin: 20px 0;
+}
+
+.domain-option {
+    padding: 12px;
+
+    border: 1px solid #ddd;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+}
+
+.domain-option.selected {
+    background: #eee9ff;
+
+    border-color: #6839d7;
+
+    color: #6031d0;
+
+    font-weight: 700;
+}
+
+
+/* =====================================================
+   TOAST
+===================================================== */
+
+.toast {
+    position: fixed;
+
+    bottom: 25px;
+
+    right: 25px;
+
+    background: #171329;
+
+    color: white;
+
+    padding: 14px 19px;
+
+    border-radius: 9px;
+
+    display: none;
+
+    z-index: 5000;
+}
+
+.toast.show {
+    display: block;
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media(max-width:1000px) {
+
+    .stats {
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+    .event-grid {
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+    .filters {
+        grid-template-columns:
+            1fr 1fr;
+    }
+}
+
+
+@media(max-width:700px) {
+
+    .sidebar {
+        width: 70px;
+    }
+
+    .logo-text,
+    .menu-item span,
+    .menu-heading {
+        display: none;
+    }
+
+    .logo-area {
+        justify-content: center;
+    }
+
+    .menu-item {
+        justify-content: center;
+    }
+
+    .main {
+        margin-left: 70px;
+    }
+
+    .content {
+        padding: 18px;
+    }
+
+    .stats {
+        grid-template-columns: 1fr;
+    }
+
+    .event-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .filters {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .certificate-grid {
+        grid-template-columns: 1fr;
+    }
+}
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-image {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.logo-text {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+}
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
+
+<aside class="sidebar">
+
+    <div class="logo-area">
+
+        <!-- YOUR UPLOADED LOGO -->
+
+        <img
+            src="assets/vectored-logo.jpeg"
+            class="logo-image"
+            alt="Vectored Logo"
+        >
+
+        <div class="logo-text">
+            Vectored
+        </div>
+
+    </div>
+
+
+    <div class="menu-heading">
+        Main Menu
+    </div>
+
+
+    <div
+        class="menu-item active"
+        onclick="openPage('dashboard', this)"
+    >
+
+        <div class="menu-icon">
+            🏠
+        </div>
+
+        <span>
+            Dashboard
+        </span>
+
+    </div>
+
+
+    <div
+        class="menu-item"
+        onclick="openPage('recommendations', this)"
+    >
+
+        <div class="menu-icon">
+            🎯
+        </div>
+
+        <span>
+            Recommendations
+        </span>
+
+    </div>
+
+
+    <div
+        class="menu-item"
+        onclick="openPage('registrations', this)"
+    >
+
+        <div class="menu-icon">
+            📋
+        </div>
+
+        <span>
+            My Registration
+        </span>
+
+    </div>
+
+
+    <div
+        class="menu-item"
+        onclick="openPage('events', this)"
+    >
+
+        <div class="menu-icon">
+            🔎
+        </div>
+
+        <span>
+            Show All Events
+        </span>
+
+    </div>
+
+
+    <div
+        class="menu-item"
+        onclick="openPage('profile', this)"
+    >
+
+        <div class="menu-icon">
+            👤
+        </div>
+
+        <span>
+            Profile
+        </span>
+
+    </div>
+
+
+    <div class="menu-heading">
+        Account
+    </div>
+
+
+    <div
+        class="menu-item"
+        onclick="logout()"
+    >
+
+        <div class="menu-icon">
+            ↪
+        </div>
+
+        <span>
+            Logout
+        </span>
+
+    </div>
+
+</aside>
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<main class="main">
+
+
+<!-- =====================================================
+     TOPBAR
+===================================================== -->
+
+<header class="topbar">
+
+    <div
+        class="page-title"
+        id="pageTitle"
+    >
+        Dashboard
+    </div>
+
+
+    <div class="top-right">
+
+        <div
+            class="notification"
+            onclick="showNotifications()"
+        >
+
+            🔔
+
+            <div class="notification-dot"></div>
+
+        </div>
+
+
+        <div class="user-mini">
+
+            <div
+                class="avatar"
+                id="topAvatar"
+            >
+                SG
+            </div>
+
+            <span id="topName">
+                Santhiya
+            </span>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<div class="content">
+
+
+<!-- =====================================================
+     DASHBOARD
+===================================================== -->
+
+<section
+    class="page active"
+    id="dashboard"
+>
+
+
+    <div class="welcome">
+
+        <h1>
+            Welcome back,
+            <span id="welcomeName">
+                Santhiya
+            </span> 👋
+        </h1>
+
+        <p>
+            Discover events that match your interests,
+            skills and previous experiences.
+        </p>
+
+    </div>
+
+
+    <!-- STATISTICS -->
+
+    <div class="stats">
+
+
+        <div class="stat-card">
+
+            <div>
+
+                <div
+                    class="stat-number"
+                    id="registeredCount"
+                >
+                    0
+                </div>
+
+                <div class="stat-label">
+                    Registered Events
+                </div>
+
+            </div>
+
+            <div class="stat-icon">
+                📋
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div>
+
+                <div class="stat-number">
+                    2
+                </div>
+
+                <div class="stat-label">
+                    Completed Events
+                </div>
+
+            </div>
+
+            <div class="stat-icon">
+                ✅
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div>
+
+                <div class="stat-number">
+                    3
+                </div>
+
+                <div class="stat-label">
+                    Certificates
+                </div>
+
+            </div>
+
+            <div class="stat-icon">
+                🏆
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div>
+
+                <div class="stat-number">
+                    20
+                </div>
+
+                <div class="stat-label">
+                    Recommendations
+                </div>
+
+            </div>
+
+            <div class="stat-icon">
+                🎯
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- RECOMMENDED -->
+
+    <div class="section">
+
+        <div class="section-title">
+
+            <h2>
+                Recommended For You
+            </h2>
+
+            <button
+                class="primary-btn"
+                onclick="openPageById('recommendations')"
+            >
+                View All
+            </button>
+
+        </div>
+
+
+        <div
+            class="event-grid"
+            id="dashboardRecommendations"
+        ></div>
+
+    </div>
+
+
+    <!-- REGISTERED -->
+
+    <div class="section">
+
+        <div class="section-title">
+
+            <h2>
+                My Upcoming Events
+            </h2>
+
+            <button
+                class="primary-btn"
+                onclick="openPageById('registrations')"
+            >
+                View All
+            </button>
+
+        </div>
+
+
+        <div
+            class="event-grid"
+            id="dashboardRegistered"
+        ></div>
+
+    </div>
+
+
+    <!-- FEEDBACK -->
+
+    <div class="section">
+
+        <div class="section-title">
+
+            <h2>
+                Event Feedback
+            </h2>
+
+        </div>
+
+
+        <div id="feedbackContainer"></div>
+
+    </div>
+
+
+</section>
+
+
+<!-- =====================================================
+     RECOMMENDATIONS
+===================================================== -->
+
+<section
+    class="page"
+    id="recommendations"
+>
+
+    <div class="section-title">
+
+        <div>
+
+            <h2>
+                🎯 Personalized Recommendations
+            </h2>
+
+            <p
+                style="
+                    color:#777;
+                    margin-top:5px;
+                "
+            >
+                Top 20 events selected according to
+                your interests and feedback.
+            </p>
+
+        </div>
+
+
+        <button
+            class="primary-btn"
+            onclick="openDomainModal()"
+        >
+            Modify Interests
+        </button>
+
+    </div>
+
+
+    <div
+        style="
+            background:white;
+            border:1px solid #e5e4ea;
+            border-radius:12px;
+            padding:17px;
+            margin-bottom:22px;
+        "
+    >
+
+        <strong>
+            Your Interests
+        </strong>
+
+
+        <div
+            class="domain-list"
+            id="recommendationDomains"
+        ></div>
+
+    </div>
+
+
+    <div
+        class="event-grid"
+        id="recommendationGrid"
+    ></div>
+
+</section>
+
+
+<!-- =====================================================
+     MY REGISTRATION
+===================================================== -->
+
+<section
+    class="page"
+    id="registrations"
+>
+
+    <div class="section-title">
+
+        <h2>
+            📋 My Registration
+        </h2>
+
+    </div>
+
+
+    <div
+        class="table-box"
+        id="registrationTable"
+    ></div>
+
+
+    <br><br>
+
+
+    <div class="section-title">
+
+        <h2>
+            🏆 My Certificates
+        </h2>
+
+    </div>
+
+
+    <div class="certificate-grid">
+
+
+        <div class="certificate">
+
+            <div class="certificate-icon">
+                🏆
+            </div>
+
+            <div>
+
+                <h3>
+                    Python Coding Challenge
+                </h3>
+
+                <p
+                    style="
+                        color:#777;
+                        margin:5px 0 12px;
+                    "
+                >
+                    Completed • August 2026
+                </p>
+
+                <button
+                    class="primary-btn"
+                    onclick="certificate()"
+                >
+                    View Certificate
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="certificate">
+
+            <div class="certificate-icon">
+                🏆
+            </div>
+
+            <div>
+
+                <h3>
+                    Web Development Workshop
+                </h3>
+
+                <p
+                    style="
+                        color:#777;
+                        margin:5px 0 12px;
+                    "
+                >
+                    Completed • August 2026
+                </p>
+
+                <button
+                    class="primary-btn"
+                    onclick="certificate()"
+                >
+                    View Certificate
+                </button>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     SHOW ALL EVENTS
+===================================================== -->
+
+<section
+    class="page"
+    id="events"
+>
+
+    <div class="section-title">
+
+        <div>
+
+            <h2>
+                🔎 Explore All Events
+            </h2>
+
+            <p
+                style="
+                    color:#777;
+                    margin-top:5px;
+                "
+            >
+                Find events using filters.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="filters">
+
+
+        <input
+            type="text"
+            class="input"
+            id="search"
+            placeholder="Search events..."
+            oninput="filterEvents()"
+        >
+
+
+        <select
+            class="select"
+            id="domainFilter"
+            onchange="filterEvents()"
+        >
+
+            <option value="">
+                All Domains
+            </option>
+
+            <option>AI / ML</option>
+            <option>Web Development</option>
+            <option>Cybersecurity</option>
+            <option>Data Science</option>
+            <option>Cloud Computing</option>
+            <option>Mobile Development</option>
+            <option>UI / UX</option>
+            <option>IoT</option>
+            <option>Blockchain</option>
+            <option>Programming</option>
+
+        </select>
+
+
+        <select
+            class="select"
+            id="locationFilter"
+            onchange="filterEvents()"
+        >
+
+            <option value="">
+                All Locations
+            </option>
+
+            <option>Coimbatore</option>
+            <option>Chennai</option>
+            <option>Bangalore</option>
+            <option>Online</option>
+
+        </select>
+
+
+        <select
+            class="select"
+            id="modeFilter"
+            onchange="filterEvents()"
+        >
+
+            <option value="">
+                All Modes
+            </option>
+
+            <option>Online</option>
+            <option>Offline</option>
+            <option>Hybrid</option>
+
+        </select>
+
+    </div>
+
+
+    <div
+        class="event-grid"
+        id="allEventsGrid"
+    ></div>
+
+</section>
+
+
+<!-- =====================================================
+     PROFILE
+===================================================== -->
+
+<section
+    class="page"
+    id="profile"
+>
+
+    <div class="section-title">
+
+        <h2>
+            👤 My Profile
+        </h2>
+
+    </div>
+
+
+    <div class="profile-card">
+
+
+        <div class="profile-header">
+
+            <div
+                class="profile-avatar"
+                id="profileAvatar"
+            >
+                SG
+            </div>
+
+
+            <div>
+
+                <h2 id="profileName">
+                    Santhiya
+                </h2>
+
+                <p
+                    id="profileEmail"
+                    style="
+                        color:#777;
+                        margin-top:5px;
+                    "
+                >
+                    santhiya@example.com
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="profile-info-grid">
+
+
+            <div class="info-box">
+
+                <label>
+                    NAME
+                </label>
+
+                <strong id="profileName2">
+                    Santhiya
+                </strong>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <label>
+                    EMAIL ID
+                </label>
+
+                <strong id="profileEmail2">
+                    santhiya@example.com
+                </strong>
+
+            </div>
+
+
+        </div>
+
+
+        <br>
+
+
+        <h3>
+            🎯 My Recommendation Domains
+        </h3>
+
+
+        <p
+            style="
+                color:#777;
+                font-size:13px;
+                margin-top:6px;
+            "
+        >
+            These domains are used to personalize
+            your event recommendations.
+        </p>
+
+
+        <div
+            class="domain-list"
+            id="profileDomains"
+        ></div>
+
+
+        <br>
+
+
+        <div
+            style="
+                display:flex;
+                gap:10px;
+                flex-wrap:wrap;
+            "
+        >
+
+            <button
+                class="primary-btn"
+                onclick="openDomainModal()"
+            >
+                Modify Recommendations
+            </button>
+
+
+            <button
+                class="secondary-btn"
+                onclick="logout()"
+            >
+                Log Out
+            </button>
+
+
+            <button
+                class="danger-btn"
+                onclick="deleteAccount()"
+            >
+                Delete Account
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+</div>
+
+</main>
+
+
+<!-- =====================================================
+     DOMAIN MODAL
+===================================================== -->
+
+<div
+    class="modal"
+    id="domainModal"
+>
+
+    <div class="modal-content">
+
+        <button
+            class="close"
+            onclick="closeDomainModal()"
+        >
+            ×
+        </button>
+
+
+        <h2>
+            Choose Your Interests
+        </h2>
+
+
+        <p
+            style="
+                color:#777;
+                margin-top:7px;
+            "
+        >
+            Select the domains you are interested in.
+        </p>
+
+
+        <div
+            class="domain-selection"
+            id="domainSelection"
+        ></div>
+
+
+        <button
+            class="primary-btn"
+            onclick="saveDomains()"
+        >
+            Save Changes
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     EVENT DETAILS MODAL
+===================================================== -->
+
+<div
+    class="modal"
+    id="eventModal"
+>
+
+    <div class="modal-content">
+
+        <button
+            class="close"
+            onclick="closeEventModal()"
+        >
+            ×
+        </button>
+
+
+        <div
+            class="event-banner"
+            id="modalBanner"
+        >
+            EVENT
+        </div>
+
+
+        <br>
+
+
+        <span
+            class="event-tag"
+            id="modalDomain"
+        >
+            DOMAIN
+        </span>
+
+
+        <h2
+            id="modalTitle"
+            style="margin:12px 0;"
+        >
+            Event
+        </h2>
+
+
+        <p
+            id="modalDescription"
+            style="
+                color:#777;
+                line-height:1.6;
+                margin-bottom:18px;
+            "
+        ></p>
+
+
+        <div
+            class="event-details"
+            style="font-size:14px;"
+        >
+
+            <span id="modalDate"></span>
+
+            <span id="modalLocation"></span>
+
+            <span id="modalMode"></span>
+
+            <span id="modalOrganizer"></span>
+
+        </div>
+
+
+        <button
+            class="primary-btn"
+            id="modalRegister"
+            onclick="registerCurrentEvent()"
+        >
+            Register Now
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     TOAST
+===================================================== -->
+
+<div
+    class="toast"
+    id="toast"
+>
+    Done
+</div>
+
+
+<script>
+
+/* =====================================================
+   EVENT DATA
+===================================================== */
+
+const events = [
+
+{
+    id: 1,
+    title: "AI Innovation Hackathon",
+    domain: "AI / ML",
+    location: "Online",
+    mode: "Online",
+    date: "15 September 2026",
+    organizer: "Tech Community",
+    tag: "AI HACK",
+    description:
+        "Build innovative solutions using Artificial Intelligence and Machine Learning."
+},
+
+{
+    id: 2,
+    title: "Machine Learning Challenge",
+    domain: "AI / ML",
+    location: "Coimbatore",
+    mode: "Offline",
+    date: "20 September 2026",
+    organizer: "KCT Innovation Club",
+    tag: "ML",
+    description:
+        "Test your Machine Learning skills in a competitive environment."
+},
+
+{
+    id: 3,
+    title: "Full Stack Web Development Workshop",
+    domain: "Web Development",
+    location: "Coimbatore",
+    mode: "Offline",
+    date: "22 September 2026",
+    organizer: "Developer Community",
+    tag: "WEB",
+    description:
+        "Learn modern frontend and backend development."
+},
+
+{
+    id: 4,
+    title: "Cybersecurity CTF",
+    domain: "Cybersecurity",
+    location: "Online",
+    mode: "Online",
+    date: "25 September 2026",
+    organizer: "Cyber Club",
+    tag: "CYBER",
+    description:
+        "Solve cybersecurity challenges and improve security skills."
+},
+
+{
+    id: 5,
+    title: "Python Coding Challenge",
+    domain: "Programming",
+    location: "Online",
+    mode: "Online",
+    date: "28 September 2026",
+    organizer: "Code Arena",
+    tag: "PYTHON",
+    description:
+        "Solve programming problems and compete with developers."
+},
+
+{
+    id: 6,
+    title: "Data Science Bootcamp",
+    domain: "Data Science",
+    location: "Chennai",
+    mode: "Offline",
+    date: "1 October 2026",
+    organizer: "Data Science Club",
+    tag: "DATA",
+    description:
+        "Learn data analysis, visualization and machine learning."
+},
+
+{
+    id: 7,
+    title: "Cloud Computing Workshop",
+    domain: "Cloud Computing",
+    location: "Bangalore",
+    mode: "Offline",
+    date: "3 October 2026",
+    organizer: "Cloud Community",
+    tag: "CLOUD",
+    description:
+        "Learn cloud computing concepts and deployment."
+},
+
+{
+    id: 8,
+    title: "Android App Development",
+    domain: "Mobile Development",
+    location: "Coimbatore",
+    mode: "Offline",
+    date: "5 October 2026",
+    organizer: "Mobile Dev Club",
+    tag: "ANDROID",
+    description:
+        "Learn how to build Android applications."
+},
+
+{
+    id: 9,
+    title: "UI UX Design Workshop",
+    domain: "UI / UX",
+    location: "Coimbatore",
+    mode: "Offline",
+    date: "7 October 2026",
+    organizer: "Design Community",
+    tag: "UI UX",
+    description:
+        "Learn user interface and user experience design."
+},
+
+{
+    id: 10,
+    title: "IoT Innovation Challenge",
+    domain: "IoT",
+    location: "Chennai",
+    mode: "Hybrid",
+    date: "10 October 2026",
+    organizer: "IoT Club",
+    tag: "IOT",
+    description:
+        "Build innovative Internet of Things solutions."
+},
+
+{
+    id: 11,
+    title: "Blockchain Technology Seminar",
+    domain: "Blockchain",
+    location: "Online",
+    mode: "Online",
+    date: "12 October 2026",
+    organizer: "Blockchain Club",
+    tag: "BLOCKCHAIN",
+    description:
+        "Understand blockchain and decentralized technologies."
+},
+
+{
+    id: 12,
+    title: "React Development Workshop",
+    domain: "Web Development",
+    location: "Online",
+    mode: "Online",
+    date: "15 October 2026",
+    organizer: "Frontend Community",
+    tag: "REACT",
+    description:
+        "Build modern web applications using React."
+},
+
+{
+    id: 13,
+    title: "Deep Learning Bootcamp",
+    domain: "AI / ML",
+    location: "Bangalore",
+    mode: "Offline",
+    date: "17 October 2026",
+    organizer: "AI Community",
+    tag: "DEEP AI",
+    description:
+        "Learn neural networks and deep learning."
+},
+
+{
+    id: 14,
+    title: "Ethical Hacking Workshop",
+    domain: "Cybersecurity",
+    location: "Chennai",
+    mode: "Offline",
+    date: "20 October 2026",
+    organizer: "Security Community",
+    tag: "HACKING",
+    description:
+        "Learn ethical hacking and cybersecurity fundamentals."
+},
+
+{
+    id: 15,
+    title: "SQL Database Challenge",
+    domain: "Data Science",
+    location: "Online",
+    mode: "Online",
+    date: "22 October 2026",
+    organizer: "Database Club",
+    tag: "SQL",
+    description:
+        "Solve real-world SQL and database problems."
+},
+
+{
+    id: 16,
+    title: "DevOps Cloud Hackathon",
+    domain: "Cloud Computing",
+    location: "Bangalore",
+    mode: "Hybrid",
+    date: "25 October 2026",
+    organizer: "DevOps Community",
+    tag: "DEVOPS",
+    description:
+        "Build and deploy applications using DevOps tools."
+},
+
+{
+    id: 17,
+    title: "Competitive Programming Contest",
+    domain: "Programming",
+    location: "Coimbatore",
+    mode: "Offline",
+    date: "28 October 2026",
+    organizer: "Coding Club",
+    tag: "CODE",
+    description:
+        "Compete with programmers and solve algorithmic problems."
+},
+
+{
+    id: 18,
+    title: "Flutter App Development",
+    domain: "Mobile Development",
+    location: "Online",
+    mode: "Online",
+    date: "30 October 2026",
+    organizer: "App Developers",
+    tag: "FLUTTER",
+    description:
+        "Build cross-platform applications using Flutter."
+},
+
+{
+    id: 19,
+    title: "Figma UI Design Challenge",
+    domain: "UI / UX",
+    location: "Online",
+    mode: "Online",
+    date: "2 November 2026",
+    organizer: "Design Club",
+    tag: "FIGMA",
+    description:
+        "Create beautiful user interfaces using Figma."
+},
+
+{
+    id: 20,
+    title: "Smart City IoT Hackathon",
+    domain: "IoT",
+    location: "Coimbatore",
+    mode: "Hybrid",
+    date: "5 November 2026",
+    organizer: "Smart City Club",
+    tag: "SMART CITY",
+    description:
+        "Build IoT solutions for smart cities."
+},
+
+{
+    id: 21,
+    title: "Generative AI Workshop",
+    domain: "AI / ML",
+    location: "Online",
+    mode: "Online",
+    date: "8 November 2026",
+    organizer: "AI Community",
+    tag: "GEN AI",
+    description:
+        "Explore Generative AI and modern AI applications."
+},
+
+{
+    id: 22,
+    title: "Next.js Development Bootcamp",
+    domain: "Web Development",
+    location: "Coimbatore",
+    mode: "Offline",
+    date: "10 November 2026",
+    organizer: "Web Community",
+    tag: "NEXT JS",
+    description:
+        "Build production-ready applications using Next.js."
+}
+
+];
+
+
+/* =====================================================
+   USER
+===================================================== */
+
+let user =
+    JSON.parse(
+        localStorage.getItem("vectoredUser")
+    ) ||
+    {
+        name: "Santhiya",
+        email: "santhiya@example.com",
+
+        domains: [
+            "AI / ML",
+            "Web Development",
+            "Programming"
+        ]
+    };
+
+
+/* =====================================================
+   USER DATA
+===================================================== */
+
+let registeredEvents =
+    JSON.parse(
+        localStorage.getItem("vectoredRegistrations")
+    ) || [];
+
+
+let feedback =
+    JSON.parse(
+        localStorage.getItem("vectoredFeedback")
+    ) || {};
+
+
+let bookmarks =
+    JSON.parse(
+        localStorage.getItem("vectoredBookmarks")
+    ) || [];
+
+
+let currentEventId = null;
+
+
+/* =====================================================
+   INITIALIZE
+===================================================== */
+
+window.onload = function() {
+
+    updateUser();
+
+    renderDashboard();
+
+    renderRecommendations();
+
+    renderAllEvents();
+
+    renderRegistrations();
+
+    renderFeedback();
+
+    renderDomainSelection();
+
+};
+
+
+/* =====================================================
+   UPDATE USER
+===================================================== */
+
+function updateUser() {
+
+    document.getElementById(
+        "welcomeName"
+    ).innerText = user.name;
+
+    document.getElementById(
+        "topName"
+    ).innerText = user.name;
+
+    document.getElementById(
+        "profileName"
+    ).innerText = user.name;
+
+    document.getElementById(
+        "profileName2"
+    ).innerText = user.name;
+
+    document.getElementById(
+        "profileEmail"
+    ).innerText = user.email;
+
+    document.getElementById(
+        "profileEmail2"
+    ).innerText = user.email;
+
+
+    const initials =
+        user.name
+        .split(" ")
+        .map(
+            word => word[0]
+        )
+        .join("")
+        .substring(0,2)
+        .toUpperCase();
+
+
+    document.getElementById(
+        "topAvatar"
+    ).innerText = initials;
+
+    document.getElementById(
+        "profileAvatar"
+    ).innerText = initials;
+
+
+    renderDomains(
+        "profileDomains"
+    );
+
+    renderDomains(
+        "recommendationDomains"
+    );
+
+}
+
+
+/* =====================================================
+   PAGE NAVIGATION
+===================================================== */
+
+function openPage(
+    pageId,
+    element
+) {
+
+    document
+        .querySelectorAll(".page")
+        .forEach(
+            page =>
+            page.classList.remove("active")
+        );
+
+
+    document
+        .getElementById(pageId)
+        .classList.add("active");
+
+
+    document
+        .querySelectorAll(".menu-item")
+        .forEach(
+            item =>
+            item.classList.remove("active")
+        );
+
+
+    if(element) {
+
+        element.classList.add("active");
+
+    }
+
+
+    const titles = {
+
+        dashboard:
+            "Dashboard",
+
+        recommendations:
+            "Recommendations",
+
+        registrations:
+            "My Registration",
+
+        events:
+            "Show All Events",
+
+        profile:
+            "Profile"
+
+    };
+
+
+    document.getElementById(
+        "pageTitle"
+    ).innerText =
+        titles[pageId];
+
+}
+
+
+function openPageById(
+    pageId
+) {
+
+    const item =
+        document.querySelector(
+            `.menu-item[onclick*="${pageId}"]`
+        );
+
+    openPage(
+        pageId,
+        item
+    );
+
+}
+
+
+/* =====================================================
+   DOMAIN SELECTION
+===================================================== */
+
+const domains = [
+
+    "AI / ML",
+    "Web Development",
+    "Cybersecurity",
+    "Data Science",
+    "Cloud Computing",
+    "Mobile Development",
+    "UI / UX",
+    "IoT",
+    "Blockchain",
+    "Programming"
+
+];
+
+
+function renderDomainSelection() {
+
+    const container =
+        document.getElementById(
+            "domainSelection"
+        );
+
+
+    container.innerHTML = "";
+
+
+    domains.forEach(
+        domain => {
+
+            const div =
+                document.createElement(
+                    "div"
+                );
+
+
+            div.className =
+                "domain-option";
+
+
+            if(
+                user.domains.includes(
+                    domain
+                )
+            ) {
+
+                div.classList.add(
+                    "selected"
+                );
+
+            }
+
+
+            div.innerText =
+                domain;
+
+
+            div.onclick =
+                () => {
+
+                    div.classList.toggle(
+                        "selected"
+                    );
+
+                };
+
+
+            container.appendChild(
+                div
+            );
+
+        }
+    );
+
+}
+
+
+function openDomainModal() {
+
+    renderDomainSelection();
+
+    document
+        .getElementById(
+            "domainModal"
+        )
+        .classList.add("show");
+
+}
+
+
+function closeDomainModal() {
+
+    document
+        .getElementById(
+            "domainModal"
+        )
+        .classList.remove("show");
+
+}
+
+
+function saveDomains() {
+
+    const selected =
+        [
+            ...document
+            .querySelectorAll(
+                ".domain-option.selected"
+            )
+        ]
+        .map(
+            element =>
+            element.innerText
+        );
+
+
+    if(
+        selected.length === 0
+    ) {
+
+        alert(
+            "Please select at least one domain."
+        );
+
+        return;
+
+    }
+
+
+    user.domains =
+        selected;
+
+
+    localStorage.setItem(
+        "vectoredUser",
+        JSON.stringify(user)
+    );
+
+
+    updateUser();
+
+    renderRecommendations();
+
+    renderDashboard();
+
+    closeDomainModal();
+
+    showToast(
+        "Your recommendations were updated."
+    );
+
+}
+
+
+/* =====================================================
+   RENDER DOMAINS
+===================================================== */
+
+function renderDomains(
+    id
+) {
+
+    const container =
+        document.getElementById(id);
+
+
+    if(!container)
+        return;
+
+
+    container.innerHTML = "";
+
+
+    user.domains.forEach(
+        domain => {
+
+            const span =
+                document.createElement(
+                    "span"
+                );
+
+
+            span.className =
+                "domain";
+
+
+            span.innerText =
+                domain;
+
+
+            container.appendChild(
+                span
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   RECOMMENDATION ENGINE
+=====================================================
+
+   DOMAIN MATCH = +100
+   LIKE         = +40
+   DISLIKE      = -50
+   BOOKMARK     = +15
+
+   Higher score = better recommendation
+
+===================================================== */
+
+function calculateScore(
+    event
+) {
+
+    let score = 0;
+
+
+    if(
+        user.domains.includes(
+            event.domain
+        )
+    ) {
+
+        score += 100;
+
+    }
+
+
+    if(
+        feedback[event.id] === "like"
+    ) {
+
+        score += 40;
+
+    }
+
+
+    if(
+        feedback[event.id] === "dislike"
+    ) {
+
+        score -= 50;
+
+    }
+
+
+    if(
+        bookmarks.includes(
+            event.id
+        )
+    ) {
+
+        score += 15;
+
+    }
+
+
+    return score;
+
+}
+
+
+function getRecommendations() {
+
+    return events
+        .map(
+            event => ({
+                ...event,
+
+                score:
+                    calculateScore(
+                        event
+                    )
+            })
+        )
+        .sort(
+            (a,b) =>
+                b.score - a.score
+        )
+        .slice(
+            0,
+            20
+        );
+
+}
+
+
+/* =====================================================
+   RENDER RECOMMENDATIONS
+===================================================== */
+
+function renderRecommendations() {
+
+    const grid =
+        document.getElementById(
+            "recommendationGrid"
+        );
+
+
+    grid.innerHTML = "";
+
+
+    getRecommendations()
+        .forEach(
+            event => {
+
+                grid.appendChild(
+                    createEventCard(
+                        event
+                    )
+                );
+
+            }
+        );
+
+}
+
+
+/* =====================================================
+   EVENT CARD
+===================================================== */
+
+function createEventCard(
+    event
+) {
+
+    const card =
+        document.createElement(
+            "div"
+        );
+
+
+    card.className =
+        "event-card";
+
+
+    const saved =
+        bookmarks.includes(
+            event.id
+        );
+
+
+    const registered =
+        registeredEvents.includes(
+            event.id
+        );
+
+
+    card.innerHTML = `
+
+        <button
+            class="bookmark"
+            onclick="toggleBookmark(${event.id})"
+        >
+            ${saved ? "♥" : "♡"}
+        </button>
+
+
+        <div class="event-banner">
+
+            ${event.tag}
+
+        </div>
+
+
+        <div class="event-content">
+
+            <span class="event-tag">
+                ${event.domain}
+            </span>
+
+
+            <h3>
+                ${event.title}
+            </h3>
+
+
+            <p class="event-description">
+                ${event.description}
+            </p>
+
+
+            <div class="event-details">
+
+                <span>
+                    📅 ${event.date}
+                </span>
+
+                <span>
+                    📍 ${event.location}
+                </span>
+
+                <span>
+                    🌐 ${event.mode}
+                </span>
+
+            </div>
+
+
+            <div class="event-buttons">
+
+                <button
+                    class="primary-btn"
+                    onclick="openEvent(${event.id})"
+                >
+                    View Event
+                </button>
+
+
+                <button
+                    class="secondary-btn"
+                    onclick="registerEvent(${event.id})"
+                >
+                    ${
+                        registered
+                        ? "Registered"
+                        : "Register"
+                    }
+                </button>
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    return card;
+
+}
+
+
+/* =====================================================
+   ALL EVENTS
+===================================================== */
+
+function renderAllEvents(
+    list = events
+) {
+
+    const grid =
+        document.getElementById(
+            "allEventsGrid"
+        );
+
+
+    grid.innerHTML = "";
+
+
+    if(
+        list.length === 0
+    ) {
+
+        grid.innerHTML = `
+
+            <div
+                style="
+                    background:white;
+                    padding:40px;
+                    border-radius:12px;
+                "
+            >
+                No events found.
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    list.forEach(
+        event => {
+
+            grid.appendChild(
+                createEventCard(
+                    event
+                )
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   FILTER
+===================================================== */
+
+function filterEvents() {
+
+    const search =
+        document.getElementById(
+            "search"
+        ).value.toLowerCase();
+
+
+    const domain =
+        document.getElementById(
+            "domainFilter"
+        ).value;
+
+
+    const location =
+        document.getElementById(
+            "locationFilter"
+        ).value;
+
+
+    const mode =
+        document.getElementById(
+            "modeFilter"
+        ).value;
+
+
+    const filtered =
+        events.filter(
+            event =>
+
+            event.title
+                .toLowerCase()
+                .includes(search)
+
+            &&
+
+            (
+                !domain ||
+                event.domain === domain
+            )
+
+            &&
+
+            (
+                !location ||
+                event.location === location
+            )
+
+            &&
+
+            (
+                !mode ||
+                event.mode === mode
+            )
+        );
+
+
+    renderAllEvents(
+        filtered
+    );
+
+}
+
+
+/* =====================================================
+   EVENT DETAILS
+===================================================== */
+
+function openEvent(
+    id
+) {
+
+    const event =
+        events.find(
+            e => e.id === id
+        );
+
+
+    if(!event)
+        return;
+
+
+    currentEventId =
+        id;
+
+
+    document.getElementById(
+        "modalBanner"
+    ).innerText =
+        event.tag;
+
+
+    document.getElementById(
+        "modalDomain"
+    ).innerText =
+        event.domain;
+
+
+    document.getElementById(
+        "modalTitle"
+    ).innerText =
+        event.title;
+
+
+    document.getElementById(
+        "modalDescription"
+    ).innerText =
+        event.description;
+
+
+    document.getElementById(
+        "modalDate"
+    ).innerText =
+        "📅 " + event.date;
+
+
+    document.getElementById(
+        "modalLocation"
+    ).innerText =
+        "📍 " + event.location;
+
+
+    document.getElementById(
+        "modalMode"
+    ).innerText =
+        "🌐 " + event.mode;
+
+
+    document.getElementById(
+        "modalOrganizer"
+    ).innerText =
+        "👤 " + event.organizer;
+
+
+    const button =
+        document.getElementById(
+            "modalRegister"
+        );
+
+
+    if(
+        registeredEvents.includes(id)
+    ) {
+
+        button.innerText =
+            "Already Registered";
+
+        button.disabled =
+            true;
+
+    }
+
+    else {
+
+        button.innerText =
+            "Register Now";
+
+        button.disabled =
+            false;
+
+    }
+
+
+    document
+        .getElementById(
+            "eventModal"
+        )
+        .classList.add("show");
+
+}
+
+
+function closeEventModal() {
+
+    document
+        .getElementById(
+            "eventModal"
+        )
+        .classList.remove("show");
+
+}
+
+
+/* =====================================================
+   REGISTRATION
+===================================================== */
+
+function registerCurrentEvent() {
+
+    registerEvent(
+        currentEventId
+    );
+
+}
+
+
+function registerEvent(
+    id
+) {
+
+    if(
+        registeredEvents.includes(id)
+    ) {
+
+        showToast(
+            "Already registered."
+        );
+
+        return;
+
+    }
+
+
+    registeredEvents.push(
+        id
+    );
+
+
+    localStorage.setItem(
+        "vectoredRegistrations",
+        JSON.stringify(
+            registeredEvents
+        )
+    );
+
+
+    renderDashboard();
+
+    renderRegistrations();
+
+    renderRecommendations();
+
+    renderAllEvents();
+
+
+    closeEventModal();
+
+
+    showToast(
+        "Successfully registered!"
+    );
+
+}
+
+
+/* =====================================================
+   DASHBOARD
+===================================================== */
+
+function renderDashboard() {
+
+    document.getElementById(
+        "registeredCount"
+    ).innerText =
+        registeredEvents.length;
+
+
+    const recommended =
+        document.getElementById(
+            "dashboardRecommendations"
+        );
+
+
+    recommended.innerHTML = "";
+
+
+    getRecommendations()
+        .slice(0,3)
+        .forEach(
+            event => {
+
+                recommended.appendChild(
+                    createEventCard(
+                        event
+                    )
+                );
+
+            }
+        );
+
+
+    const registered =
+        document.getElementById(
+            "dashboardRegistered"
+        );
+
+
+    registered.innerHTML = "";
+
+
+    events
+        .filter(
+            event =>
+                registeredEvents.includes(
+                    event.id
+                )
+        )
+        .slice(0,3)
+        .forEach(
+            event => {
+
+                registered.appendChild(
+                    createEventCard(
+                        event
+                    )
+                );
+
+            }
+        );
+
+}
+
+
+/* =====================================================
+   REGISTRATION TABLE
+===================================================== */
+
+function renderRegistrations() {
+
+    const container =
+        document.getElementById(
+            "registrationTable"
+        );
+
+
+    const registered =
+        events.filter(
+            event =>
+                registeredEvents.includes(
+                    event.id
+                )
+        );
+
+
+    if(
+        registered.length === 0
+    ) {
+
+        container.innerHTML = `
+
+            <div
+                style="
+                    padding:40px;
+                    text-align:center;
+                    color:#777;
+                "
+            >
+
+                <h3>
+                    No registrations yet
+                </h3>
+
+                <p style="margin-top:8px;">
+                    Explore events and register for one.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    let html = `
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Event</th>
+                    <th>Domain</th>
+                    <th>Date</th>
+                    <th>Location</th>
+                    <th>Status</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+    `;
+
+
+    registered.forEach(
+        event => {
+
+            html += `
+
+                <tr>
+
+                    <td>
+                        ${event.title}
+                    </td>
+
+                    <td>
+                        ${event.domain}
+                    </td>
+
+                    <td>
+                        ${event.date}
+                    </td>
+
+                    <td>
+                        ${event.location}
+                    </td>
+
+                    <td>
+
+                        <span
+                            class="status registered"
+                        >
+                            Registered
+                        </span>
+
+                    </td>
+
+                </tr>
+
+            `;
+
+        }
+    );
+
+
+    html += `
+
+            </tbody>
+
+        </table>
+
+    `;
+
+
+    container.innerHTML =
+        html;
+
+}
+
+
+/* =====================================================
+   FEEDBACK
+===================================================== */
+
+function renderFeedback() {
+
+    const container =
+        document.getElementById(
+            "feedbackContainer"
+        );
+
+
+    const participated =
+        events.filter(
+            event =>
+                registeredEvents.includes(
+                    event.id
+                )
+        );
+
+
+    if(
+        participated.length === 0
+    ) {
+
+        container.innerHTML = `
+
+            <div class="feedback-card">
+
+                <p style="color:#777;">
+                    Participate in events to give feedback.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    container.innerHTML = "";
+
+
+    participated.forEach(
+        event => {
+
+            const current =
+                feedback[event.id];
+
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+
+            card.className =
+                "feedback-card";
+
+
+            card.innerHTML = `
+
+                <h3>
+                    ${event.title}
+                </h3>
+
+
+                <p
+                    style="
+                        color:#777;
+                        margin-top:6px;
+                    "
+                >
+                    How was your experience?
+                </p>
+
+
+                <div class="feedback-buttons">
+
+                    <button
+                        class="
+                            feedback-btn
+                            ${
+                                current === "like"
+                                ? "selected"
+                                : ""
+                            }
+                        "
+                        onclick="
+                            giveFeedback(
+                                ${event.id},
+                                'like'
+                            )
+                        "
+                    >
+                        👍 Good
+                    </button>
+
+
+                    <button
+                        class="
+                            feedback-btn
+                            ${
+                                current === "neutral"
+                                ? "selected"
+                                : ""
+                            }
+                        "
+                        onclick="
+                            giveFeedback(
+                                ${event.id},
+                                'neutral'
+                            )
+                        "
+                    >
+                        😐 Moderate
+                    </button>
+
+
+                    <button
+                        class="
+                            feedback-btn
+                            ${
+                                current === "dislike"
+                                ? "selected"
+                                : ""
+                            }
+                        "
+                        onclick="
+                            giveFeedback(
+                                ${event.id},
+                                'dislike'
+                            )
+                        "
+                    >
+                        👎 Not Good
+                    </button>
+
+                </div>
+
+            `;
+
+
+            container.appendChild(
+                card
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   FEEDBACK → RECOMMENDATIONS
+===================================================== */
+
+function giveFeedback(
+    eventId,
+    type
+) {
+
+    feedback[eventId] =
+        type;
+
+
+    localStorage.setItem(
+        "vectoredFeedback",
+        JSON.stringify(
+            feedback
+        )
+    );
+
+
+    renderFeedback();
+
+    renderRecommendations();
+
+    renderDashboard();
+
+
+    if(type === "like") {
+
+        showToast(
+            "More similar events will be recommended."
+        );
+
+    }
+
+    else if(type === "dislike") {
+
+        showToast(
+            "Similar events will be recommended less."
+        );
+
+    }
+
+    else {
+
+        showToast(
+            "Feedback saved as moderate."
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   BOOKMARK
+===================================================== */
+
+function toggleBookmark(
+    id
+) {
+
+    if(
+        bookmarks.includes(id)
+    ) {
+
+        bookmarks =
+            bookmarks.filter(
+                eventId =>
+                    eventId !== id
+            );
+
+        showToast(
+            "Bookmark removed."
+        );
+
+    }
+
+    else {
+
+        bookmarks.push(id);
+
+        showToast(
+            "Event bookmarked."
+        );
+
+    }
+
+
+    localStorage.setItem(
+        "vectoredBookmarks",
+        JSON.stringify(
+            bookmarks
+        )
+    );
+
+
+    renderRecommendations();
+
+    renderAllEvents();
+
+}
+
+
+/* =====================================================
+   NOTIFICATION
+===================================================== */
+
+function showNotifications() {
+
+    alert(
+
+        "🔔 Notifications\n\n" +
+
+        "• New AI event matches your interests.\n" +
+
+        "• Python Coding Challenge registration is open.\n" +
+
+        "• Your feedback has updated recommendations.\n" +
+
+        "• New certificate available."
+
+    );
+
+}
+
+
+/* =====================================================
+   CERTIFICATE
+===================================================== */
+
+function certificate() {
+
+    alert(
+        "Certificate preview will be connected to the backend."
+    );
+
+}
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+function logout() {
+
+    const answer =
+        confirm(
+            "Are you sure you want to logout?"
+        );
+
+
+    if(!answer)
+        return;
+
+
+    showToast(
+        "Logged out successfully."
+    );
+
+
+    setTimeout(
+        () => {
+
+            alert(
+                "Login page will be connected here."
+            );
+
+        },
+        700
+    );
+
+}
+
+
+/* =====================================================
+   DELETE ACCOUNT
+===================================================== */
+
+function deleteAccount() {
+
+    const warning = `
+
+⚠ DELETE ACCOUNT
+
+This action is permanent.
+
+Deleting your account will remove:
+
+• Your profile
+• Selected recommendation domains
+• Event registrations
+• Feedback
+• Bookmarks
+• Recommendation preferences
+
+The account cannot be recovered.
+
+Do you want to continue?
+
+`;
+
+
+    const first =
+        confirm(warning);
+
+
+    if(!first)
+        return;
+
+
+    const second =
+        confirm(
+            "FINAL WARNING!\n\n" +
+            "Delete your Vectored account permanently?"
+        );
+
+
+    if(!second)
+        return;
+
+
+    localStorage.removeItem(
+        "vectoredUser"
+    );
+
+    localStorage.removeItem(
+        "vectoredRegistrations"
+    );
+
+    localStorage.removeItem(
+        "vectoredFeedback"
+    );
+
+    localStorage.removeItem(
+        "vectoredBookmarks"
+    );
+
+
+    alert(
+        "Your account has been deleted."
+    );
+
+
+    location.reload();
+
+}
+
+
+/* =====================================================
+   TOAST
+===================================================== */
+
+function showToast(
+    message
+) {
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+    toast.innerText =
+        message;
+
+
+    toast.classList.add(
+        "show"
+    );
+
+
+    setTimeout(
+        () => {
+
+            toast.classList.remove(
+                "show"
+            );
+
+        },
+        2500
+    );
+
+}
+
+
+/* =====================================================
+   CLOSE MODALS
+===================================================== */
+
+window.onclick =
+function(event) {
+
+    const domainModal =
+        document.getElementById(
+            "domainModal"
+        );
+
+
+    const eventModal =
+        document.getElementById(
+            "eventModal"
+        );
+
+
+    if(
+        event.target === domainModal
+    ) {
+
+        closeDomainModal();
+
+    }
+
+
+    if(
+        event.target === eventModal
+    ) {
+
+        closeEventModal();
+
+    }
+
+};
+
+</script>
+
+</body>
+
+</html>
