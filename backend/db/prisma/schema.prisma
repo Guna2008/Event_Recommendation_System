@@ -1,0 +1,87 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id                 Int      @id @default(autoincrement())
+  name               String
+  email              String   @unique
+  department         String?
+  year               Int?
+
+  skills             String[]
+  interests          String[]
+  preferredEventType String[]
+  preferredMode      String
+
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  interactions       Interaction[]
+  searchHistory      SearchHistory[]
+}
+
+model Event {
+  id                   Int      @id @default(autoincrement())
+
+  title                String
+  date                 DateTime?
+  location             String?
+  domain               String?
+
+  startTime            String?
+  endTime              String?
+
+  registrationFee      Float?
+  cashPrize            Float?
+  certificateAvailable Boolean  @default(false)
+
+  posterUrl            String?
+
+  registrationUrl      String?
+  whatsappGroupLink    String?
+
+  contactNumber        String?
+  contactEmail         String?
+
+  organizerName        String?
+  organizerDepartment  String?
+
+  description          String?
+
+  registrationDeadline DateTime?
+
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  interactions         Interaction[]
+}
+
+model Interaction {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  eventId   Int
+  type      String
+  createdAt DateTime @default(now())
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([eventId])
+}
+
+model SearchHistory {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  query     String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
