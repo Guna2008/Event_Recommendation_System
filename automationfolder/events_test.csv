@@ -1,0 +1,11 @@
+event_id,event_name,skills,interests,event_type,mode
+E001,Machine Learning Workshop,"Python, Machine Learning","Artificial Intelligence, Data Science",Workshop,Online
+E002,AI Hackathon,"Python, Deep Learning","Artificial Intelligence, Generative AI",Hackathon,Offline
+E003,Web Development Workshop,"HTML/CSS, JavaScript, React","Web Development, Software Engineering",Workshop,Online
+E004,Cybersecurity Seminar,"Linux, Ethical Hacking","Cybersecurity, Network Security",Seminar,Online
+E005,Data Science Bootcamp,"Python, SQL, Data Analytics","Data Science, Machine Learning",Bootcamp,Online
+E006,Cloud Computing Workshop,"AWS, Docker, DevOps","Cloud Computing, Cloud Architecture",Workshop,Both
+E007,IoT Conference,"ESP32, Embedded Systems","Internet of Things, Electronics",Conference,Offline
+E008,Generative AI Talk,"Python, Generative AI","Generative AI, Artificial Intelligence",Tech Talk,Online
+E009,React Hackathon,"React, JavaScript","Web Development, Open Source",Hackathon,Offline
+E010,Deep Learning Workshop,"Python, Deep Learning","Computer Vision, Machine Learning",Workshop,Online
