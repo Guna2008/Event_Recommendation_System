@@ -1,10 +1,37 @@
 const prisma = require("../connection");
+const bcrypt = require("bcryptjs");
 
 // Create a user
 const createUserInDB = async (userData) => {
+  const data = { ...userData };
+
+  if (data.password) {
+    data.password = await bcrypt.hash(data.password, 10);
+  }
+
   return await prisma.user.create({
-    data: userData
+    data
   });
+};
+
+// Verify email + password, return user (without password) or null
+const verifyUserCredentials = async (email, password) => {
+  const user = await prisma.user.findUnique({
+    where: { email }
+  });
+
+  if (!user || !user.password) {
+    return null;
+  }
+
+  const matches = await bcrypt.compare(password, user.password);
+
+  if (!matches) {
+    return null;
+  }
+
+  const { password: _pw, ...safeUser } = user;
+  return safeUser;
 };
 
 // Get all users
@@ -36,11 +63,19 @@ const getUserByEmail = async (email) => {
 
 // Update user
 const updateUserInDB = async (id, userData) => {
+  const data = { ...userData };
+
+  if (data.password) {
+    data.password = await bcrypt.hash(data.password, 10);
+  } else {
+    delete data.password;
+  }
+
   return await prisma.user.update({
     where: {
       id: Number(id)
     },
-    data: userData
+    data
   });
 };
 
@@ -59,5 +94,6 @@ module.exports = {
   getUserById,
   getUserByEmail,
   updateUserInDB,
-  deleteUser
+  deleteUser,
+  verifyUserCredentials
 };

@@ -1107,6 +1107,7 @@ th {
 
 
 <body>
+<script src="assets/api.js"></script>
 
 
 <!-- =====================================================
@@ -2098,9 +2099,14 @@ th {
 
 /* =====================================================
    EVENT DATA
+   (fallback only — used if the backend can't be reached;
+   normally `events` is replaced by loadEvents() below with
+   live data from the Express API)
 ===================================================== */
 
-const events = [
+let events = [];
+
+const fallbackEvents = [
 
 {
     id: 1,
@@ -2392,6 +2398,64 @@ const events = [
 
 
 /* =====================================================
+   LOAD EVENTS FROM BACKEND
+   Maps the Prisma Event shape onto the shape the rest of
+   this file's rendering code expects (id, title, domain,
+   location, mode, date, organizer, tag, description).
+===================================================== */
+
+const DOMAIN_TAGS = {
+    "AI / ML": "AI HACK",
+    "Web Development": "WEB",
+    "Cybersecurity": "CYBER",
+    "Programming": "CODE",
+    "Data Science": "DATA",
+    "Cloud Computing": "CLOUD",
+    "Mobile Development": "MOBILE"
+};
+
+function mapBackendEvent(event) {
+    const dateObj = event.date ? new Date(event.date) : null;
+
+    return {
+        id: event.id,
+        title: event.title,
+        domain: event.domain || "General",
+        location: event.location || "TBA",
+        mode: event.location && event.location.toLowerCase().includes("online")
+            ? "Online"
+            : "Offline",
+        date: dateObj
+            ? dateObj.toLocaleDateString("en-US", {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric"
+              })
+            : "Date TBA",
+        organizer: event.organizerName || "Vectored",
+        tag: DOMAIN_TAGS[event.domain] || "EVENT",
+        description: event.description || ""
+    };
+}
+
+async function loadEvents() {
+    try {
+        const response = await api.getEvents();
+        const backendEvents = (response && response.data) || [];
+
+        if (backendEvents.length > 0) {
+            events = backendEvents.map(mapBackendEvent);
+        } else {
+            events = fallbackEvents;
+        }
+    } catch (error) {
+        console.error("Failed to load events from backend, using fallback data.", error);
+        events = fallbackEvents;
+    }
+}
+
+
+/* =====================================================
    USER
 ===================================================== */
 
@@ -2400,15 +2464,24 @@ let user =
         localStorage.getItem("vectoredUser")
     ) ||
     {
-        name: "Santhiya",
-        email: "santhiya@example.com",
+        name: "Guest",
+        email: "",
 
-        domains: [
-            "AI / ML",
-            "Web Development",
-            "Programming"
-        ]
+        domains: []
     };
+
+// preferredEventType comes back from the backend as an array of
+// event-type names (e.g. "Hackathon"); `domains` here is used for
+// local scoring against event.domain, so treat them the same way.
+if (!Array.isArray(user.domains)) {
+    user.domains = user.preferredEventType || user.interests || [];
+}
+
+// Real backend users have a numeric `id`. If there isn't one, the
+// person isn't logged in — recommendations/registrations/feedback
+// will fall back to local-only behaviour instead of hitting the API.
+const currentUserId =
+    typeof user.id === "number" ? user.id : null;
 
 
 /* =====================================================
@@ -2440,13 +2513,19 @@ let currentEventId = null;
    INITIALIZE
 ===================================================== */
 
-window.onload = function() {
+window.onload = async function() {
 
     updateUser();
 
+    await loadEvents();
+
+    if (currentUserId) {
+        await syncRegistrationsFromBackend();
+    }
+
     renderDashboard();
 
-    renderRecommendations();
+    await renderRecommendations();
 
     renderAllEvents();
 
@@ -2457,6 +2536,27 @@ window.onload = function() {
     renderDomainSelection();
 
 };
+
+/* =====================================================
+   SYNC REGISTRATIONS FROM BACKEND
+   Keeps the local `registeredEvents` list (used everywhere
+   for instant UI state) in sync with what's actually stored
+   for this user in Postgres.
+===================================================== */
+
+async function syncRegistrationsFromBackend() {
+    try {
+        const regs = await api.getUserRegistrations(currentUserId);
+        registeredEvents = (regs || []).map((r) => r.eventId);
+
+        localStorage.setItem(
+            "vectoredRegistrations",
+            JSON.stringify(registeredEvents)
+        );
+    } catch (error) {
+        console.error("Could not sync registrations from backend.", error);
+    }
+}
 
 
 /* =====================================================
@@ -2872,7 +2972,7 @@ function calculateScore(
 }
 
 
-function getRecommendations() {
+function getRecommendationsLocal() {
 
     return events
         .map(
@@ -2896,12 +2996,30 @@ function getRecommendations() {
 
 }
 
+async function getRecommendations() {
+
+    if (currentUserId) {
+        try {
+            const response = await api.getRecommendations(currentUserId);
+            const backendRecs = (response && response.data) || [];
+
+            if (backendRecs.length > 0) {
+                return backendRecs.map(mapBackendEvent);
+            }
+        } catch (error) {
+            console.error("Falling back to local recommendation scoring.", error);
+        }
+    }
+
+    return getRecommendationsLocal();
+}
+
 
 /* =====================================================
    RENDER RECOMMENDATIONS
 ===================================================== */
 
-function renderRecommendations() {
+async function renderRecommendations() {
 
     const grid =
         document.getElementById(
@@ -2912,8 +3030,9 @@ function renderRecommendations() {
     grid.innerHTML = "";
 
 
-    getRecommendations()
-        .forEach(
+    const recommendations = await getRecommendations();
+
+    recommendations.forEach(
             event => {
 
                 grid.appendChild(
@@ -3162,6 +3281,16 @@ function filterEvents() {
         filtered
     );
 
+
+    if (currentUserId && search.trim().length > 2) {
+        clearTimeout(window.__searchSaveTimer);
+        window.__searchSaveTimer = setTimeout(() => {
+            api.saveSearch(currentUserId, search.trim()).catch((error) => {
+                console.error("Could not save search history.", error);
+            });
+        }, 600);
+    }
+
 }
 
 
@@ -3270,6 +3399,13 @@ function openEvent(
         )
         .classList.add("show");
 
+
+    if (currentUserId) {
+        api.saveInteraction(currentUserId, id, "VIEW").catch((error) => {
+            console.error("Could not save view interaction.", error);
+        });
+    }
+
 }
 
 
@@ -3297,7 +3433,7 @@ function registerCurrentEvent() {
 }
 
 
-function registerEvent(
+async function registerEvent(
     id
 ) {
 
@@ -3342,6 +3478,16 @@ function registerEvent(
     showToast(
         "Successfully registered!"
     );
+
+
+    if (currentUserId) {
+        try {
+            await api.registerForEvent(currentUserId, id);
+            await api.saveInteraction(currentUserId, id, "REGISTER");
+        } catch (error) {
+            console.error("Could not save registration to backend.", error);
+        }
+    }
 
 }
 
@@ -3728,6 +3874,14 @@ function giveFeedback(
     renderDashboard();
 
 
+    if (currentUserId) {
+        api.saveInteraction(currentUserId, eventId, type.toUpperCase())
+            .catch((error) => {
+                console.error("Could not save feedback interaction.", error);
+            });
+    }
+
+
     if(type === "like") {
 
         showToast(
@@ -3798,6 +3952,13 @@ function toggleBookmark(
     );
 
 
+    if (currentUserId) {
+        api.saveInteraction(currentUserId, id, "BOOKMARK").catch((error) => {
+            console.error("Could not save bookmark interaction.", error);
+        });
+    }
+
+
     renderRecommendations();
 
     renderAllEvents();
@@ -3862,12 +4023,15 @@ function logout() {
     );
 
 
+    Session.clear();
+
+    localStorage.removeItem("vectoredUser");
+
+
     setTimeout(
         () => {
 
-            alert(
-                "Login page will be connected here."
-            );
+            window.location.href = "login.html";
 
         },
         700
@@ -3939,13 +4103,21 @@ Do you want to continue?
         "vectoredBookmarks"
     );
 
+    if (currentUserId) {
+        api.deleteUser
+            ? api.deleteUser(currentUserId)
+            : fetch(`${API_BASE}/users/${currentUserId}`, { method: "DELETE" });
+    }
+
+    Session.clear();
+
 
     alert(
         "Your account has been deleted."
     );
 
 
-    location.reload();
+    window.location.href = "login.html";
 
 }
 

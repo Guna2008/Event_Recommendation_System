@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "User"
+ADD COLUMN     "password" TEXT NOT NULL DEFAULT '',
+ADD COLUMN     "role" TEXT NOT NULL DEFAULT 'STUDENT',
+ALTER COLUMN "preferredMode" SET DEFAULT 'Online';

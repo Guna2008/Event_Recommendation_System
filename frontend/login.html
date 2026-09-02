@@ -127,6 +127,7 @@ body{padding:10px}
 </head>
 
 <body>
+<script src="assets/api.js"></script>
 <div class="app">
 
 <section class="brand">
@@ -429,36 +430,9 @@ function togglePassword(id, button){
 }
 
 /* =========================
-   DEFAULT ADMIN
+   SIGN UP  (real backend account)
 ========================= */
-const DEFAULT_ADMINS = [
-    {
-        name: "Vectored Admin",
-        email: "dharaneesh@gmail.com",
-        password: "dharaneesh_07",
-        role: "admin"
-    },
-    {
-        name: "Vectored Admin",
-        email: "praneethan@gmail.com",
-        password: "praneethan_07",
-        role: "admin"
-    }
-];
-
-/*
-  This is only a frontend/localStorage prototype.
-  In the real application, create this account in the backend database
-  and store a HASHED password, not the plain password.
-*/
-if(!localStorage.getItem("vectoredAdmins")){
-    localStorage.setItem("vectoredAdmins", JSON.stringify(DEFAULT_ADMINS));
-}
-
-/* =========================
-   SIGN UP
-========================= */
-document.getElementById("signupForm").addEventListener("submit", function(e){
+document.getElementById("signupForm").addEventListener("submit", async function(e){
     e.preventDefault();
 
     const name = document.getElementById("name").value.trim();
@@ -476,75 +450,72 @@ document.getElementById("signupForm").addEventListener("submit", function(e){
         return;
     }
 
-    const users = JSON.parse(localStorage.getItem("vectoredUsers") || "[]");
+    const submitButton = this.querySelector("button[type=submit]");
+    if(submitButton) submitButton.disabled = true;
 
-    if(users.some(user => user.email === email)){
-        showToast("An account with this email already exists.");
-        return;
+    try{
+        await api.signup({ name, email, password });
+
+        this.reset();
+
+        /*
+          IMPORTANT FLOW:
+          Sign Up -> User Login -> Successful Login -> Profile
+        */
+        showToast("Account created successfully. Please sign in.");
+
+        setTimeout(() => {
+            showUserLogin();
+            document.getElementById("userEmail").value = email;
+            document.getElementById("userPassword").focus();
+        }, 900);
+
+    }catch(error){
+        showToast(error.message || "Could not create account.");
+    }finally{
+        if(submitButton) submitButton.disabled = false;
     }
-
-    users.push({
-        name,
-        email,
-        password
-    });
-
-    localStorage.setItem("vectoredUsers", JSON.stringify(users));
-
-    this.reset();
-
-    /*
-      IMPORTANT FLOW:
-      Sign Up -> User Login -> Successful Login -> Profile
-    */
-    showToast("Account created successfully. Please sign in.");
-
-    setTimeout(() => {
-        showUserLogin();
-        document.getElementById("userEmail").value = email;
-        document.getElementById("userPassword").focus();
-    }, 900);
 });
 
 /* =========================
-   USER LOGIN
+   USER LOGIN  (real backend account)
 ========================= */
-document.getElementById("userLoginForm").addEventListener("submit", function(e){
+document.getElementById("userLoginForm").addEventListener("submit", async function(e){
     e.preventDefault();
 
     const email = document.getElementById("userEmail").value.trim().toLowerCase();
     const password = document.getElementById("userPassword").value;
 
-    const users = JSON.parse(localStorage.getItem("vectoredUsers") || "[]");
+    const submitButton = this.querySelector("button[type=submit]");
+    if(submitButton) submitButton.disabled = true;
 
-    const user = users.find(
-        item => item.email === email && item.password === password
-    );
+    try{
+        const user = await api.login(email, password);
 
-    if(!user){
-        showToast("Invalid email or password.");
-        return;
+        if(user.role === "ADMIN"){
+            showToast("This is an admin account. Use Admin Login instead.");
+            return;
+        }
+
+        Session.save(user);
+
+        document.getElementById("userPassword").value = "";
+
+        showToast("Login successful. Complete your profile.");
+
+        /*
+          Successful user login ALWAYS proceeds to profile.
+          User can fill all four fields OR skip.
+        */
+        setTimeout(() => {
+            openProfile();
+        }, 700);
+
+    }catch(error){
+        showToast(error.message || "Invalid email or password.");
+    }finally{
+        if(submitButton) submitButton.disabled = false;
     }
-
-    localStorage.setItem(
-        "vectoredLoggedInUser",
-        JSON.stringify({
-            name: user.name,
-            email: user.email
-        })
-    );
-
-    document.getElementById("userPassword").value = "";
-
-    showToast("Login successful. Complete your profile.");
-
-    /*
-      Successful user login ALWAYS proceeds to profile.
-      User can fill all four fields OR skip.
-    */
-    setTimeout(() => {
-        openProfile();
-    }, 700);
 });
 
 /* =========================
@@ -793,34 +764,26 @@ document.getElementById("modes").addEventListener("change", function(e){
 /* =========================
    PROFILE
 ========================= */
-function skipProfile(){
+async function goToApp(){
+    // index.html reads the logged-in user from the "vectoredUser" key.
+    const session = Session.get();
+    if(session){
+        localStorage.setItem("vectoredUser", JSON.stringify(session));
+    }
+    window.location.href = "index.html";
+}
 
-    const loggedInUser =
-        JSON.parse(localStorage.getItem("vectoredLoggedInUser") || "{}");
-
-    const profile = {
-        email: loggedInUser.email || "",
-        skills: [],
-        interests: [],
-        preferredEventTypes: [],
-        preferredMode: "",
-        skipped: true
-    };
-
-    localStorage.setItem(
-        "vectoredUserProfile",
-        JSON.stringify(profile)
-    );
+async function skipProfile(){
 
     document.getElementById("welcomeName").textContent =
-        loggedInUser.name || "User";
+        (Session.get() || {}).name || "User";
 
     showToast("Profile skipped. You can complete it later.");
 
-    setTimeout(showUserDashboard,700);
+    setTimeout(goToApp,700);
 }
 
-document.getElementById("profileForm").addEventListener("submit", function(e){
+document.getElementById("profileForm").addEventListener("submit", async function(e){
 
     e.preventDefault();
 
@@ -861,35 +824,39 @@ document.getElementById("profileForm").addEventListener("submit", function(e){
         return;
     }
 
-    const loggedInUser =
-        JSON.parse(localStorage.getItem("vectoredLoggedInUser") || "{}");
+    const loggedInUser = Session.get();
 
-    const profile = {
-        email: loggedInUser.email || "",
-        skills: [...selectedSkills],
-        interests: [...selectedInterests],
-        preferredEventTypes: [...selectedEvents],
-        preferredMode: selectedMode,
-        skipped: false
-    };
+    if(!loggedInUser || !loggedInUser.id){
+        showToast("Please log in again.");
+        return;
+    }
 
-    localStorage.setItem(
-        "vectoredUserProfile",
-        JSON.stringify(profile)
-    );
+    try{
+        const updated = await api.updateUser(loggedInUser.id, {
+            skills: [...selectedSkills],
+            interests: [...selectedInterests],
+            preferredEventType: [...selectedEvents],
+            preferredMode: selectedMode === "Both" ? "Hybrid" : selectedMode
+        });
 
-    document.getElementById("welcomeName").textContent =
-        loggedInUser.name || "User";
+        Session.save(updated);
 
-    showToast("Profile saved successfully.");
+        document.getElementById("welcomeName").textContent =
+            updated.name || "User";
 
-    setTimeout(showUserDashboard,700);
+        showToast("Profile saved successfully.");
+
+        setTimeout(goToApp,700);
+
+    }catch(error){
+        showToast(error.message || "Could not save profile.");
+    }
 });
 
 /* =========================
    ADMIN LOGIN
 ========================= */
-document.getElementById("adminLoginForm").addEventListener("submit", function(e){
+document.getElementById("adminLoginForm").addEventListener("submit", async function(e){
 
     e.preventDefault();
 
@@ -899,34 +866,33 @@ document.getElementById("adminLoginForm").addEventListener("submit", function(e)
     const password =
         document.getElementById("adminPassword").value;
 
-    const admins =
-        JSON.parse(localStorage.getItem("vectoredAdmins") || "[]")
-    const admin = admins.find(
-    item =>
-        item.email.toLowerCase() === email &&
-        item.password === password
-    );
-    if(
-        !admin
-    ){
-        showToast("Invalid admin email or password.");
-        return;
+    const submitButton = this.querySelector("button[type=submit]");
+    if(submitButton) submitButton.disabled = true;
+
+    try{
+        const admin = await api.login(email, password);
+
+        if(admin.role !== "ADMIN"){
+            showToast("This account is not an admin account.");
+            return;
+        }
+
+        Session.save(admin);
+        localStorage.setItem("vectoredUser", JSON.stringify(admin));
+
+        document.getElementById("adminPassword").value = "";
+
+        showToast("Admin login successful.");
+
+        setTimeout(() => {
+            window.location.href = "admin.html";
+        },700);
+
+    }catch(error){
+        showToast(error.message || "Invalid admin email or password.");
+    }finally{
+        if(submitButton) submitButton.disabled = false;
     }
-    if(
-        email !== admin.email.toLowerCase() ||
-        password !== admin.password
-    ){
-        showToast("Invalid admin email or password.");
-        return;
-    }
-
-    localStorage.setItem("vectoredAdminLoggedIn","true");
-
-    document.getElementById("adminPassword").value = "";
-
-    showToast("Admin login successful.");
-
-    setTimeout(showAdminDashboard,700);
 });
 
 /* =========================

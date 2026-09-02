@@ -1,7 +1,61 @@
 const prisma = require("./connection");
+const bcrypt = require("bcryptjs");
+const seedEvents = require("./seedEvents.json");
 
 async function main() {
-  console.log("Database is ready. User data will be added through the application.");
+  const eventCount = await prisma.event.count();
+
+  if (eventCount === 0) {
+    await prisma.event.createMany({
+      data: seedEvents.map((event) => ({
+        ...event,
+        date: new Date(event.date)
+      }))
+    });
+    console.log(`Seeded ${seedEvents.length} events.`);
+  } else {
+    console.log(`Skipping event seed, ${eventCount} events already exist.`);
+  }
+
+  // Default admin accounts (matches the old frontend-only prototype logins,
+  // now backed by the real database with hashed passwords).
+  const admins = [
+    {
+      name: "Vectored Admin",
+      email: "dharaneesh@gmail.com",
+      password: "dharaneesh_07"
+    },
+    {
+      name: "Vectored Admin",
+      email: "praneethan@gmail.com",
+      password: "praneethan_07"
+    }
+  ];
+
+  for (const admin of admins) {
+    const existing = await prisma.user.findUnique({
+      where: { email: admin.email }
+    });
+
+    if (existing) continue;
+
+    await prisma.user.create({
+      data: {
+        name: admin.name,
+        email: admin.email,
+        password: await bcrypt.hash(admin.password, 10),
+        role: "ADMIN",
+        preferredMode: "Online",
+        preferredEventType: [],
+        skills: [],
+        interests: []
+      }
+    });
+
+    console.log(`Created admin account: ${admin.email}`);
+  }
+
+  console.log("Database is ready.");
 }
 
 main()
