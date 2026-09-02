@@ -1,51 +1,99 @@
-"""
-Standalone demo microservice for the KMeans-based EventRecommender.
-
-IMPORTANT: this model was trained on `college_students_synthetic_dataset.csv`
-(synthetic student user_ids like "U001") and expects an events table shaped
-like `events_test.csv` (event_id, event_name, skills, interests, event_type,
-mode). It has no knowledge of the real users/events created through the
-Node/Postgres backend, so it is NOT wired into the main app's
-/recommendations endpoint — that endpoint uses a live, DB-driven
-content-based scorer instead (see backend/src/services/recommendationService.js).
-
-This file just makes the existing trained model runnable over HTTP so you
-can demo/inspect it on its own:
-
-    pip install -r requirements.txt flask
-    python app.py
-    curl http://localhost:8000/recommend/U001
-"""
-
-from pathlib import Path
-
+from flask import Flask, jsonify, request
 import pandas as pd
-from flask import Flask, jsonify
 
-from recommend_api import get_recommendations
+from recommend_api import get_recommendations_from_profile
 
-BASE_DIR = Path(__file__).resolve().parent
-EVENTS_FILE = BASE_DIR / "events_test.csv"
 
 app = Flask(__name__)
 
 
+# ============================================================
+# HEALTH CHECK
+# ============================================================
+
 @app.get("/health")
 def health():
-    return jsonify({"status": "ok"})
+    return jsonify({
+        "status": "ok"
+    })
 
 
-@app.get("/recommend/<user_id>")
-def recommend(user_id):
+# ============================================================
+# RECOMMENDATIONS
+# ============================================================
+
+@app.post("/recommend")
+def recommend():
+
     try:
-        events = pd.read_csv(EVENTS_FILE)
-        recommendations = get_recommendations(user_id=user_id, events_df=events, top_n=20)
-        return jsonify(recommendations.to_dict(orient="records"))
-    except ValueError as error:
-        return jsonify({"error": str(error)}), 404
-    except Exception as error:  # pragma: no cover - demo service
-        return jsonify({"error": str(error)}), 500
 
+        data = request.get_json()
+
+        if not data:
+            return jsonify({
+                "success": False,
+                "error": "Request body is required"
+            }), 400
+
+        user = data.get("user")
+        events = data.get("events")
+
+        if not user:
+            return jsonify({
+                "success": False,
+                "error": "user is required"
+            }), 400
+
+        if not events:
+            return jsonify({
+                "success": False,
+                "error": "events are required"
+            }), 400
+
+        # Convert events received from Express
+        # into pandas dataframe.
+        events_df = pd.DataFrame(events)
+
+        top_n = data.get("top_n", 20)
+
+        recommendations = get_recommendations_from_profile(
+            user_profile=user,
+            events_df=events_df,
+            top_n=top_n
+        )
+
+        return jsonify({
+            "success": True,
+            "data": recommendations.to_dict(
+                orient="records"
+            )
+        })
+
+    except ValueError as error:
+
+        return jsonify({
+            "success": False,
+            "error": str(error)
+        }), 400
+
+    except Exception as error:
+
+        print("ML ERROR:", error)
+
+        return jsonify({
+            "success": False,
+            "error": str(error)
+        }), 500
+
+
+# ============================================================
+# START SERVER
+# ============================================================
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8000, debug=True)
+
+    app.run(
+        host="0.0.0.0",
+        port=8000,
+        debug=True
+    )

@@ -1,0 +1,101 @@
+event_id,event_name,skills,interests,event_type,mode
+1,Autonomous Systems Career Fair 1,"Graphic Design, Entrepreneurship, ESP32, Cryptography","Backend Development, VLSI, PCB Design, Autonomous Systems",Career Fair,Both
+2,Data Analytics Bootcamp 2,"Drone Technology, Electronics","Robotics, Animation, Product Design, Data Analytics",Bootcamp,Both
+3,Computer Vision Conference 3,"Graphic Design, 3D Design, Data Science, Python","Drones, Computer Vision, Data Science",Conference,Offline
+4,Digital Forensics Career Fair 4,"Circuit Design, Microcontrollers, Marketing","Digital Forensics, App Development, Marketing, PCB Design",Career Fair,Both
+5,DevOps Seminar 5,"Innovation, Natural Language Processing, Digital Forensics, Azure","UI/UX, DevOps",Seminar,Both
+6,Generative AI Career Fair 6,"Node.js, Graphic Design","Software Engineering, Generative AI, Cyber Defense",Career Fair,Both
+7,Marketing Project Exhibition 7,"Generative AI, Backend Development, Deep Learning, Web Development","Digital Electronics, Cyber Defense, Marketing, Graphic Design",Project Exhibition,Both
+8,Innovation Webinar 8,"Leadership, Automation, Electronics, Animation","Innovation, Drones, Automation",Webinar,Both
+9,Computer Vision Workshop 9,"Drone Technology, Technical Writing, Problem Solving","Marketing, Computer Vision, Digital Forensics, Cloud Computing",Workshop,Online
+10,Network Security Webinar 10,"Python, Product Management, Natural Language Processing","Cloud Computing, Network Security",Webinar,Online
+11,Graphic Design Career Fair 11,"Data Analytics, Data Science","Leadership, Robotics, Automation, Graphic Design",Career Fair,Both
+12,Ethical Hacking Workshop 12,"Ethical Hacking, API Development, Communication, Web Development","Startups, Ethical Hacking, Cloud Architecture",Workshop,Offline
+13,Backend Development Seminar 13,"3D Design, Frontend Development, TypeScript","Network Security, Backend Development",Seminar,Both
+14,PCB Design Webinar 14,"Data Analytics, Network Security","PCB Design, Open Source",Webinar,Online
+15,Digital Electronics Workshop 15,"AWS, Communication, Natural Language Processing","Digital Electronics, Artificial Intelligence, Product Management",Workshop,Offline
+16,UI/UX Career Fair 16,"Azure, Web Development, Content Creation","UI/UX, Microcontrollers",Career Fair,Online
+17,Startups Hackathon 17,"Python, Drone Technology, Digital Marketing, JavaScript","UI/UX, Startups, Generative AI",Hackathon,Online
+18,Ethical Hacking Webinar 18,"Entrepreneurship, ESP32","Ethical Hacking, Animation",Webinar,Offline
+19,App Development Workshop 19,"Backend Development, Automation","Automation, App Development",Workshop,Both
+20,Cloud Computing Career Fair 20,"Graphic Design, Teamwork","PCB Design, Cloud Computing",Career Fair,Online
+21,Marketing Conference 21,"Digital Forensics, Circuit Design, Raspberry Pi","Leadership, Internet of Things, Marketing",Conference,Offline
+22,Digital Electronics Bootcamp 22,"Circuit Design, Automation, Product Management, Machine Learning","Digital Electronics, Data Analytics",Bootcamp,Online
+23,Digital Electronics Webinar 23,"Python, Digital Electronics","Marketing, Digital Electronics, Automation",Webinar,Offline
+24,Internet of Things Webinar 24,"API Development, CAD","Cyber Defense, Internet of Things",Webinar,Both
+25,Digital Forensics Tech Talk 25,"Automation, Deep Learning, Node.js","Graphic Design, Digital Forensics",Tech Talk,Both
+26,Artificial Intelligence Hackathon 26,"Teamwork, Data Analytics, Digital Forensics, Innovation","Artificial Intelligence, Public Speaking",Hackathon,Offline
+27,Artificial Intelligence Project Exhibition 27,"Software Development, TypeScript","Cyber Defense, Artificial Intelligence, Network Security, Autonomous Systems",Project Exhibition,Both
+28,Product Management Career Fair 28,"Embedded Systems, Product Management","Product Management, Digital Electronics",Career Fair,Online
+29,UI/UX Workshop 29,"VLSI, Kubernetes, Frontend Development","UI/UX, Entrepreneurship",Workshop,Both
+30,Marketing Hackathon 30,"Internet of Things, Robotics","Automation, 3D Design, Marketing",Hackathon,Offline
+31,Cloud Computing Workshop 31,"Web Development, Drone Technology","Digital Forensics, Cloud Computing, Frontend Development, Automation",Workshop,Both
+32,3D Design Project Exhibition 32,"React, Internet of Things","Startups, Open Source, 3D Design, UI/UX",Project Exhibition,Offline
+33,Data Science Career Fair 33,"Communication, Cloud Computing, Data Analytics","Electronics, Robotics, Data Science",Career Fair,Both
+34,Software Engineering Project Exhibition 34,"Frontend Development, TypeScript, Teamwork, Ethical Hacking","Autonomous Systems, Software Engineering",Project Exhibition,Both
+35,Product Design Hackathon 35,"Linux, Content Creation","Digital Forensics, Cyber Defense, Machine Learning, Product Design",Hackathon,Both
+36,Generative AI Webinar 36,"Backend Development, Data Analytics","App Development, Generative AI, Public Speaking, Product Design",Webinar,Both
+37,Frontend Development Seminar 37,"JavaScript, Natural Language Processing","Frontend Development, Data Science",Seminar,Both
+38,Internet of Things Career Fair 38,"Project Management, Data Analytics, Embedded Systems, Data Science","Internet of Things, Animation",Career Fair,Offline
+39,App Development Project Exhibition 39,"Entrepreneurship, Generative AI, Data Science, Cloud Computing","App Development, Microcontrollers, DevOps",Project Exhibition,Offline
+40,Data Analytics Tech Talk 40,"Electronics, ESP32, Actuators","Data Analytics, Innovation, Ethical Hacking, Drones",Tech Talk,Offline
+41,Cloud Architecture Hackathon 41,"UI/UX Design, Product Management, Web Development, Linux","Cloud Architecture, Digital Forensics",Hackathon,Offline
+42,Robotics Workshop 42,"Cloud Computing, Raspberry Pi","Entrepreneurship, Leadership, Robotics",Workshop,Offline
+43,Open Source Career Fair 43,"Digital Forensics, Ethical Hacking, App Development, Raspberry Pi","Open Source, PCB Design",Career Fair,Offline
+44,UI/UX Project Exhibition 44,"Linux, Kubernetes","Cloud Architecture, Embedded Systems, Network Security, UI/UX",Project Exhibition,Offline
+45,Cybersecurity Project Exhibition 45,"Innovation, Content Creation, Digital Forensics, Public Speaking","Graphic Design, VLSI, Cybersecurity, Smart Devices",Project Exhibition,Offline
+46,Public Speaking Seminar 46,"Internet of Things, HTML/CSS","Leadership, Public Speaking",Seminar,Online
+47,Autonomous Systems Tech Talk 47,"Drone Technology, UI/UX Design, Sensors","Cyber Defense, UI/UX, Autonomous Systems, Electronics",Tech Talk,Offline
+48,Digital Electronics Career Fair 48,"JavaScript, ESP32, Digital Marketing, Cybersecurity","App Development, Digital Electronics",Career Fair,Both
+49,Computer Vision Workshop 49,"Public Speaking, Digital Forensics, PCB Design","Innovation, Digital Electronics, Computer Vision",Workshop,Both
+50,Artificial Intelligence Bootcamp 50,"ESP32, DevOps, VLSI","Artificial Intelligence, Product Design, Digital Electronics",Bootcamp,Both
+51,Leadership Tech Talk 51,"Video Editing, Kubernetes, React","Network Security, Leadership, Product Design, Machine Learning",Tech Talk,Both
+52,Digital Electronics Tech Talk 52,"Entrepreneurship, Graphic Design, VLSI","Software Engineering, Digital Electronics, Drones",Tech Talk,Offline
+53,PCB Design Career Fair 53,"Embedded Systems, Generative AI, Linux","PCB Design, Autonomous Systems, Cloud Computing",Career Fair,Online
+54,PCB Design Conference 54,"Data Analytics, Drone Technology, Azure, Public Speaking","Ethical Hacking, PCB Design, Marketing",Conference,Offline
+55,Frontend Development Bootcamp 55,"PCB Design, AWS, Node.js","3D Design, Frontend Development, Embedded Systems",Bootcamp,Both
+56,Ethical Hacking Seminar 56,"ESP32, Teamwork, Generative AI, Raspberry Pi","Animation, Graphic Design, Ethical Hacking",Seminar,Online
+57,PCB Design Seminar 57,"SQL, Content Creation","PCB Design, Animation, Innovation, Public Speaking",Seminar,Online
+58,Graphic Design Career Fair 58,"Cryptography, SQL, Digital Electronics","Digital Forensics, Graphic Design",Career Fair,Online
+59,Digital Forensics Conference 59,"Machine Learning, Node.js, Graphic Design","Digital Forensics, Autonomous Systems, Microcontrollers",Conference,Offline
+60,Digital Electronics Webinar 60,"ESP32, Azure, App Development","Digital Electronics, Data Analytics",Webinar,Both
+61,Data Science Workshop 61,"Content Creation, Sensors","Cloud Architecture, Product Management, Data Science, Marketing",Workshop,Both
+62,VLSI Project Exhibition 62,"Communication, Data Science, JavaScript, Cloud Computing","Animation, Embedded Systems, Product Management, VLSI",Project Exhibition,Both
+63,Web Development Seminar 63,"Backend Development, Entrepreneurship","Web Development, Embedded Systems",Seminar,Online
+64,Startups Workshop 64,"Web Development, Python, Network Security","Network Security, Startups",Workshop,Both
+65,Leadership Bootcamp 65,"Cloud Computing, Raspberry Pi, Natural Language Processing","Marketing, Computer Vision, Leadership, Cybersecurity",Bootcamp,Offline
+66,Autonomous Systems Workshop 66,"SQL, Raspberry Pi, Generative AI","Digital Electronics, Autonomous Systems, Drones",Workshop,Online
+67,NLP Conference 67,"Node.js, Machine Learning, Actuators, Technical Writing","Cybersecurity, NLP, Data Science",Conference,Offline
+68,Digital Electronics Hackathon 68,"Graphic Design, API Development, VLSI","Autonomous Systems, Digital Electronics",Hackathon,Offline
+69,Animation Tech Talk 69,"Sensors, Teamwork","Animation, Autonomous Systems, Electronics",Tech Talk,Online
+70,Open Source Seminar 70,"JavaScript, Network Security","Product Design, Open Source, Frontend Development",Seminar,Online
+71,Cloud Architecture Webinar 71,"Robotics, Generative AI, JavaScript","DevOps, Cloud Architecture, Data Analytics",Webinar,Offline
+72,Open Source Career Fair 72,"Digital Electronics, Digital Forensics, Drone Technology, Software Development","Public Speaking, Open Source, Robotics",Career Fair,Online
+73,PCB Design Career Fair 73,"Electronics, Natural Language Processing, DevOps","3D Design, PCB Design, Cloud Computing",Career Fair,Both
+74,Electronics Bootcamp 74,"Innovation, Content Creation, Teamwork, Cloud Computing","Product Management, Electronics",Bootcamp,Both
+75,Automation Tech Talk 75,"Digital Electronics, Arduino, Ethical Hacking","Cloud Architecture, Automation, Innovation",Tech Talk,Offline
+76,Product Design Career Fair 76,"Arduino, Data Analytics, Internet of Things, Business Strategy","Cloud Architecture, Product Design",Career Fair,Online
+77,Public Speaking Workshop 77,"ESP32, VLSI, Node.js, Robot Programming","Embedded Systems, Public Speaking, Leadership",Workshop,Online
+78,Digital Forensics Workshop 78,"Circuit Design, Docker","Data Science, Digital Forensics, UI/UX, Autonomous Systems",Workshop,Online
+79,Robotics Conference 79,"Backend Development, Data Science, 3D Design, Project Management","Web Development, Robotics, Microcontrollers",Conference,Both
+80,Digital Forensics Bootcamp 80,"HTML/CSS, Robotics, Backend Development","DevOps, Digital Forensics, Software Engineering, Public Speaking",Bootcamp,Both
+81,Cyber Defense Seminar 81,"ESP32, Data Analytics, Generative AI, Cybersecurity","Artificial Intelligence, Cyber Defense",Seminar,Both
+82,Drones Workshop 82,"HTML/CSS, React, Computer Vision, SQL","Embedded Systems, Web Development, Innovation, Drones",Workshop,Online
+83,Autonomous Systems Tech Talk 83,"App Development, Raspberry Pi, Leadership, Ethical Hacking","Autonomous Systems, DevOps",Tech Talk,Both
+84,Cybersecurity Hackathon 84,"DevOps, Sensors","Startups, Machine Learning, Drones, Cybersecurity",Hackathon,Online
+85,Backend Development Tech Talk 85,"Marketing, Project Management, Linux","UI/UX, Backend Development, Cyber Defense",Tech Talk,Both
+86,Entrepreneurship Seminar 86,"HTML/CSS, Product Management, Animation","Autonomous Systems, Entrepreneurship, Digital Forensics",Seminar,Online
+87,Generative AI Career Fair 87,"3D Design, SQL, Project Management, Arduino","Open Source, Generative AI",Career Fair,Offline
+88,Machine Learning Tech Talk 88,"Generative AI, Content Creation","Machine Learning, Web Development, NLP",Tech Talk,Both
+89,Cloud Architecture Bootcamp 89,"Embedded Systems, Data Science, JavaScript, API Development","Internet of Things, Autonomous Systems, DevOps, Cloud Architecture",Bootcamp,Online
+90,Digital Electronics Career Fair 90,"Technical Writing, Innovation","Drones, Internet of Things, Microcontrollers, Digital Electronics",Career Fair,Online
+91,Internet of Things Webinar 91,"Digital Forensics, UI/UX Design, Cryptography","Drones, Internet of Things",Webinar,Both
+92,Computer Vision Webinar 92,"HTML/CSS, Internet of Things","Public Speaking, UI/UX, NLP, Computer Vision",Webinar,Offline
+93,Digital Electronics Webinar 93,"Linux, Node.js, Robotics","Data Analytics, Web Development, Digital Electronics",Webinar,Offline
+94,Computer Vision Seminar 94,"App Development, Kubernetes, Sensors","Graphic Design, UI/UX, Startups, Computer Vision",Seminar,Both
+95,Internet of Things Bootcamp 95,"Linux, Circuit Design, React, Video Editing","3D Design, Computer Vision, Internet of Things",Bootcamp,Both
+96,PCB Design Competition 96,"Frontend Development, Machine Learning, Problem Solving","Autonomous Systems, Ethical Hacking, VLSI, PCB Design",Competition,Both
+97,Autonomous Systems Project Exhibition 97,"Teamwork, Animation, Azure, Embedded Systems","VLSI, Electronics, DevOps, Autonomous Systems",Project Exhibition,Online
+98,App Development Career Fair 98,"Circuit Design, React, Deep Learning, Internet of Things","App Development, Entrepreneurship",Career Fair,Online
+99,Product Management Hackathon 99,"Raspberry Pi, Cybersecurity, Entrepreneurship","Internet of Things, Product Management, VLSI, Cybersecurity",Hackathon,Offline
+100,Software Engineering Competition 100,"Node.js, Embedded Systems, Technical Writing, Cybersecurity","Marketing, Software Engineering",Competition,Both
