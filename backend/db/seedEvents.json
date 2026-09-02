@@ -1,0 +1,222 @@
+[
+  {
+    "title": "AI Innovation Hackathon",
+    "domain": "AI / ML",
+    "location": "Online",
+    "date": "2026-09-15T00:00:00.000Z",
+    "organizerName": "Tech Community",
+    "description": "Build innovative solutions using Artificial Intelligence and Machine Learning.",
+    "certificateAvailable": true,
+    "registrationFee": 0
+  },
+  {
+    "title": "Machine Learning Challenge",
+    "domain": "AI / ML",
+    "location": "Coimbatore",
+    "date": "2026-09-20T00:00:00.000Z",
+    "organizerName": "KCT Innovation Club",
+    "description": "Test your Machine Learning skills in a competitive environment.",
+    "certificateAvailable": true,
+    "registrationFee": 0
+  },
+  {
+    "title": "Full Stack Web Development Workshop",
+    "domain": "Web Development",
+    "location": "Coimbatore",
+    "date": "2026-09-22T00:00:00.000Z",
+    "organizerName": "Developer Community",
+    "description": "Learn modern frontend and backend development.",
+    "certificateAvailable": true,
+    "registrationFee": 0
+  },
+  {
+    "title": "Cybersecurity CTF",
+    "domain": "Cybersecurity",
+    "location": "Online",
+    "date": "2026-09-25T00:00:00.000Z",
+    "organizerName": "Cyber Club",
+    "description": "Solve cybersecurity challenges and improve security skills.",
+    "certificateAvailable": true,
+    "registrationFee": 0
+  },
+  {
+    "title": "Python Coding Challenge",
+    "domain": "Programming",
+    "location": "Online",
+    "date": "2026-09-28T00:00:00.000Z",
+    "organizerName": "Code Arena",
+    "description": "Solve programming problems and compete with developers.",
+    "certificateAvailable": true,
+    "registrationFee": 0
+  },
+  {
+    "title": "Data Science Bootcamp",
+    "domain": "Data Science",
+    "location": "Chennai",
+    "date": "2026-10-01T00:00:00.000Z",
+    "organizerName": "Data Science Club",
+    "description": "Learn data analysis, visualization and machine learning.",
+    "certificateAvailable": true,
+    "registrationFee": 0
+  },
+  {
+    "title": "Cloud Computing Workshop",
+    "domain": "Cloud Computing",
+    "location": "Bangalore",
+    "date": "2026-10-03T00:00:00.000Z",
+    "organizerName": "Cloud Community",
+    "description": "Learn cloud computing concepts and deployment.",
+    "certificateAvailable": true,
+    "registrationFee": 0
+  },
+  {
+    "title": "Android App Development",
+    "domain": "Mobile Development",
+    "location": "Coimbatore",
+    "date": "2026-10-05T00:00:00.000Z",
+    "organizerName": "Mobile Dev Club",
+    "description": "Learn how to build Android applications.",
+    "certificateAvailable": true,
+    "registrationFee": 0
+  },
+  {
+    "title": "UI UX Design Workshop",
+    "domain": "UI / UX",
+    "location": "Coimbatore",
+    "date": "2026-10-07T00:00:00.000Z",
+    "organizerName": "Design Community",
+    "description": "Learn user interface and user experience design.",
+    "certificateAvailable": true,
+    "registrationFee": 0
+  },
+  {
+    "title": "IoT Innovation Challenge",
+    "domain": "IoT",
+    "location": "Chennai",
+    "date": "2026-10-10T00:00:00.000Z",
+    "organizerName": "IoT Club",
+    "description": "Build innovative Internet of Things solutions.",
+    "certificateAvailable": true,
+    "registrationFee": 0
+  },
+  {
+    "title": "Blockchain Technology Seminar",
+    "domain": "Blockchain",
+    "location": "Online",
+    "date": "2026-10-12T00:00:00.000Z",
+    "organizerName": "Blockchain Club",
+    "description": "Understand blockchain and decentralized technologies.",
+    "certificateAvailable": true,
+    "registrationFee": 0
+  },
+  {
+    "title": "React Development Workshop",
+    "domain": "Web Development",
+    "location": "Online",
+    "date": "2026-10-15T00:00:00.000Z",
+    "organizerName": "Frontend Community",
+    "description": "Build modern web applications using React.",
+    "certificateAvailable": true,
+    "registrationFee": 0
+  },
+  {
+    "title": "Deep Learning Bootcamp",
+    "domain": "AI / ML",
+    "location": "Bangalore",
+    "date": "2026-10-17T00:00:00.000Z",
+    "organizerName": "AI Community",
+    "description": "Learn neural networks and deep learning.",
+    "certificateAvailable": true,
+    "registrationFee": 0
+  },
+  {
+    "title": "Ethical Hacking Workshop",
+    "domain": "Cybersecurity",
+    "location": "Chennai",
+    "date": "2026-10-20T00:00:00.000Z",
+    "organizerName": "Security Community",
+    "description": "Learn ethical hacking and cybersecurity fundamentals.",
+    "certificateAvailable": true,
+    "registrationFee": 0
+  },
+  {
+    "title": "SQL Database Challenge",
+    "domain": "Data Science",
+    "location": "Online",
+    "date": "2026-10-22T00:00:00.000Z",
+    "organizerName": "Database Club",
+    "description": "Solve real-world SQL and database problems.",
+    "certificateAvailable": true,
+    "registrationFee": 0
+  },
+  {
+    "title": "DevOps Cloud Hackathon",
+    "domain": "Cloud Computing",
+    "location": "Bangalore",
+    "date": "2026-10-25T00:00:00.000Z",
+    "organizerName": "DevOps Community",
+    "description": "Build and deploy applications using DevOps tools.",
+    "certificateAvailable": true,
+    "registrationFee": 0
+  },
+  {
+    "title": "Competitive Programming Contest",
+    "domain": "Programming",
+    "location": "Coimbatore",
+    "date": "2026-10-28T00:00:00.000Z",
+    "organizerName": "Coding Club",
+    "description": "Compete with programmers and solve algorithmic problems.",
+    "certificateAvailable": true,
+    "registrationFee": 0
+  },
+  {
+    "title": "Flutter App Development",
+    "domain": "Mobile Development",
+    "location": "Online",
+    "date": "2026-10-30T00:00:00.000Z",
+    "organizerName": "App Developers",
+    "description": "Build cross-platform applications using Flutter.",
+    "certificateAvailable": true,
+    "registrationFee": 0
+  },
+  {
+    "title": "Figma UI Design Challenge",
+    "domain": "UI / UX",
+    "location": "Online",
+    "date": "2026-11-02T00:00:00.000Z",
+    "organizerName": "Design Club",
+    "description": "Create beautiful user interfaces using Figma.",
+    "certificateAvailable": true,
+    "registrationFee": 0
+  },
+  {
+    "title": "Smart City IoT Hackathon",
+    "domain": "IoT",
+    "location": "Coimbatore",
+    "date": "2026-11-05T00:00:00.000Z",
+    "organizerName": "Smart City Club",
+    "description": "Build IoT solutions for smart cities.",
+    "certificateAvailable": true,
+    "registrationFee": 0
+  },
+  {
+    "title": "Generative AI Workshop",
+    "domain": "AI / ML",
+    "location": "Online",
+    "date": "2026-11-08T00:00:00.000Z",
+    "organizerName": "AI Community",
+    "description": "Explore Generative AI and modern AI applications.",
+    "certificateAvailable": true,
+    "registrationFee": 0
+  },
+  {
+    "title": "Next.js Development Bootcamp",
+    "domain": "Web Development",
+    "location": "Coimbatore",
+    "date": "2026-11-10T00:00:00.000Z",
+    "organizerName": "Web Community",
+    "description": "Build production-ready applications using Next.js.",
+    "certificateAvailable": true,
+    "registrationFee": 0
+  }
+]

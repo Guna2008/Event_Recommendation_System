@@ -1228,6 +1228,7 @@
 <div class="toast" id="toast"></div>
 
 
+<script src="assets/api.js"></script>
 <script>
   /* =========================
      DATA
@@ -1238,9 +1239,74 @@
     email: "admin@eventai.com"
   };
 
-  let profile = JSON.parse(localStorage.getItem("vectoredProfile")) || defaultProfile;
-  let events = JSON.parse(localStorage.getItem("vectoredEvents")) || [];
+  const adminSession = Session.get();
+
+  let profile = adminSession
+    ? { id: adminSession.id, name: adminSession.name, email: adminSession.email }
+    : defaultProfile;
+
+  let events = [];
   let deleteIndex = null;
+
+  /* =========================
+     BACKEND <-> ADMIN SHAPE MAPPING
+  ========================= */
+
+  function toAdminEvent(event) {
+    return {
+      id: event.id,
+      name: event.title,
+      date: event.date ? event.date.slice(0, 10) : "",
+      location: event.location || "",
+      cashPrize: event.cashPrize ?? 0,
+      certificate: !!event.certificateAvailable,
+      startTime: event.startTime || "",
+      endTime: event.endTime || "",
+      registrationFee: event.registrationFee ?? 0,
+      domain: event.domain || "",
+      poster: event.posterUrl || "",
+      registrationLink: event.registrationUrl || "",
+      whatsappLink: event.whatsappGroupLink || "",
+      contactNumber: event.contactNumber || "",
+      contactEmail: event.contactEmail || "",
+      organizerName: event.organizerName || "",
+      organizerDepartment: event.organizerDepartment || "",
+      description: event.description || ""
+    };
+  }
+
+  function toBackendEvent(adminEvent) {
+    return {
+      title: adminEvent.name,
+      date: adminEvent.date ? new Date(adminEvent.date).toISOString() : null,
+      location: adminEvent.location,
+      cashPrize: Number(adminEvent.cashPrize) || 0,
+      certificateAvailable: !!adminEvent.certificate,
+      startTime: adminEvent.startTime,
+      endTime: adminEvent.endTime,
+      registrationFee: Number(adminEvent.registrationFee) || 0,
+      domain: adminEvent.domain,
+      posterUrl: adminEvent.poster,
+      registrationUrl: adminEvent.registrationLink,
+      whatsappGroupLink: adminEvent.whatsappLink,
+      contactNumber: adminEvent.contactNumber,
+      contactEmail: adminEvent.contactEmail,
+      organizerName: adminEvent.organizerName,
+      organizerDepartment: adminEvent.organizerDepartment,
+      description: adminEvent.description
+    };
+  }
+
+  async function loadEventsFromBackend() {
+    try {
+      const response = await api.getEvents();
+      events = ((response && response.data) || []).map(toAdminEvent);
+    } catch (error) {
+      console.error("Could not load events from backend.", error);
+      showToast("Could not reach the backend — showing an empty list.");
+      events = [];
+    }
+  }
 
 
   /* =========================
@@ -1334,7 +1400,7 @@
     document.getElementById("adminEmail").value = profile.email;
   }
 
-  document.getElementById("profileForm").addEventListener("submit", function(event) {
+  document.getElementById("profileForm").addEventListener("submit", async function(event) {
     event.preventDefault();
 
     const name = document.getElementById("adminName").value.trim();
@@ -1346,11 +1412,21 @@
     }
 
     profile = {
+      id: profile.id,
       name: name,
       email: email
     };
 
-    localStorage.setItem("vectoredProfile", JSON.stringify(profile));
+    if (profile.id) {
+      try {
+        const updated = await api.updateUser(profile.id, { name, email });
+        Session.save(updated);
+      } catch (error) {
+        console.error("Could not update admin profile on backend.", error);
+        showToast(error.message || "Could not save profile to backend.");
+        return;
+      }
+    }
 
     updateProfileUI();
     showToast("Profile updated successfully.");
@@ -1407,7 +1483,7 @@
 
   const eventForm = document.getElementById("eventForm");
 
-  eventForm.addEventListener("submit", function(event) {
+  eventForm.addEventListener("submit", async function(event) {
     event.preventDefault();
 
     const startTime = document.getElementById("startTime").value;
@@ -1423,7 +1499,6 @@
       : "";
 
     const newEvent = {
-      id: Date.now(),
       name: document.getElementById("eventName").value.trim(),
       date: document.getElementById("eventDate").value,
       location: document.getElementById("eventLocation").value.trim(),
@@ -1443,9 +1518,20 @@
       description: document.getElementById("eventDescription").value.trim()
     };
 
-    events.push(newEvent);
+    const submitButton = eventForm.querySelector("button[type=submit]");
+    if (submitButton) submitButton.disabled = true;
 
-    localStorage.setItem("vectoredEvents", JSON.stringify(events));
+    try {
+      const response = await api.createEvent(toBackendEvent(newEvent));
+      events.push(toAdminEvent(response.data));
+    } catch (error) {
+      console.error("Could not save event to backend.", error);
+      showToast(error.message || "Could not post event.");
+      if (submitButton) submitButton.disabled = false;
+      return;
+    }
+
+    if (submitButton) submitButton.disabled = false;
 
     eventForm.reset();
 
@@ -1577,15 +1663,26 @@
     document.getElementById("deleteModal").classList.remove("show");
   }
 
-  document.getElementById("confirmDelete").addEventListener("click", function() {
+  document.getElementById("confirmDelete").addEventListener("click", async function() {
 
     if (deleteIndex === null) {
       return;
     }
 
-    events.splice(deleteIndex, 1);
+    const eventToDelete = events[deleteIndex];
 
-    localStorage.setItem("vectoredEvents", JSON.stringify(events));
+    try {
+      if (eventToDelete) {
+        await api.deleteEvent(eventToDelete.id);
+      }
+    } catch (error) {
+      console.error("Could not delete event on backend.", error);
+      showToast(error.message || "Could not delete event.");
+      closeDeleteModal();
+      return;
+    }
+
+    events.splice(deleteIndex, 1);
 
     closeDeleteModal();
     renderEventsTable();
@@ -1648,8 +1745,13 @@
 
   document.getElementById("confirmLogout").addEventListener("click", function() {
     logoutModal.classList.remove("show");
+    Session.clear();
+    localStorage.removeItem("vectoredUser");
     document.getElementById("loggedOutScreen").classList.add("show");
     showToast("Logged out successfully.");
+    setTimeout(() => {
+      window.location.href = "login.html";
+    }, 900);
   });
 
   function closeLogoutModal() {
@@ -1666,23 +1768,28 @@
     confirmDeleteAccount.disabled = !this.checked;
   });
 
-  confirmDeleteAccount.addEventListener("click", function() {
+  confirmDeleteAccount.addEventListener("click", async function() {
     if (!deleteAccountCheck.checked) {
       return;
     }
 
-    localStorage.removeItem("vectoredProfile");
-    localStorage.removeItem("vectoredEvents");
+    if (profile.id) {
+      try {
+        await api.deleteUser(profile.id);
+      } catch (error) {
+        console.error("Could not delete admin account on backend.", error);
+      }
+    }
 
-    profile = { name: "Admin", email: "admin@eventai.com" };
-    events = [];
+    Session.clear();
+    localStorage.removeItem("vectoredUser");
 
     deleteAccountModal.classList.remove("show");
-    updateProfileUI();
-    updateDashboard();
-    renderEventsTable();
-    showPage("dashboard");
-    showToast("Account and saved event data deleted.");
+    showToast("Account deleted.");
+
+    setTimeout(() => {
+      window.location.href = "login.html";
+    }, 900);
   });
 
   function closeDeleteAccountModal() {
@@ -1742,9 +1849,14 @@
      INITIAL LOAD
   ========================= */
 
-  updateProfileUI();
-  updateDashboard();
-  renderEventsTable();
+  (async function init() {
+    updateProfileUI();
+
+    await loadEventsFromBackend();
+
+    updateDashboard();
+    renderEventsTable();
+  })();
 
 </script>
 

@@ -1,9 +1,0 @@
-{
-  "name": "Updated Test User",
-  "department": "Information Technology",
-  "year": 4,
-  "preferredMode": "offline",
-  "preferredEventType": ["Hackathon", "Conference"],
-  "skills": ["Python", "FastAPI", "JavaScript"],
-  "interests": ["AI", "Backend Development"]
-}
