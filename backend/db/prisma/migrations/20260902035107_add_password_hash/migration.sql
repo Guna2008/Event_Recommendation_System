@@ -1,0 +1,3 @@
+-- Migration already applied to the database.
+-- The passwordHash column already exists in the database.
+-- This file restores the missing migration history locally.
