@@ -7,11 +7,8 @@ from sklearn.metrics.pairwise import cosine_similarity
 from recommender import EventRecommender
 
 
-# ============================================================
-# PATHS
-# ============================================================
-
 BASE_DIR = Path(__file__).resolve().parent
+
 MODEL_FILE = BASE_DIR / "event_recommender.pkl"
 
 
@@ -21,6 +18,8 @@ MODEL_FILE = BASE_DIR / "event_recommender.pkl"
 
 model = EventRecommender.load(MODEL_FILE)
 
+print(f"Model loaded from {MODEL_FILE}")
+
 
 # ============================================================
 # HELPERS
@@ -28,39 +27,54 @@ model = EventRecommender.load(MODEL_FILE)
 
 def to_list(value):
     """
-    Convert a value into a clean list.
+    Convert different input formats into a clean list.
 
-    Supports:
-        ["Python", "Machine Learning"]
-        "Python, Machine Learning"
-        None
+    Examples:
+
+    ["Python", "Docker"]
+        -> ["Python", "Docker"]
+
+    "Python, Docker"
+        -> ["Python", "Docker"]
+
+    None
+        -> []
     """
 
     if value is None:
         return []
 
     if isinstance(value, list):
-        return [str(x).strip() for x in value if str(x).strip()]
+        return [
+            str(item).strip()
+            for item in value
+            if str(item).strip()
+        ]
 
     if isinstance(value, str):
         return [
-            x.strip()
-            for x in value.split(",")
-            if x.strip()
+            item.strip()
+            for item in value.split(",")
+            if item.strip()
         ]
 
     return []
 
 
-def safe_float(value):
-    try:
-        return float(value)
-    except (TypeError, ValueError):
-        return 0.0
+def get_value(data, *keys, default=None):
+    """
+    Return the first existing value from multiple possible keys.
+    """
+
+    for key in keys:
+        if key in data and data[key] is not None:
+            return data[key]
+
+    return default
 
 
 # ============================================================
-# REAL USER PROFILE RECOMMENDATIONS
+# PROFILE BASED RECOMMENDATION
 # ============================================================
 
 def get_recommendations_from_profile(
@@ -69,64 +83,92 @@ def get_recommendations_from_profile(
     top_n=20
 ):
     """
-    Generate recommendations for a real application user.
+    Generate recommendations for a real user profile.
 
-    The real user's profile is encoded using the encoders
-    stored inside the trained EventRecommender model.
-
-    This does NOT require the real PostgreSQL user ID to exist
-    in the synthetic training dataset.
+    This does NOT require the real database user ID
+    to exist inside the training dataset.
     """
 
+    if not isinstance(user_profile, dict):
+        raise ValueError(
+            "user must be an object"
+        )
+
+    if not isinstance(events_df, pd.DataFrame):
+        raise ValueError(
+            "events must be a pandas DataFrame"
+        )
+
     # --------------------------------------------------------
-    # Prepare user profile
+    # USER DATA
     # --------------------------------------------------------
 
     skills = to_list(
-        user_profile.get("skills")
+        get_value(
+            user_profile,
+            "skills",
+            default=[]
+        )
     )
 
     interests = to_list(
-        user_profile.get("interests")
+        get_value(
+            user_profile,
+            "interests",
+            default=[]
+        )
     )
 
     event_types = to_list(
-        user_profile.get("preferred_event_type")
-        or user_profile.get("preferredEventType")
-        or user_profile.get("event_type")
+        get_value(
+            user_profile,
+            "preferred_event_type",
+            "preferredEventType",
+            "event_type",
+            "eventType",
+            default=[]
+        )
     )
 
-    mode = user_profile.get(
-        "preferred_mode"
-        or user_profile.get("preferredMode")
-        or user_profile.get("mode")
+    mode = get_value(
+        user_profile,
+        "preferred_mode",
+        "preferredMode",
+        "mode",
+        default=""
     )
-
-    if mode is None:
-        mode = ""
 
     mode = str(mode).strip()
 
+
     # --------------------------------------------------------
-    # Create user dataframe in exactly the format expected
-    # by the trained model.
+    # CREATE USER DATAFRAME
     # --------------------------------------------------------
 
     user_data = {
         "user_id": "REAL_USER",
+
         "skills": ", ".join(skills),
+
         "interests": ", ".join(interests),
-        "preferred_event_type": ", ".join(event_types),
-        "preferred_mode": mode,
+
+        "preferred_event_type": ", ".join(
+            event_types
+        ),
+
+        "preferred_mode": mode
     }
 
     user_df = pd.DataFrame([user_data])
 
+
     # --------------------------------------------------------
-    # Encode real user using trained model encoders
+    # ENCODE USER
     # --------------------------------------------------------
 
-    user_vector = model.encode_single_user(user_df)
+    user_vector = model.encode_single_user(
+        user_data
+    )
 
     user_vector = np.asarray(
         user_vector,
@@ -134,13 +176,15 @@ def get_recommendations_from_profile(
     )
 
     if user_vector.ndim == 1:
-        user_vector = user_vector.reshape(1, -1)
+        user_vector = user_vector.reshape(
+            1,
+            -1
+        )
+
 
     # --------------------------------------------------------
-    # Prepare events
+    # VALIDATE EVENT COLUMNS
     # --------------------------------------------------------
-
-    events = events_df.copy()
 
     required_columns = [
         "event_id",
@@ -148,13 +192,13 @@ def get_recommendations_from_profile(
         "skills",
         "interests",
         "event_type",
-        "mode",
+        "mode"
     ]
 
     missing_columns = [
         column
         for column in required_columns
-        if column not in events.columns
+        if column not in events_df.columns
     ]
 
     if missing_columns:
@@ -163,11 +207,34 @@ def get_recommendations_from_profile(
             + ", ".join(missing_columns)
         )
 
+
     # --------------------------------------------------------
-    # Encode events using trained model encoders
+    # COPY EVENTS
     # --------------------------------------------------------
 
-    event_vectors = model.encode_events(events)
+    events = events_df.copy()
+
+
+    # --------------------------------------------------------
+    # CLEAN EVENT VALUES
+    # --------------------------------------------------------
+
+    for column in [
+        "skills",
+        "interests",
+        "event_type",
+        "mode"
+    ]:
+        events[column] = events[column].fillna("").astype(str)
+
+
+    # --------------------------------------------------------
+    # ENCODE EVENTS
+    # --------------------------------------------------------
+
+    event_vectors = model.encode_events(
+        events
+    )
 
     event_vectors = np.asarray(
         event_vectors,
@@ -175,10 +242,14 @@ def get_recommendations_from_profile(
     )
 
     if event_vectors.ndim == 1:
-        event_vectors = event_vectors.reshape(1, -1)
+        event_vectors = event_vectors.reshape(
+            1,
+            -1
+        )
+
 
     # --------------------------------------------------------
-    # Calculate similarity
+    # CALCULATE SIMILARITY
     # --------------------------------------------------------
 
     similarities = cosine_similarity(
@@ -186,19 +257,32 @@ def get_recommendations_from_profile(
         event_vectors
     )[0]
 
-    events["recommendation_score"] = similarities
 
     # --------------------------------------------------------
-    # Sort highest score first
+    # ADD SCORE
+    # --------------------------------------------------------
+
+    events["recommendation_score"] = (
+        similarities
+    )
+
+
+    # --------------------------------------------------------
+    # SORT
     # --------------------------------------------------------
 
     events = events.sort_values(
-        "recommendation_score",
+        by="recommendation_score",
         ascending=False
     )
 
+
     # --------------------------------------------------------
-    # Return top N
+    # RETURN TOP N
     # --------------------------------------------------------
 
-    return events.head(top_n).reset_index(drop=True)
+    return events.head(
+        int(top_n)
+    ).reset_index(
+        drop=True
+    )

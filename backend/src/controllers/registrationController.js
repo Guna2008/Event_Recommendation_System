@@ -2,7 +2,8 @@ const {
   createRegistration,
   getRegistration,
   getUserRegistrations,
-  markAttendance
+  markAttendance,
+  getUserCertificates
 } = require("../../db/queries/registrationQueries");
 
 const registerForEvent = async (req, res) => {
@@ -74,8 +75,28 @@ const attendEvent = async (req, res) => {
   }
 };
 
+const getCertificates = async (req, res) => {
+  try {
+    const certs = await getUserCertificates(req.params.userId);
+
+    const data = certs.map(reg => ({
+      id: reg.id,
+      eventId: reg.eventId,
+      title: reg.event.title,
+      eventTitle: reg.event.title,
+      date: reg.attendedAt
+    }));
+
+    res.json({ success: true, data });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to get certificates" });
+  }
+};
+
 module.exports = {
   registerForEvent,
   getMyRegistrations,
-  attendEvent
+  attendEvent,
+  getCertificates
 };

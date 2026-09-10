@@ -9,7 +9,11 @@ async function main() {
     await prisma.event.createMany({
       data: seedEvents.map((event) => ({
         ...event,
-        date: new Date(event.date)
+        date: new Date(event.date),
+        skills: event.skills || [],
+        interests: event.interests || [],
+        eventType: event.eventType || "Workshop",
+        mode: event.mode || "Online"
       }))
     });
     console.log(`Seeded ${seedEvents.length} events.`);

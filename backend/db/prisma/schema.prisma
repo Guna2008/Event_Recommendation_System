@@ -4,6 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 /// ==================================================
@@ -19,8 +20,10 @@ model User {
   year               Int?
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
+
   preferredMode      String   @default("Online")
   preferredEventType String[]
+  preferredLocations String[]
   skills             String[]
   interests          String[]
 
@@ -39,10 +42,16 @@ model Event {
   description          String?
   location             String?
   date                 DateTime?
+
+  skills               String[]
+  interests            String[]
+  eventType             String
+  mode                  String
+
   registrationUrl      String?
   createdAt            DateTime  @default(now())
   updatedAt            DateTime  @updatedAt
-  cashPrize            Float?
+  cashPrize             Float?
   certificateAvailable Boolean   @default(false)
   contactEmail         String?
   contactNumber        String?
@@ -50,11 +59,11 @@ model Event {
   endTime              String?
   organizerDepartment  String?
   organizerName        String?
-  posterUrl            String?
+  posterUrl             String?
   registrationDeadline DateTime?
-  registrationFee      Float?
-  startTime            String?
-  whatsappGroupLink    String?
+  registrationFee       Float?
+  startTime             String?
+  whatsappGroupLink     String?
 
   interactions  Interaction[]
   registrations Registration[]

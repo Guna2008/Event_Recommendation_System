@@ -1,15 +1,12 @@
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 import pandas as pd
 
 from recommend_api import get_recommendations_from_profile
 
-
 app = Flask(__name__)
+CORS(app)
 
-
-# ============================================================
-# HEALTH CHECK
-# ============================================================
 
 @app.get("/health")
 def health():
@@ -18,18 +15,16 @@ def health():
     })
 
 
-# ============================================================
-# RECOMMENDATIONS
-# ============================================================
-
 @app.post("/recommend")
 def recommend():
-
     try:
+        data = request.get_json(silent=True)
 
-        data = request.get_json()
+        print("\n================ ML REQUEST ================")
+        print(data)
+        print("============================================\n")
 
-        if not data:
+        if data is None:
             return jsonify({
                 "success": False,
                 "error": "Request body is required"
@@ -38,23 +33,43 @@ def recommend():
         user = data.get("user")
         events = data.get("events")
 
-        if not user:
+        print("USER:")
+        print(user)
+
+        print("\nEVENT COUNT:")
+        print(len(events) if isinstance(events, list) else events)
+
+        if user is None:
             return jsonify({
                 "success": False,
                 "error": "user is required"
             }), 400
 
-        if not events:
+        if not isinstance(events, list):
             return jsonify({
                 "success": False,
-                "error": "events are required"
+                "error": "events must be a list"
             }), 400
 
-        # Convert events received from Express
-        # into pandas dataframe.
+        # No events is a valid situation.
+        # Return an empty recommendation list instead of 400.
+        if len(events) == 0:
+            return jsonify({
+                "success": True,
+                "data": []
+            }), 200
+
         events_df = pd.DataFrame(events)
 
         top_n = data.get("top_n", 20)
+
+        try:
+            top_n = int(top_n)
+        except (TypeError, ValueError):
+            top_n = 20
+
+        if top_n <= 0:
+            top_n = 20
 
         recommendations = get_recommendations_from_profile(
             user_profile=user,
@@ -67,9 +82,11 @@ def recommend():
             "data": recommendations.to_dict(
                 orient="records"
             )
-        })
+        }), 200
 
     except ValueError as error:
+        print("\nML VALUE ERROR:")
+        print(error)
 
         return jsonify({
             "success": False,
@@ -77,8 +94,8 @@ def recommend():
         }), 400
 
     except Exception as error:
-
-        print("ML ERROR:", error)
+        print("\nML ERROR:")
+        print(error)
 
         return jsonify({
             "success": False,
@@ -86,12 +103,7 @@ def recommend():
         }), 500
 
 
-# ============================================================
-# START SERVER
-# ============================================================
-
 if __name__ == "__main__":
-
     app.run(
         host="0.0.0.0",
         port=8000,

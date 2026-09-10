@@ -1118,8 +1118,6 @@ th {
 
     <div class="logo-area">
 
-        <!-- YOUR UPLOADED LOGO -->
-
         <img
             src="assets/vectored-logo.jpeg"
             class="logo-image"
@@ -1138,104 +1136,41 @@ th {
     </div>
 
 
-    <div
-        class="menu-item active"
-        onclick="openPage('dashboard', this)"
-    >
-
-        <div class="menu-icon">
-            🏠
-        </div>
-
-        <span>
-            Dashboard
-        </span>
-
+    <div class="menu-item active" data-page="dashboard" onclick="navigateTo('dashboard')">
+        <div class="menu-icon">🏠</div>
+        <span>Dashboard</span>
     </div>
 
-
-    <div
-        class="menu-item"
-        onclick="openPage('recommendations', this)"
-    >
-
-        <div class="menu-icon">
-            🎯
-        </div>
-
-        <span>
-            Recommendations
-        </span>
-
+    <div class="menu-item" data-page="recommendations" onclick="navigateTo('recommendations')">
+        <div class="menu-icon">🎯</div>
+        <span>Recommendations</span>
     </div>
 
-
-    <div
-        class="menu-item"
-        onclick="openPage('registrations', this)"
-    >
-
-        <div class="menu-icon">
-            📋
-        </div>
-
-        <span>
-            My Registration
-        </span>
-
+    <div class="menu-item" data-page="events" onclick="navigateTo('events')">
+        <div class="menu-icon">🔎</div>
+        <span>All Events</span>
     </div>
 
-
-    <div
-        class="menu-item"
-        onclick="openPage('events', this)"
-    >
-
-        <div class="menu-icon">
-            🔎
-        </div>
-
-        <span>
-            Show All Events
-        </span>
-
+    <div class="menu-item" data-page="registrations" onclick="navigateTo('registrations')">
+        <div class="menu-icon">📋</div>
+        <span>Registrations</span>
     </div>
 
-
-    <div
-        class="menu-item"
-        onclick="openPage('profile', this)"
-    >
-
-        <div class="menu-icon">
-            👤
-        </div>
-
-        <span>
-            Profile
-        </span>
-
+    <div class="menu-item" data-page="certificates" onclick="navigateTo('certificates')">
+        <div class="menu-icon">🏆</div>
+        <span>Certificates</span>
     </div>
 
-
-    <div class="menu-heading">
-        Account
+    <div class="menu-item" data-page="profile" onclick="navigateTo('profile')">
+        <div class="menu-icon">👤</div>
+        <span>Profile</span>
     </div>
 
+    <div class="menu-heading">Account</div>
 
-    <div
-        class="menu-item"
-        onclick="logout()"
-    >
-
-        <div class="menu-icon">
-            ↪
-        </div>
-
-        <span>
-            Logout
-        </span>
-
+    <div class="menu-item" onclick="logout()">
+        <div class="menu-icon">↪</div>
+        <span>Logout</span>
     </div>
 
 </aside>
@@ -1248,47 +1183,24 @@ th {
 <main class="main">
 
 
-<!-- =====================================================
-     TOPBAR
-===================================================== -->
-
 <header class="topbar">
 
-    <div
-        class="page-title"
-        id="pageTitle"
-    >
+    <div class="page-title" id="pageTitle">
         Dashboard
     </div>
 
 
     <div class="top-right">
 
-        <div
-            class="notification"
-            onclick="showNotifications()"
-        >
-
+        <div class="notification" onclick="showNotifications()">
             🔔
-
             <div class="notification-dot"></div>
-
         </div>
 
 
         <div class="user-mini">
-
-            <div
-                class="avatar"
-                id="topAvatar"
-            >
-                SG
-            </div>
-
-            <span id="topName">
-                Santhiya
-            </span>
-
+            <div class="avatar" id="topAvatar">--</div>
+            <span id="topName">Loading...</span>
         </div>
 
     </div>
@@ -1303,194 +1215,79 @@ th {
      DASHBOARD
 ===================================================== -->
 
-<section
-    class="page active"
-    id="dashboard"
->
+<section class="page active" id="dashboard">
 
 
     <div class="welcome">
-
-        <h1>
-            Welcome back,
-            <span id="welcomeName">
-                Santhiya
-            </span> 👋
-        </h1>
-
-        <p>
-            Discover events that match your interests,
-            skills and previous experiences.
-        </p>
-
+        <h1>Welcome back, <span id="welcomeName">Loading...</span> 👋</h1>
+        <p>Discover events that match your interests, skills and previous experiences.</p>
     </div>
 
-
-    <!-- STATISTICS -->
 
     <div class="stats">
 
-
         <div class="stat-card">
-
             <div>
-
-                <div
-                    class="stat-number"
-                    id="registeredCount"
-                >
-                    0
-                </div>
-
-                <div class="stat-label">
-                    Registered Events
-                </div>
-
+                <div class="stat-number" id="totalEventsCount">0</div>
+                <div class="stat-label">Total Events</div>
             </div>
-
-            <div class="stat-icon">
-                📋
-            </div>
-
+            <div class="stat-icon">📊</div>
         </div>
 
-
         <div class="stat-card">
-
             <div>
-
-                <div class="stat-number">
-                    2
-                </div>
-
-                <div class="stat-label">
-                    Completed Events
-                </div>
-
+                <div class="stat-number" id="recommendationCount">0</div>
+                <div class="stat-label">Recommendations</div>
             </div>
-
-            <div class="stat-icon">
-                ✅
-            </div>
-
+            <div class="stat-icon">🎯</div>
         </div>
 
-
         <div class="stat-card">
-
             <div>
-
-                <div class="stat-number">
-                    3
-                </div>
-
-                <div class="stat-label">
-                    Certificates
-                </div>
-
+                <div class="stat-number" id="certificateCount">0</div>
+                <div class="stat-label">Certificates</div>
             </div>
-
-            <div class="stat-icon">
-                🏆
-            </div>
-
+            <div class="stat-icon">🏆</div>
         </div>
 
-
         <div class="stat-card">
-
             <div>
-
-                <div class="stat-number">
-                    20
-                </div>
-
-                <div class="stat-label">
-                    Recommendations
-                </div>
-
+                <div class="stat-number" id="interestCount">0</div>
+                <div class="stat-label">My Interests</div>
             </div>
-
-            <div class="stat-icon">
-                🎯
-            </div>
-
+            <div class="stat-icon">❤️</div>
         </div>
 
     </div>
 
 
-    <!-- RECOMMENDED -->
-
     <div class="section">
 
         <div class="section-title">
-
-            <h2>
-                Recommended For You
-            </h2>
-
-            <button
-                class="primary-btn"
-                onclick="openPageById('recommendations')"
-            >
-                View All
-            </button>
-
+            <h2>Recommended For You</h2>
+            <button class="primary-btn" onclick="navigateTo('recommendations')">View All</button>
         </div>
 
-
-        <div
-            class="event-grid"
-            id="dashboardRecommendations"
-        ></div>
+        <div class="event-grid" id="dashboardRecommendations"></div>
 
     </div>
 
 
-    <!-- REGISTERED -->
-
     <div class="section">
 
         <div class="section-title">
-
-            <h2>
-                My Upcoming Events
-            </h2>
-
-            <button
-                class="primary-btn"
-                onclick="openPageById('registrations')"
-            >
-                View All
-            </button>
-
+            <h2>All Events</h2>
+            <button class="primary-btn" onclick="navigateTo('events')">Browse Events</button>
         </div>
 
-
-        <div
-            class="event-grid"
-            id="dashboardRegistered"
-        ></div>
+        <div class="event-grid" id="dashboardAllEvents"></div>
 
     </div>
 
 
-    <!-- FEEDBACK -->
-
     <div class="section">
-
-        <div class="section-title">
-
-            <h2>
-                Event Feedback
-            </h2>
-
-        </div>
-
-
+        <div class="section-title"><h2>Event Feedback</h2></div>
         <div id="feedbackContainer"></div>
-
     </div>
 
 
@@ -1501,291 +1298,132 @@ th {
      RECOMMENDATIONS
 ===================================================== -->
 
-<section
-    class="page"
-    id="recommendations"
->
+<section class="page" id="recommendations">
 
     <div class="section-title">
-
         <div>
-
-            <h2>
-                🎯 Personalized Recommendations
-            </h2>
-
-            <p
-                style="
-                    color:#777;
-                    margin-top:5px;
-                "
-            >
-                Top 20 events selected according to
-                your interests and feedback.
-            </p>
-
+            <h2>🎯 Personalized Recommendations</h2>
+            <p style="color:#777;margin-top:5px;">Top 20 events ranked by the ML model based on your interests.</p>
         </div>
-
-
-        <button
-            class="primary-btn"
-            onclick="openDomainModal()"
-        >
-            Modify Interests
-        </button>
-
+        <button class="primary-btn" onclick="openDomainModal()">Modify Interests</button>
     </div>
 
-
-    <div
-        style="
-            background:white;
-            border:1px solid #e5e4ea;
-            border-radius:12px;
-            padding:17px;
-            margin-bottom:22px;
-        "
-    >
-
-        <strong>
-            Your Interests
-        </strong>
-
-
-        <div
-            class="domain-list"
-            id="recommendationDomains"
-        ></div>
-
-    </div>
-
-
-    <div
-        class="event-grid"
-        id="recommendationGrid"
-    ></div>
-
-</section>
-
-
-<!-- =====================================================
-     MY REGISTRATION
-===================================================== -->
-
-<section
-    class="page"
-    id="registrations"
->
-
-    <div class="section-title">
-
-        <h2>
-            📋 My Registration
-        </h2>
-
-    </div>
-
-
-    <div
-        class="table-box"
-        id="registrationTable"
-    ></div>
-
-
-    <br><br>
-
-
-    <div class="section-title">
-
-        <h2>
-            🏆 My Certificates
-        </h2>
-
-    </div>
-
-
-    <div class="certificate-grid">
-
-
-        <div class="certificate">
-
-            <div class="certificate-icon">
-                🏆
-            </div>
-
+    <!-- Interests panel -->
+    <div style="background:white;border:1px solid #e5e4ea;border-radius:12px;padding:20px;margin-bottom:18px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
             <div>
-
-                <h3>
-                    Python Coding Challenge
-                </h3>
-
-                <p
-                    style="
-                        color:#777;
-                        margin:5px 0 12px;
-                    "
-                >
-                    Completed • August 2026
-                </p>
-
-                <button
-                    class="primary-btn"
-                    onclick="certificate()"
-                >
-                    View Certificate
-                </button>
-
+                <strong>Your Selected Interests</strong>
+                <p style="color:#777;font-size:12px;margin-top:4px;">The ML model uses these to rank events for you.</p>
             </div>
-
+            <button class="primary-btn" id="getRecommendationsBtn" onclick="fetchMLRecommendations()" style="display:flex;align-items:center;gap:8px;">
+                <span>✨</span> Get My Top 20 Recommendations
+            </button>
         </div>
+        <div class="domain-list" id="recommendationDomains" style="margin-top:14px;"></div>
+    </div>
 
+    <!-- State: prompt -->
+    <div id="recPrompt" style="background:white;border:1px solid #e5e4ea;border-radius:12px;padding:48px;text-align:center;">
+        <div style="font-size:40px;margin-bottom:14px;">🎯</div>
+        <h3 style="margin-bottom:8px;">Ready to find your best events?</h3>
+        <p style="color:#777;margin-bottom:20px;">Click the button above to let the ML model rank the top 20 events based on your interests.</p>
+        <button class="primary-btn" onclick="fetchMLRecommendations()" style="font-size:15px;padding:13px 28px;">✨ Get My Top 20 Recommendations</button>
+    </div>
 
-        <div class="certificate">
+    <!-- State: loading -->
+    <div id="recLoading" style="display:none;background:white;border:1px solid #e5e4ea;border-radius:12px;padding:48px;text-align:center;">
+        <div style="font-size:36px;margin-bottom:14px;">⏳</div>
+        <h3 style="margin-bottom:8px;">ML model is ranking events...</h3>
+        <p style="color:#777;">Analysing your interests and scoring all events. This takes a moment.</p>
+    </div>
 
-            <div class="certificate-icon">
-                🏆
-            </div>
-
-            <div>
-
-                <h3>
-                    Web Development Workshop
-                </h3>
-
-                <p
-                    style="
-                        color:#777;
-                        margin:5px 0 12px;
-                    "
-                >
-                    Completed • August 2026
-                </p>
-
-                <button
-                    class="primary-btn"
-                    onclick="certificate()"
-                >
-                    View Certificate
-                </button>
-
-            </div>
-
+    <!-- State: results -->
+    <div id="recResults" style="display:none;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+            <p style="color:#555;font-size:14px;">Showing top <strong id="recResultCount">0</strong> events ranked by the ML model</p>
+            <button class="secondary-btn" onclick="fetchMLRecommendations()">🔄 Refresh</button>
         </div>
+        <div class="event-grid" id="recommendationGrid"></div>
+    </div>
 
+    <!-- State: empty -->
+    <div id="recEmpty" style="display:none;background:white;border:1px solid #e5e4ea;border-radius:12px;padding:48px;text-align:center;">
+        <div style="font-size:36px;margin-bottom:14px;">😕</div>
+        <h3 style="margin-bottom:8px;">No recommendations found</h3>
+        <p style="color:#777;margin-bottom:20px;">Try adding more interests or check back when new events are added.</p>
+        <button class="primary-btn" onclick="openDomainModal()">Modify Interests</button>
+    </div>
 
+    <!-- State: error -->
+    <div id="recError" style="display:none;background:white;border:1px solid #e5e4ea;border-radius:12px;padding:48px;text-align:center;">
+        <div style="font-size:36px;margin-bottom:14px;">⚠️</div>
+        <h3 style="margin-bottom:8px;">ML service unavailable</h3>
+        <p style="color:#777;margin-bottom:8px;" id="recErrorMsg">Could not reach the recommendation service.</p>
+        <p style="color:#aaa;font-size:12px;margin-bottom:20px;">Showing interest-based fallback results instead.</p>
+        <div class="event-grid" id="recFallbackGrid"></div>
     </div>
 
 </section>
 
 
 <!-- =====================================================
-     SHOW ALL EVENTS
+     ALL EVENTS
 ===================================================== -->
 
-<section
-    class="page"
-    id="events"
->
+<section class="page" id="events">
 
     <div class="section-title">
-
         <div>
-
-            <h2>
-                🔎 Explore All Events
-            </h2>
-
-            <p
-                style="
-                    color:#777;
-                    margin-top:5px;
-                "
-            >
-                Find events using filters.
-            </p>
-
+            <h2>🔎 All Events</h2>
+            <p style="color:#777;margin-top:5px;">Browse and filter all available events.</p>
         </div>
-
     </div>
-
 
     <div class="filters">
-
-
-        <input
-            type="text"
-            class="input"
-            id="search"
-            placeholder="Search events..."
-            oninput="filterEvents()"
-        >
-
-
-        <select
-            class="select"
-            id="domainFilter"
-            onchange="filterEvents()"
-        >
-
-            <option value="">
-                All Domains
-            </option>
-
-            <option>AI / ML</option>
-            <option>Web Development</option>
-            <option>Cybersecurity</option>
-            <option>Data Science</option>
-            <option>Cloud Computing</option>
-            <option>Mobile Development</option>
-            <option>UI / UX</option>
-            <option>IoT</option>
-            <option>Blockchain</option>
-            <option>Programming</option>
-
+        <input type="text" class="input" id="search" placeholder="Search events..." oninput="filterEvents()">
+        <select class="select" id="domainFilter" onchange="filterEvents()">
+            <option value="">All Domains</option>
         </select>
-
-
-        <select
-            class="select"
-            id="locationFilter"
-            onchange="filterEvents()"
-        >
-
-            <option value="">
-                All Locations
-            </option>
-
-            <option>Coimbatore</option>
-            <option>Chennai</option>
-            <option>Bangalore</option>
-            <option>Online</option>
-
+        <select class="select" id="locationFilter" onchange="filterEvents()">
+            <option value="">All Locations</option>
         </select>
-
-
-        <select
-            class="select"
-            id="modeFilter"
-            onchange="filterEvents()"
-        >
-
-            <option value="">
-                All Modes
-            </option>
-
+        <select class="select" id="modeFilter" onchange="filterEvents()">
+            <option value="">All Modes</option>
             <option>Online</option>
             <option>Offline</option>
             <option>Hybrid</option>
-
         </select>
-
     </div>
 
+    <div class="event-grid" id="allEventsGrid"></div>
 
-    <div
-        class="event-grid"
-        id="allEventsGrid"
-    ></div>
+</section>
+
+
+<!-- =====================================================
+     REGISTRATIONS
+===================================================== -->
+
+<section class="page" id="registrations">
+
+    <div class="section-title"><h2>📋 Registrations</h2></div>
+
+    <div class="table-box" id="registrationTable"></div>
+
+</section>
+
+
+<!-- =====================================================
+     CERTIFICATES
+===================================================== -->
+
+<section class="page" id="certificates">
+
+    <div class="section-title"><h2>🏆 My Certificates</h2></div>
+
+    <div class="certificate-grid" id="certificateGrid">
+        <div style="color:#777;">Loading certificates...</div>
+    </div>
 
 </section>
 
@@ -1794,49 +1432,19 @@ th {
      PROFILE
 ===================================================== -->
 
-<section
-    class="page"
-    id="profile"
->
+<section class="page" id="profile">
 
-    <div class="section-title">
-
-        <h2>
-            👤 My Profile
-        </h2>
-
-    </div>
-
+    <div class="section-title"><h2>👤 My Profile</h2></div>
 
     <div class="profile-card">
 
-
         <div class="profile-header">
 
-            <div
-                class="profile-avatar"
-                id="profileAvatar"
-            >
-                SG
-            </div>
-
+            <div class="profile-avatar" id="profileAvatar">--</div>
 
             <div>
-
-                <h2 id="profileName">
-                    Santhiya
-                </h2>
-
-                <p
-                    id="profileEmail"
-                    style="
-                        color:#777;
-                        margin-top:5px;
-                    "
-                >
-                    santhiya@example.com
-                </p>
-
+                <h2 id="profileName">Loading...</h2>
+                <p id="profileEmail" style="color:#777;margin-top:5px;"></p>
             </div>
 
         </div>
@@ -1844,95 +1452,36 @@ th {
 
         <div class="profile-info-grid">
 
-
             <div class="info-box">
-
-                <label>
-                    NAME
-                </label>
-
-                <strong id="profileName2">
-                    Santhiya
-                </strong>
-
+                <label>NAME</label>
+                <strong id="profileName2">Loading...</strong>
             </div>
 
-
             <div class="info-box">
-
-                <label>
-                    EMAIL ID
-                </label>
-
-                <strong id="profileEmail2">
-                    santhiya@example.com
-                </strong>
-
+                <label>EMAIL ID</label>
+                <strong id="profileEmail2"></strong>
             </div>
-
 
         </div>
 
 
         <br>
 
+        <h3>🎯 My Recommendation Domains</h3>
 
-        <h3>
-            🎯 My Recommendation Domains
-        </h3>
-
-
-        <p
-            style="
-                color:#777;
-                font-size:13px;
-                margin-top:6px;
-            "
-        >
-            These domains are used to personalize
-            your event recommendations.
+        <p style="color:#777;font-size:13px;margin-top:6px;">
+            These domains are used to personalize your event recommendations.
         </p>
 
-
-        <div
-            class="domain-list"
-            id="profileDomains"
-        ></div>
-
+        <div class="domain-list" id="profileDomains"></div>
 
         <br>
 
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
 
-        <div
-            style="
-                display:flex;
-                gap:10px;
-                flex-wrap:wrap;
-            "
-        >
-
-            <button
-                class="primary-btn"
-                onclick="openDomainModal()"
-            >
-                Modify Recommendations
-            </button>
-
-
-            <button
-                class="secondary-btn"
-                onclick="logout()"
-            >
-                Log Out
-            </button>
-
-
-            <button
-                class="danger-btn"
-                onclick="deleteAccount()"
-            >
-                Delete Account
-            </button>
+            <button class="primary-btn" onclick="openDomainModal()">Modify Recommendations</button>
+            <button class="secondary-btn" onclick="logout()">Log Out</button>
+            <button class="danger-btn" onclick="deleteAccount()">Delete Account</button>
 
         </div>
 
@@ -1950,48 +1499,19 @@ th {
      DOMAIN MODAL
 ===================================================== -->
 
-<div
-    class="modal"
-    id="domainModal"
->
+<div class="modal" id="domainModal">
 
     <div class="modal-content">
 
-        <button
-            class="close"
-            onclick="closeDomainModal()"
-        >
-            ×
-        </button>
+        <button class="close" onclick="closeDomainModal()">×</button>
 
+        <h2>Choose Your Interests</h2>
 
-        <h2>
-            Choose Your Interests
-        </h2>
+        <p style="color:#777;margin-top:7px;">Select the domains you are interested in.</p>
 
+        <div class="domain-selection" id="domainSelection"></div>
 
-        <p
-            style="
-                color:#777;
-                margin-top:7px;
-            "
-        >
-            Select the domains you are interested in.
-        </p>
-
-
-        <div
-            class="domain-selection"
-            id="domainSelection"
-        ></div>
-
-
-        <button
-            class="primary-btn"
-            onclick="saveDomains()"
-        >
-            Save Changes
-        </button>
+        <button class="primary-btn" id="saveDomainsButton" onclick="saveDomains()">Save Changes</button>
 
     </div>
 
@@ -2002,81 +1522,30 @@ th {
      EVENT DETAILS MODAL
 ===================================================== -->
 
-<div
-    class="modal"
-    id="eventModal"
->
+<div class="modal" id="eventModal">
 
     <div class="modal-content">
 
-        <button
-            class="close"
-            onclick="closeEventModal()"
-        >
-            ×
-        </button>
+        <button class="close" onclick="closeEventModal()">×</button>
 
-
-        <div
-            class="event-banner"
-            id="modalBanner"
-        >
-            EVENT
-        </div>
-
+        <div class="event-banner" id="modalBanner">EVENT</div>
 
         <br>
 
+        <span class="event-tag" id="modalDomain">DOMAIN</span>
 
-        <span
-            class="event-tag"
-            id="modalDomain"
-        >
-            DOMAIN
-        </span>
+        <h2 id="modalTitle" style="margin:12px 0;">Event</h2>
 
+        <p id="modalDescription" style="color:#777;line-height:1.6;margin-bottom:18px;"></p>
 
-        <h2
-            id="modalTitle"
-            style="margin:12px 0;"
-        >
-            Event
-        </h2>
-
-
-        <p
-            id="modalDescription"
-            style="
-                color:#777;
-                line-height:1.6;
-                margin-bottom:18px;
-            "
-        ></p>
-
-
-        <div
-            class="event-details"
-            style="font-size:14px;"
-        >
-
+        <div class="event-details" style="font-size:14px;">
             <span id="modalDate"></span>
-
             <span id="modalLocation"></span>
-
             <span id="modalMode"></span>
-
             <span id="modalOrganizer"></span>
-
         </div>
 
-
-        <button
-            class="primary-btn"
-            id="modalRegister"
-            onclick="registerCurrentEvent()"
-        >
-            Register Now
-        </button>
+        <button class="primary-btn" id="modalRegister" onclick="registerCurrentEvent()">Register Now</button>
 
     </div>
 
@@ -2087,322 +1556,48 @@ th {
      TOAST
 ===================================================== -->
 
-<div
-    class="toast"
-    id="toast"
->
-    Done
-</div>
+<div class="toast" id="toast">Done</div>
 
 
 <script>
 
 /* =====================================================
+   NOTE ON DOMAIN MAPPING
+   -----------------------------------------------------
+   This UI keeps the simple 10-domain model from the
+   original Vectored design (AI / ML, Web Development,
+   etc). The backend user record may not have a field
+   literally called "domains" — it's mapped here onto
+   `user.interests` (falling back to
+   `user.preferredEventType`) since that's the closest
+   generic array field a user profile is likely to expose.
+   If your backend uses a different field name for this,
+   change DOMAIN_FIELD below and the two spots that read
+   /write it (initializeUser + saveDomains).
+===================================================== */
+
+const DOMAIN_FIELD = "interests";
+
+
+/* =====================================================
    EVENT DATA
-   (fallback only — used if the backend can't be reached;
-   normally `events` is replaced by loadEvents() below with
-   live data from the Express API)
+   (fallback only — used only if the backend truly cannot
+   be reached or returns no events; `events` is otherwise
+   always populated by loadEvents() from the live API)
 ===================================================== */
 
 let events = [];
 
 const fallbackEvents = [
 
-{
-    id: 1,
-    title: "AI Innovation Hackathon",
-    domain: "AI / ML",
-    location: "Online",
-    mode: "Online",
-    date: "15 September 2026",
-    organizer: "Tech Community",
-    tag: "AI HACK",
-    description:
-        "Build innovative solutions using Artificial Intelligence and Machine Learning."
-},
-
-{
-    id: 2,
-    title: "Machine Learning Challenge",
-    domain: "AI / ML",
-    location: "Coimbatore",
-    mode: "Offline",
-    date: "20 September 2026",
-    organizer: "KCT Innovation Club",
-    tag: "ML",
-    description:
-        "Test your Machine Learning skills in a competitive environment."
-},
-
-{
-    id: 3,
-    title: "Full Stack Web Development Workshop",
-    domain: "Web Development",
-    location: "Coimbatore",
-    mode: "Offline",
-    date: "22 September 2026",
-    organizer: "Developer Community",
-    tag: "WEB",
-    description:
-        "Learn modern frontend and backend development."
-},
-
-{
-    id: 4,
-    title: "Cybersecurity CTF",
-    domain: "Cybersecurity",
-    location: "Online",
-    mode: "Online",
-    date: "25 September 2026",
-    organizer: "Cyber Club",
-    tag: "CYBER",
-    description:
-        "Solve cybersecurity challenges and improve security skills."
-},
-
-{
-    id: 5,
-    title: "Python Coding Challenge",
-    domain: "Programming",
-    location: "Online",
-    mode: "Online",
-    date: "28 September 2026",
-    organizer: "Code Arena",
-    tag: "PYTHON",
-    description:
-        "Solve programming problems and compete with developers."
-},
-
-{
-    id: 6,
-    title: "Data Science Bootcamp",
-    domain: "Data Science",
-    location: "Chennai",
-    mode: "Offline",
-    date: "1 October 2026",
-    organizer: "Data Science Club",
-    tag: "DATA",
-    description:
-        "Learn data analysis, visualization and machine learning."
-},
-
-{
-    id: 7,
-    title: "Cloud Computing Workshop",
-    domain: "Cloud Computing",
-    location: "Bangalore",
-    mode: "Offline",
-    date: "3 October 2026",
-    organizer: "Cloud Community",
-    tag: "CLOUD",
-    description:
-        "Learn cloud computing concepts and deployment."
-},
-
-{
-    id: 8,
-    title: "Android App Development",
-    domain: "Mobile Development",
-    location: "Coimbatore",
-    mode: "Offline",
-    date: "5 October 2026",
-    organizer: "Mobile Dev Club",
-    tag: "ANDROID",
-    description:
-        "Learn how to build Android applications."
-},
-
-{
-    id: 9,
-    title: "UI UX Design Workshop",
-    domain: "UI / UX",
-    location: "Coimbatore",
-    mode: "Offline",
-    date: "7 October 2026",
-    organizer: "Design Community",
-    tag: "UI UX",
-    description:
-        "Learn user interface and user experience design."
-},
-
-{
-    id: 10,
-    title: "IoT Innovation Challenge",
-    domain: "IoT",
-    location: "Chennai",
-    mode: "Hybrid",
-    date: "10 October 2026",
-    organizer: "IoT Club",
-    tag: "IOT",
-    description:
-        "Build innovative Internet of Things solutions."
-},
-
-{
-    id: 11,
-    title: "Blockchain Technology Seminar",
-    domain: "Blockchain",
-    location: "Online",
-    mode: "Online",
-    date: "12 October 2026",
-    organizer: "Blockchain Club",
-    tag: "BLOCKCHAIN",
-    description:
-        "Understand blockchain and decentralized technologies."
-},
-
-{
-    id: 12,
-    title: "React Development Workshop",
-    domain: "Web Development",
-    location: "Online",
-    mode: "Online",
-    date: "15 October 2026",
-    organizer: "Frontend Community",
-    tag: "REACT",
-    description:
-        "Build modern web applications using React."
-},
-
-{
-    id: 13,
-    title: "Deep Learning Bootcamp",
-    domain: "AI / ML",
-    location: "Bangalore",
-    mode: "Offline",
-    date: "17 October 2026",
-    organizer: "AI Community",
-    tag: "DEEP AI",
-    description:
-        "Learn neural networks and deep learning."
-},
-
-{
-    id: 14,
-    title: "Ethical Hacking Workshop",
-    domain: "Cybersecurity",
-    location: "Chennai",
-    mode: "Offline",
-    date: "20 October 2026",
-    organizer: "Security Community",
-    tag: "HACKING",
-    description:
-        "Learn ethical hacking and cybersecurity fundamentals."
-},
-
-{
-    id: 15,
-    title: "SQL Database Challenge",
-    domain: "Data Science",
-    location: "Online",
-    mode: "Online",
-    date: "22 October 2026",
-    organizer: "Database Club",
-    tag: "SQL",
-    description:
-        "Solve real-world SQL and database problems."
-},
-
-{
-    id: 16,
-    title: "DevOps Cloud Hackathon",
-    domain: "Cloud Computing",
-    location: "Bangalore",
-    mode: "Hybrid",
-    date: "25 October 2026",
-    organizer: "DevOps Community",
-    tag: "DEVOPS",
-    description:
-        "Build and deploy applications using DevOps tools."
-},
-
-{
-    id: 17,
-    title: "Competitive Programming Contest",
-    domain: "Programming",
-    location: "Coimbatore",
-    mode: "Offline",
-    date: "28 October 2026",
-    organizer: "Coding Club",
-    tag: "CODE",
-    description:
-        "Compete with programmers and solve algorithmic problems."
-},
-
-{
-    id: 18,
-    title: "Flutter App Development",
-    domain: "Mobile Development",
-    location: "Online",
-    mode: "Online",
-    date: "30 October 2026",
-    organizer: "App Developers",
-    tag: "FLUTTER",
-    description:
-        "Build cross-platform applications using Flutter."
-},
-
-{
-    id: 19,
-    title: "Figma UI Design Challenge",
-    domain: "UI / UX",
-    location: "Online",
-    mode: "Online",
-    date: "2 November 2026",
-    organizer: "Design Club",
-    tag: "FIGMA",
-    description:
-        "Create beautiful user interfaces using Figma."
-},
-
-{
-    id: 20,
-    title: "Smart City IoT Hackathon",
-    domain: "IoT",
-    location: "Coimbatore",
-    mode: "Hybrid",
-    date: "5 November 2026",
-    organizer: "Smart City Club",
-    tag: "SMART CITY",
-    description:
-        "Build IoT solutions for smart cities."
-},
-
-{
-    id: 21,
-    title: "Generative AI Workshop",
-    domain: "AI / ML",
-    location: "Online",
-    mode: "Online",
-    date: "8 November 2026",
-    organizer: "AI Community",
-    tag: "GEN AI",
-    description:
-        "Explore Generative AI and modern AI applications."
-},
-
-{
-    id: 22,
-    title: "Next.js Development Bootcamp",
-    domain: "Web Development",
-    location: "Coimbatore",
-    mode: "Offline",
-    date: "10 November 2026",
-    organizer: "Web Community",
-    tag: "NEXT JS",
-    description:
-        "Build production-ready applications using Next.js."
-}
+{ id: 1, title: "AI Innovation Hackathon", domain: "AI / ML", location: "Online", mode: "Online", date: "15 September 2026", organizer: "Tech Community", tag: "AI HACK", description: "Build innovative solutions using Artificial Intelligence and Machine Learning." },
+{ id: 2, title: "Machine Learning Challenge", domain: "AI / ML", location: "Coimbatore", mode: "Offline", date: "20 September 2026", organizer: "KCT Innovation Club", tag: "ML", description: "Test your Machine Learning skills in a competitive environment." },
+{ id: 3, title: "Full Stack Web Development Workshop", domain: "Web Development", location: "Coimbatore", mode: "Offline", date: "22 September 2026", organizer: "Developer Community", tag: "WEB", description: "Learn modern frontend and backend development." },
+{ id: 4, title: "Cybersecurity CTF", domain: "Cybersecurity", location: "Online", mode: "Online", date: "25 September 2026", organizer: "Cyber Club", tag: "CYBER", description: "Solve cybersecurity challenges and improve security skills." },
+{ id: 5, title: "Python Coding Challenge", domain: "Programming", location: "Online", mode: "Online", date: "28 September 2026", organizer: "Code Arena", tag: "PYTHON", description: "Solve programming problems and compete with developers." }
 
 ];
 
-
-/* =====================================================
-   LOAD EVENTS FROM BACKEND
-   Maps the Prisma Event shape onto the shape the rest of
-   this file's rendering code expects (id, title, domain,
-   location, mode, date, organizer, tag, description).
-===================================================== */
 
 const DOMAIN_TAGS = {
     "AI / ML": "AI HACK",
@@ -2422,91 +1617,129 @@ function mapBackendEvent(event) {
         title: event.title,
         domain: event.domain || "General",
         location: event.location || "TBA",
-        mode: event.location && event.location.toLowerCase().includes("online")
-            ? "Online"
-            : "Offline",
+        mode: event.mode
+            ? event.mode
+            : (event.location && event.location.toLowerCase().includes("online") ? "Online" : "Offline"),
         date: dateObj
-            ? dateObj.toLocaleDateString("en-US", {
-                  day: "numeric",
-                  month: "long",
-                  year: "numeric"
-              })
+            ? dateObj.toLocaleDateString("en-US", { day: "numeric", month: "long", year: "numeric" })
             : "Date TBA",
         organizer: event.organizerName || "Vectored",
         tag: DOMAIN_TAGS[event.domain] || "EVENT",
-        description: event.description || ""
+        description: event.description || "",
+        registrationUrl: event.registrationUrl || event.registrationLink || ""
     };
 }
 
 async function loadEvents() {
     try {
         const response = await api.getEvents();
-        const backendEvents = (response && response.data) || [];
+        let backendEvents = response;
+
+        if (response && response.success && Array.isArray(response.data)) {
+            backendEvents = response.data;
+        }
+
+        if (!Array.isArray(backendEvents)) {
+            backendEvents = [];
+        }
 
         if (backendEvents.length > 0) {
             events = backendEvents.map(mapBackendEvent);
         } else {
+            console.warn("Backend returned no events — using local sample data as a fallback.");
             events = fallbackEvents;
         }
     } catch (error) {
         console.error("Failed to load events from backend, using fallback data.", error);
+        showToast("Could not reach the server — showing sample events.");
         events = fallbackEvents;
     }
 }
 
 
 /* =====================================================
-   USER
+   UTILITIES
 ===================================================== */
 
-let user =
-    JSON.parse(
-        localStorage.getItem("vectoredUser")
-    ) ||
-    {
-        name: "Guest",
-        email: "",
-
-        domains: []
-    };
-
-// preferredEventType comes back from the backend as an array of
-// event-type names (e.g. "Hackathon"); `domains` here is used for
-// local scoring against event.domain, so treat them the same way.
-if (!Array.isArray(user.domains)) {
-    user.domains = user.preferredEventType || user.interests || [];
+function normalizeArray(value) {
+    if (Array.isArray(value)) {
+        return value
+            .filter(item => item !== null && item !== undefined && String(item).trim() !== "")
+            .map(item => String(item).trim());
+    }
+    if (value === null || value === undefined || value === "") return [];
+    return String(value).split(",").map(item => item.trim()).filter(Boolean);
 }
-
-// Real backend users have a numeric `id`. If there isn't one, the
-// person isn't logged in — recommendations/registrations/feedback
-// will fall back to local-only behaviour instead of hitting the API.
-const currentUserId =
-    typeof user.id === "number" ? user.id : null;
 
 
 /* =====================================================
-   USER DATA
+   USER / SESSION
+   -----------------------------------------------------
+   The logged-in user now always comes from the session +
+   backend (never from a locally-cached "vectoredUser" blob),
+   so a stale or admin-tagged localStorage value can't leak
+   into this page as if it were the current user.
 ===================================================== */
 
-let registeredEvents =
-    JSON.parse(
-        localStorage.getItem("vectoredRegistrations")
-    ) || [];
-
-
-let feedback =
-    JSON.parse(
-        localStorage.getItem("vectoredFeedback")
-    ) || {};
-
-
-let bookmarks =
-    JSON.parse(
-        localStorage.getItem("vectoredBookmarks")
-    ) || [];
-
-
+let user = { name: "Guest", email: "", domains: [] };
+let currentUserId = null;
 let currentEventId = null;
+
+
+/**
+ * Resolves the logged-in user from Session + the backend.
+ * Returns false (and redirects to login.html) if there is
+ * no valid session — this is what makes a fresh reload /
+ * new tab start at the login page instead of showing stale
+ * or wrong data.
+ */
+async function initializeUser() {
+
+    let sessionUser = null;
+
+    try {
+        sessionUser = Session.get();
+    } catch (error) {
+        console.error("Session read error:", error);
+    }
+
+    if (!sessionUser || !sessionUser.id) {
+        window.location.href = "login.html";
+        return false;
+    }
+
+    // Admins should use admin.html, not the student dashboard
+    if (sessionUser.role === "ADMIN") {
+        window.location.href = "admin.html";
+        return false;
+    }
+
+    currentUserId = sessionUser.id;
+
+    try {
+        const response = await api.getUser(sessionUser.id);
+        let backendUser = response;
+
+        if (response && response.success && response.data) {
+            backendUser = response.data;
+        }
+
+        user = (backendUser && backendUser.id) ? backendUser : sessionUser;
+    } catch (error) {
+        console.error("Failed to load user from backend, using session data.", error);
+        user = sessionUser;
+    }
+
+    if (!Array.isArray(user.domains)) {
+        user.domains = normalizeArray(user[DOMAIN_FIELD] || user.preferredEventType);
+    }
+
+    return true;
+}
+
+function loadLocalCaches() {
+    // No local caches needed — registration is external via redirect
+}
 
 
 /* =====================================================
@@ -2515,48 +1748,25 @@ let currentEventId = null;
 
 window.onload = async function() {
 
+    const authed = await initializeUser();
+    if (!authed) return;
+
     updateUser();
-
     await loadEvents();
-
-    if (currentUserId) {
-        await syncRegistrationsFromBackend();
-    }
-
-    renderDashboard();
-
-    await renderRecommendations();
-
+    populateFilters();
+    await renderDashboard();
+    renderRecommendations();
     renderAllEvents();
-
     renderRegistrations();
-
     renderFeedback();
-
     renderDomainSelection();
+    await renderCertificates();
 
 };
 
-/* =====================================================
-   SYNC REGISTRATIONS FROM BACKEND
-   Keeps the local `registeredEvents` list (used everywhere
-   for instant UI state) in sync with what's actually stored
-   for this user in Postgres.
-===================================================== */
 
-async function syncRegistrationsFromBackend() {
-    try {
-        const regs = await api.getUserRegistrations(currentUserId);
-        registeredEvents = (regs || []).map((r) => r.eventId);
+/* syncRegistrationsFromBackend removed — registration is external */
 
-        localStorage.setItem(
-            "vectoredRegistrations",
-            JSON.stringify(registeredEvents)
-        );
-    } catch (error) {
-        console.error("Could not sync registrations from backend.", error);
-    }
-}
 
 
 /* =====================================================
@@ -2565,58 +1775,23 @@ async function syncRegistrationsFromBackend() {
 
 function updateUser() {
 
-    document.getElementById(
-        "welcomeName"
-    ).innerText = user.name;
+    const name = user.name || "User";
+    const email = user.email || "";
 
-    document.getElementById(
-        "topName"
-    ).innerText = user.name;
+    document.getElementById("welcomeName").innerText = name;
+    document.getElementById("topName").innerText = name;
+    document.getElementById("profileName").innerText = name;
+    document.getElementById("profileName2").innerText = name;
+    document.getElementById("profileEmail").innerText = email;
+    document.getElementById("profileEmail2").innerText = email;
 
-    document.getElementById(
-        "profileName"
-    ).innerText = user.name;
+    const initials = name.split(" ").map(word => word[0]).join("").substring(0, 2).toUpperCase();
 
-    document.getElementById(
-        "profileName2"
-    ).innerText = user.name;
+    document.getElementById("topAvatar").innerText = initials;
+    document.getElementById("profileAvatar").innerText = initials;
 
-    document.getElementById(
-        "profileEmail"
-    ).innerText = user.email;
-
-    document.getElementById(
-        "profileEmail2"
-    ).innerText = user.email;
-
-
-    const initials =
-        user.name
-        .split(" ")
-        .map(
-            word => word[0]
-        )
-        .join("")
-        .substring(0,2)
-        .toUpperCase();
-
-
-    document.getElementById(
-        "topAvatar"
-    ).innerText = initials;
-
-    document.getElementById(
-        "profileAvatar"
-    ).innerText = initials;
-
-
-    renderDomains(
-        "profileDomains"
-    );
-
-    renderDomains(
-        "recommendationDomains"
-    );
+    renderDomains("profileDomains");
+    renderDomains("recommendationDomains");
 
 }
 
@@ -2625,81 +1800,30 @@ function updateUser() {
    PAGE NAVIGATION
 ===================================================== */
 
-function openPage(
-    pageId,
-    element
-) {
+const PAGE_TITLES = {
+    dashboard:       "Dashboard",
+    recommendations: "Recommendations",
+    events:          "All Events",
+    registrations:   "My Registrations",
+    certificates:    "My Certificates",
+    profile:         "Profile"
+};
 
-    document
-        .querySelectorAll(".page")
-        .forEach(
-            page =>
-            page.classList.remove("active")
-        );
+function navigateTo(pageId) {
+    document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+    const target = document.getElementById(pageId);
+    if (target) target.classList.add("active");
 
+    document.querySelectorAll(".menu-item[data-page]").forEach(item => {
+        item.classList.toggle("active", item.dataset.page === pageId);
+    });
 
-    document
-        .getElementById(pageId)
-        .classList.add("active");
+    document.getElementById("pageTitle").innerText = PAGE_TITLES[pageId] || pageId;
 
-
-    document
-        .querySelectorAll(".menu-item")
-        .forEach(
-            item =>
-            item.classList.remove("active")
-        );
-
-
-    if(element) {
-
-        element.classList.add("active");
-
-    }
-
-
-    const titles = {
-
-        dashboard:
-            "Dashboard",
-
-        recommendations:
-            "Recommendations",
-
-        registrations:
-            "My Registration",
-
-        events:
-            "Show All Events",
-
-        profile:
-            "Profile"
-
-    };
-
-
-    document.getElementById(
-        "pageTitle"
-    ).innerText =
-        titles[pageId];
-
-}
-
-
-function openPageById(
-    pageId
-) {
-
-    const item =
-        document.querySelector(
-            `.menu-item[onclick*="${pageId}"]`
-        );
-
-    openPage(
-        pageId,
-        item
-    );
-
+    if (pageId === "events")          renderAllEvents();
+    if (pageId === "registrations")   renderRegistrations();
+    if (pageId === "recommendations") renderRecommendations();
+    if (pageId === "certificates")    renderCertificates();
 }
 
 
@@ -2708,155 +1832,69 @@ function openPageById(
 ===================================================== */
 
 const domains = [
-
-    "AI / ML",
-    "Web Development",
-    "Cybersecurity",
-    "Data Science",
-    "Cloud Computing",
-    "Mobile Development",
-    "UI / UX",
-    "IoT",
-    "Blockchain",
-    "Programming"
-
+    "AI / ML", "Web Development", "Cybersecurity", "Data Science",
+    "Cloud Computing", "Mobile Development", "UI / UX", "IoT",
+    "Blockchain", "Programming"
 ];
-
 
 function renderDomainSelection() {
 
-    const container =
-        document.getElementById(
-            "domainSelection"
-        );
-
-
+    const container = document.getElementById("domainSelection");
     container.innerHTML = "";
 
+    domains.forEach(domain => {
+        const div = document.createElement("div");
+        div.className = "domain-option";
 
-    domains.forEach(
-        domain => {
+        if (user.domains.includes(domain)) div.classList.add("selected");
 
-            const div =
-                document.createElement(
-                    "div"
-                );
+        div.innerText = domain;
+        div.onclick = () => div.classList.toggle("selected");
 
-
-            div.className =
-                "domain-option";
-
-
-            if(
-                user.domains.includes(
-                    domain
-                )
-            ) {
-
-                div.classList.add(
-                    "selected"
-                );
-
-            }
-
-
-            div.innerText =
-                domain;
-
-
-            div.onclick =
-                () => {
-
-                    div.classList.toggle(
-                        "selected"
-                    );
-
-                };
-
-
-            container.appendChild(
-                div
-            );
-
-        }
-    );
+        container.appendChild(div);
+    });
 
 }
-
 
 function openDomainModal() {
-
     renderDomainSelection();
-
-    document
-        .getElementById(
-            "domainModal"
-        )
-        .classList.add("show");
-
+    document.getElementById("domainModal").classList.add("show");
 }
-
 
 function closeDomainModal() {
-
-    document
-        .getElementById(
-            "domainModal"
-        )
-        .classList.remove("show");
-
+    document.getElementById("domainModal").classList.remove("show");
 }
 
+async function saveDomains() {
 
-function saveDomains() {
+    const selected = [...document.querySelectorAll(".domain-option.selected")].map(element => element.innerText);
 
-    const selected =
-        [
-            ...document
-            .querySelectorAll(
-                ".domain-option.selected"
-            )
-        ]
-        .map(
-            element =>
-            element.innerText
-        );
-
-
-    if(
-        selected.length === 0
-    ) {
-
-        alert(
-            "Please select at least one domain."
-        );
-
+    if (selected.length === 0) {
+        alert("Please select at least one domain.");
         return;
-
     }
 
-
-    user.domains =
-        selected;
-
-
-    localStorage.setItem(
-        "vectoredUser",
-        JSON.stringify(user)
-    );
-
+    user.domains = selected;
 
     updateUser();
-
-    renderRecommendations();
-
-    renderDashboard();
-
+    recShowState("recPrompt");
+    await renderDashboard();
     closeDomainModal();
+    showToast("Your recommendations were updated.");
 
-    showToast(
-        "Your recommendations were updated."
-    );
+    if (currentUserId) {
+        const button = document.getElementById("saveDomainsButton");
+        button.disabled = true;
+
+        try {
+            await api.updateUser(currentUserId, { [DOMAIN_FIELD]: selected });
+        } catch (error) {
+            console.error("Could not save interests to backend.", error);
+            showToast("Saved locally, but couldn't sync interests to your account.");
+        } finally {
+            button.disabled = false;
+        }
+    }
 
 }
 
@@ -2865,185 +1903,122 @@ function saveDomains() {
    RENDER DOMAINS
 ===================================================== */
 
-function renderDomains(
-    id
-) {
+function renderDomains(id) {
 
-    const container =
-        document.getElementById(id);
-
-
-    if(!container)
-        return;
-
+    const container = document.getElementById(id);
+    if (!container) return;
 
     container.innerHTML = "";
 
-
-    user.domains.forEach(
-        domain => {
-
-            const span =
-                document.createElement(
-                    "span"
-                );
-
-
-            span.className =
-                "domain";
-
-
-            span.innerText =
-                domain;
-
-
-            container.appendChild(
-                span
-            );
-
-        }
-    );
+    user.domains.forEach(domain => {
+        const span = document.createElement("span");
+        span.className = "domain";
+        span.innerText = domain;
+        container.appendChild(span);
+    });
 
 }
 
 
 /* =====================================================
    RECOMMENDATION ENGINE
-=====================================================
-
-   DOMAIN MATCH = +100
-   LIKE         = +40
-   DISLIKE      = -50
-   BOOKMARK     = +15
-
-   Higher score = better recommendation
-
 ===================================================== */
 
-function calculateScore(
-    event
-) {
-
-    let score = 0;
-
-
-    if(
-        user.domains.includes(
-            event.domain
-        )
-    ) {
-
-        score += 100;
-
-    }
-
-
-    if(
-        feedback[event.id] === "like"
-    ) {
-
-        score += 40;
-
-    }
-
-
-    if(
-        feedback[event.id] === "dislike"
-    ) {
-
-        score -= 50;
-
-    }
-
-
-    if(
-        bookmarks.includes(
-            event.id
-        )
-    ) {
-
-        score += 15;
-
-    }
-
-
-    return score;
-
-}
-
-
 function getRecommendationsLocal() {
-
     return events
-        .map(
-            event => ({
-                ...event,
-
-                score:
-                    calculateScore(
-                        event
-                    )
-            })
-        )
-        .sort(
-            (a,b) =>
-                b.score - a.score
-        )
-        .slice(
-            0,
-            20
-        );
-
+        .map(event => ({ ...event, score: user.domains.includes(event.domain) ? 100 : 0 }))
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 20);
 }
 
 async function getRecommendations() {
-
     if (currentUserId) {
         try {
             const response = await api.getRecommendations(currentUserId);
-            const backendRecs = (response && response.data) || [];
-
-            if (backendRecs.length > 0) {
-                return backendRecs.map(mapBackendEvent);
-            }
+            let backendRecs = response;
+            if (response && response.success && Array.isArray(response.data)) backendRecs = response.data;
+            if (Array.isArray(backendRecs) && backendRecs.length > 0) return backendRecs.map(mapBackendEvent);
         } catch (error) {
-            console.error("Falling back to local recommendation scoring.", error);
+            console.error("ML recommendations failed, using local fallback.", error);
+            throw error;
         }
     }
-
     return getRecommendationsLocal();
 }
 
 
 /* =====================================================
-   RENDER RECOMMENDATIONS
+   RECOMMENDATIONS PAGE — STATE HELPERS
 ===================================================== */
 
-async function renderRecommendations() {
-
-    const grid =
-        document.getElementById(
-            "recommendationGrid"
-        );
-
-
-    grid.innerHTML = "";
+function recShowState(state) {
+    ["recPrompt", "recLoading", "recResults", "recEmpty", "recError"].forEach(id => {
+        document.getElementById(id).style.display = "none";
+    });
+    document.getElementById(state).style.display = "block";
+}
 
 
-    const recommendations = await getRecommendations();
+/* =====================================================
+   FETCH ML RECOMMENDATIONS (button click)
+===================================================== */
 
-    recommendations.forEach(
-            event => {
+async function fetchMLRecommendations() {
+    const btn = document.getElementById("getRecommendationsBtn");
+    btn.disabled = true;
+    btn.innerHTML = "<span>⏳</span> Fetching...";
 
-                grid.appendChild(
-                    createEventCard(
-                        event
-                    )
-                );
+    recShowState("recLoading");
 
-            }
-        );
+    try {
+        const recs = await getRecommendations();
 
+        document.getElementById("recommendationCount").innerText = recs.length;
+
+        if (recs.length === 0) {
+            recShowState("recEmpty");
+            return;
+        }
+
+        const grid = document.getElementById("recommendationGrid");
+        grid.innerHTML = "";
+        recs.forEach((event, index) => grid.appendChild(createEventCard(event, index + 1)));
+
+        document.getElementById("recResultCount").innerText = recs.length;
+        recShowState("recResults");
+
+    } catch (error) {
+        // ML failed — show fallback with error banner
+        const fallback = getRecommendationsLocal();
+        document.getElementById("recErrorMsg").innerText =
+            error.message || "Could not reach the recommendation service.";
+
+        const fallbackGrid = document.getElementById("recFallbackGrid");
+        fallbackGrid.innerHTML = "";
+        fallback.forEach((event, index) => fallbackGrid.appendChild(createEventCard(event, index + 1)));
+
+        document.getElementById("recommendationCount").innerText = fallback.length;
+        recShowState("recError");
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = "<span>✨</span> Get My Top 20 Recommendations";
+    }
+}
+
+
+/* =====================================================
+   RENDER RECOMMENDATIONS (called on navigate — just
+   keeps the current state, does NOT auto-fetch)
+===================================================== */
+
+function renderRecommendations() {
+    // Only reset to prompt if no results are showing yet
+    const resultsVisible = document.getElementById("recResults").style.display !== "none";
+    const errorVisible   = document.getElementById("recError").style.display !== "none";
+    if (!resultsVisible && !errorVisible) {
+        recShowState("recPrompt");
+    }
+    renderDomains("recommendationDomains");
 }
 
 
@@ -3051,110 +2026,41 @@ async function renderRecommendations() {
    EVENT CARD
 ===================================================== */
 
-function createEventCard(
-    event
-) {
+function createEventCard(event, rank) {
 
-    const card =
-        document.createElement(
-            "div"
-        );
+    const card = document.createElement("div");
+    card.className = "event-card";
 
-
-    card.className =
-        "event-card";
-
-
-    const saved =
-        bookmarks.includes(
-            event.id
-        );
-
-
-    const registered =
-        registeredEvents.includes(
-            event.id
-        );
-
+    const rankBadge = rank
+        ? `<div style="position:absolute;top:12px;left:12px;background:rgba(0,0,0,0.55);color:white;font-size:11px;font-weight:700;padding:4px 9px;border-radius:20px;">#${rank}</div>`
+        : "";
 
     card.innerHTML = `
 
-        <button
-            class="bookmark"
-            onclick="toggleBookmark(${event.id})"
-        >
-            ${saved ? "♥" : "♡"}
-        </button>
-
-
-        <div class="event-banner">
-
-            ${event.tag}
-
-        </div>
-
+        <div class="event-banner" style="position:relative;">${event.tag}${rankBadge}</div>
 
         <div class="event-content">
 
-            <span class="event-tag">
-                ${event.domain}
-            </span>
+            <span class="event-tag">${event.domain}</span>
 
+            <h3>${event.title}</h3>
 
-            <h3>
-                ${event.title}
-            </h3>
-
-
-            <p class="event-description">
-                ${event.description}
-            </p>
-
+            <p class="event-description">${event.description}</p>
 
             <div class="event-details">
-
-                <span>
-                    📅 ${event.date}
-                </span>
-
-                <span>
-                    📍 ${event.location}
-                </span>
-
-                <span>
-                    🌐 ${event.mode}
-                </span>
-
+                <span>📅 ${event.date}</span>
+                <span>📍 ${event.location}</span>
+                <span>🌐 ${event.mode}</span>
             </div>
 
-
             <div class="event-buttons">
-
-                <button
-                    class="primary-btn"
-                    onclick="openEvent(${event.id})"
-                >
-                    View Event
-                </button>
-
-
-                <button
-                    class="secondary-btn"
-                    onclick="registerEvent(${event.id})"
-                >
-                    ${
-                        registered
-                        ? "Registered"
-                        : "Register"
-                    }
-                </button>
-
+                <button class="primary-btn" onclick="openEvent(${event.id})">View Event</button>
+                <button class="secondary-btn" onclick="registerEvent(${event.id})">Register</button>
             </div>
 
         </div>
 
     `;
-
 
     return card;
 
@@ -3165,54 +2071,44 @@ function createEventCard(
    ALL EVENTS
 ===================================================== */
 
-function renderAllEvents(
-    list = events
-) {
+function renderAllEvents(list = events) {
 
-    const grid =
-        document.getElementById(
-            "allEventsGrid"
-        );
-
-
+    const grid = document.getElementById("allEventsGrid");
     grid.innerHTML = "";
 
-
-    if(
-        list.length === 0
-    ) {
-
-        grid.innerHTML = `
-
-            <div
-                style="
-                    background:white;
-                    padding:40px;
-                    border-radius:12px;
-                "
-            >
-                No events found.
-            </div>
-
-        `;
-
+    if (list.length === 0) {
+        grid.innerHTML = `<div style="background:white;padding:40px;border-radius:12px;">No events found.</div>`;
         return;
-
     }
 
+    list.forEach(event => grid.appendChild(createEventCard(event)));
 
-    list.forEach(
-        event => {
+}
 
-            grid.appendChild(
-                createEventCard(
-                    event
-                )
-            );
 
-        }
-    );
+/* =====================================================
+   POPULATE FILTERS
+===================================================== */
 
+function populateFilters() {
+    const domainFilter = document.getElementById("domainFilter");
+    const locationFilter = document.getElementById("locationFilter");
+
+    // Reset to just the default option
+    domainFilter.innerHTML = "<option value=''>All Domains</option>";
+    locationFilter.innerHTML = "<option value=''>All Locations</option>";
+
+    [...new Set(events.map(e => e.domain).filter(Boolean))].sort().forEach(d => {
+        const opt = document.createElement("option");
+        opt.value = d; opt.text = d;
+        domainFilter.appendChild(opt);
+    });
+
+    [...new Set(events.map(e => e.location).filter(Boolean))].sort().forEach(l => {
+        const opt = document.createElement("option");
+        opt.value = l; opt.text = l;
+        locationFilter.appendChild(opt);
+    });
 }
 
 
@@ -3222,70 +2118,24 @@ function renderAllEvents(
 
 function filterEvents() {
 
-    const search =
-        document.getElementById(
-            "search"
-        ).value.toLowerCase();
+    const search = document.getElementById("search").value.toLowerCase();
+    const domain = document.getElementById("domainFilter").value;
+    const location = document.getElementById("locationFilter").value;
+    const mode = document.getElementById("modeFilter").value;
 
-
-    const domain =
-        document.getElementById(
-            "domainFilter"
-        ).value;
-
-
-    const location =
-        document.getElementById(
-            "locationFilter"
-        ).value;
-
-
-    const mode =
-        document.getElementById(
-            "modeFilter"
-        ).value;
-
-
-    const filtered =
-        events.filter(
-            event =>
-
-            event.title
-                .toLowerCase()
-                .includes(search)
-
-            &&
-
-            (
-                !domain ||
-                event.domain === domain
-            )
-
-            &&
-
-            (
-                !location ||
-                event.location === location
-            )
-
-            &&
-
-            (
-                !mode ||
-                event.mode === mode
-            )
-        );
-
-
-    renderAllEvents(
-        filtered
+    const filtered = events.filter(event =>
+        event.title.toLowerCase().includes(search) &&
+        (!domain || event.domain === domain) &&
+        (!location || event.location === location) &&
+        (!mode || event.mode === mode)
     );
 
+    renderAllEvents(filtered);
 
     if (currentUserId && search.trim().length > 2) {
         clearTimeout(window.__searchSaveTimer);
         window.__searchSaveTimer = setTimeout(() => {
-            api.saveSearch(currentUserId, search.trim()).catch((error) => {
+            api.saveSearch(currentUserId, search.trim()).catch(error => {
                 console.error("Could not save search history.", error);
             });
         }, 600);
@@ -3298,125 +2148,38 @@ function filterEvents() {
    EVENT DETAILS
 ===================================================== */
 
-function openEvent(
-    id
-) {
+function openEvent(id) {
 
-    const event =
-        events.find(
-            e => e.id === id
-        );
+    const event = events.find(e => e.id === id);
+    if (!event) return;
 
+    currentEventId = id;
 
-    if(!event)
-        return;
+    document.getElementById("modalBanner").innerText = event.tag;
+    document.getElementById("modalDomain").innerText = event.domain;
+    document.getElementById("modalTitle").innerText = event.title;
+    document.getElementById("modalDescription").innerText = event.description;
+    document.getElementById("modalDate").innerText = "📅 " + event.date;
+    document.getElementById("modalLocation").innerText = "📍 " + event.location;
+    document.getElementById("modalMode").innerText = "🌐 " + event.mode;
+    document.getElementById("modalOrganizer").innerText = "👤 " + event.organizer;
 
+    const button = document.getElementById("modalRegister");
+    button.innerText = "Register Now";
+    button.disabled = false;
 
-    currentEventId =
-        id;
-
-
-    document.getElementById(
-        "modalBanner"
-    ).innerText =
-        event.tag;
-
-
-    document.getElementById(
-        "modalDomain"
-    ).innerText =
-        event.domain;
-
-
-    document.getElementById(
-        "modalTitle"
-    ).innerText =
-        event.title;
-
-
-    document.getElementById(
-        "modalDescription"
-    ).innerText =
-        event.description;
-
-
-    document.getElementById(
-        "modalDate"
-    ).innerText =
-        "📅 " + event.date;
-
-
-    document.getElementById(
-        "modalLocation"
-    ).innerText =
-        "📍 " + event.location;
-
-
-    document.getElementById(
-        "modalMode"
-    ).innerText =
-        "🌐 " + event.mode;
-
-
-    document.getElementById(
-        "modalOrganizer"
-    ).innerText =
-        "👤 " + event.organizer;
-
-
-    const button =
-        document.getElementById(
-            "modalRegister"
-        );
-
-
-    if(
-        registeredEvents.includes(id)
-    ) {
-
-        button.innerText =
-            "Already Registered";
-
-        button.disabled =
-            true;
-
-    }
-
-    else {
-
-        button.innerText =
-            "Register Now";
-
-        button.disabled =
-            false;
-
-    }
-
-
-    document
-        .getElementById(
-            "eventModal"
-        )
-        .classList.add("show");
-
+    document.getElementById("eventModal").classList.add("show");
 
     if (currentUserId) {
-        api.saveInteraction(currentUserId, id, "VIEW").catch((error) => {
+        api.saveInteraction(currentUserId, id, "VIEW").catch(error => {
             console.error("Could not save view interaction.", error);
         });
     }
 
 }
 
-
 function closeEventModal() {
-
-    document
-        .getElementById(
-            "eventModal"
-        )
-        .classList.remove("show");
-
+    document.getElementById("eventModal").classList.remove("show");
 }
 
 
@@ -3425,69 +2188,28 @@ function closeEventModal() {
 ===================================================== */
 
 function registerCurrentEvent() {
-
-    registerEvent(
-        currentEventId
-    );
-
+    registerEvent(currentEventId);
 }
 
+function registerEvent(id) {
 
-async function registerEvent(
-    id
-) {
+    const event = events.find(e => e.id === id);
+    if (!event) return;
 
-    if(
-        registeredEvents.includes(id)
-    ) {
-
-        showToast(
-            "Already registered."
-        );
-
-        return;
-
+    // Track the interaction silently
+    if (currentUserId) {
+        api.saveInteraction(currentUserId, id, "REGISTER").catch(() => {});
     }
 
-
-    registeredEvents.push(
-        id
-    );
-
-
-    localStorage.setItem(
-        "vectoredRegistrations",
-        JSON.stringify(
-            registeredEvents
-        )
-    );
-
-
-    renderDashboard();
-
-    renderRegistrations();
-
-    renderRecommendations();
-
-    renderAllEvents();
-
+    // Redirect to the external registration link
+    const url = event.registrationUrl;
+    if (url && url.trim()) {
+        window.open(url.trim(), "_blank");
+    } else {
+        showToast("No registration link available for this event.");
+    }
 
     closeEventModal();
-
-
-    showToast(
-        "Successfully registered!"
-    );
-
-
-    if (currentUserId) {
-        try {
-            await api.registerForEvent(currentUserId, id);
-            await api.saveInteraction(currentUserId, id, "REGISTER");
-        } catch (error) {
-            console.error("Could not save registration to backend.", error);
-        }
-    }
 
 }
 
@@ -3496,66 +2218,20 @@ async function registerEvent(
    DASHBOARD
 ===================================================== */
 
-function renderDashboard() {
+async function renderDashboard() {
 
-    document.getElementById(
-        "registeredCount"
-    ).innerText =
-        registeredEvents.length;
+    document.getElementById("totalEventsCount").innerText = events.length;
+    document.getElementById("interestCount").innerText = user.domains.length;
 
-
-    const recommended =
-        document.getElementById(
-            "dashboardRecommendations"
-        );
-
-
+    const recommended = document.getElementById("dashboardRecommendations");
     recommended.innerHTML = "";
+    const recommendations = await getRecommendations();
+    document.getElementById("recommendationCount").innerText = recommendations.length;
+    recommendations.slice(0, 3).forEach(event => recommended.appendChild(createEventCard(event)));
 
-
-    getRecommendations()
-        .slice(0,3)
-        .forEach(
-            event => {
-
-                recommended.appendChild(
-                    createEventCard(
-                        event
-                    )
-                );
-
-            }
-        );
-
-
-    const registered =
-        document.getElementById(
-            "dashboardRegistered"
-        );
-
-
-    registered.innerHTML = "";
-
-
-    events
-        .filter(
-            event =>
-                registeredEvents.includes(
-                    event.id
-                )
-        )
-        .slice(0,3)
-        .forEach(
-            event => {
-
-                registered.appendChild(
-                    createEventCard(
-                        event
-                    )
-                );
-
-            }
-        );
+    const allGrid = document.getElementById("dashboardAllEvents");
+    allGrid.innerHTML = "";
+    events.slice(0, 6).forEach(event => allGrid.appendChild(createEventCard(event)));
 
 }
 
@@ -3566,127 +2242,13 @@ function renderDashboard() {
 
 function renderRegistrations() {
 
-    const container =
-        document.getElementById(
-            "registrationTable"
-        );
-
-
-    const registered =
-        events.filter(
-            event =>
-                registeredEvents.includes(
-                    event.id
-                )
-        );
-
-
-    if(
-        registered.length === 0
-    ) {
-
-        container.innerHTML = `
-
-            <div
-                style="
-                    padding:40px;
-                    text-align:center;
-                    color:#777;
-                "
-            >
-
-                <h3>
-                    No registrations yet
-                </h3>
-
-                <p style="margin-top:8px;">
-                    Explore events and register for one.
-                </p>
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    let html = `
-
-        <table>
-
-            <thead>
-
-                <tr>
-
-                    <th>Event</th>
-                    <th>Domain</th>
-                    <th>Date</th>
-                    <th>Location</th>
-                    <th>Status</th>
-
-                </tr>
-
-            </thead>
-
-            <tbody>
-
+    const container = document.getElementById("registrationTable");
+    container.innerHTML = `
+        <div style="padding:40px;text-align:center;color:#777;">
+            <h3>External Registrations</h3>
+            <p style="margin-top:8px;">Click the Register button on any event card to register via the official link.</p>
+        </div>
     `;
-
-
-    registered.forEach(
-        event => {
-
-            html += `
-
-                <tr>
-
-                    <td>
-                        ${event.title}
-                    </td>
-
-                    <td>
-                        ${event.domain}
-                    </td>
-
-                    <td>
-                        ${event.date}
-                    </td>
-
-                    <td>
-                        ${event.location}
-                    </td>
-
-                    <td>
-
-                        <span
-                            class="status registered"
-                        >
-                            Registered
-                        </span>
-
-                    </td>
-
-                </tr>
-
-            `;
-
-        }
-    );
-
-
-    html += `
-
-            </tbody>
-
-        </table>
-
-    `;
-
-
-    container.innerHTML =
-        html;
 
 }
 
@@ -3697,151 +2259,12 @@ function renderRegistrations() {
 
 function renderFeedback() {
 
-    const container =
-        document.getElementById(
-            "feedbackContainer"
-        );
-
-
-    const participated =
-        events.filter(
-            event =>
-                registeredEvents.includes(
-                    event.id
-                )
-        );
-
-
-    if(
-        participated.length === 0
-    ) {
-
-        container.innerHTML = `
-
-            <div class="feedback-card">
-
-                <p style="color:#777;">
-                    Participate in events to give feedback.
-                </p>
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    container.innerHTML = "";
-
-
-    participated.forEach(
-        event => {
-
-            const current =
-                feedback[event.id];
-
-
-            const card =
-                document.createElement(
-                    "div"
-                );
-
-
-            card.className =
-                "feedback-card";
-
-
-            card.innerHTML = `
-
-                <h3>
-                    ${event.title}
-                </h3>
-
-
-                <p
-                    style="
-                        color:#777;
-                        margin-top:6px;
-                    "
-                >
-                    How was your experience?
-                </p>
-
-
-                <div class="feedback-buttons">
-
-                    <button
-                        class="
-                            feedback-btn
-                            ${
-                                current === "like"
-                                ? "selected"
-                                : ""
-                            }
-                        "
-                        onclick="
-                            giveFeedback(
-                                ${event.id},
-                                'like'
-                            )
-                        "
-                    >
-                        👍 Good
-                    </button>
-
-
-                    <button
-                        class="
-                            feedback-btn
-                            ${
-                                current === "neutral"
-                                ? "selected"
-                                : ""
-                            }
-                        "
-                        onclick="
-                            giveFeedback(
-                                ${event.id},
-                                'neutral'
-                            )
-                        "
-                    >
-                        😐 Moderate
-                    </button>
-
-
-                    <button
-                        class="
-                            feedback-btn
-                            ${
-                                current === "dislike"
-                                ? "selected"
-                                : ""
-                            }
-                        "
-                        onclick="
-                            giveFeedback(
-                                ${event.id},
-                                'dislike'
-                            )
-                        "
-                    >
-                        👎 Not Good
-                    </button>
-
-                </div>
-
-            `;
-
-
-            container.appendChild(
-                card
-            );
-
-        }
-    );
+    const container = document.getElementById("feedbackContainer");
+    container.innerHTML = `
+        <div class="feedback-card">
+            <p style="color:#777;">Participate in events to give feedback.</p>
+        </div>
+    `;
 
 }
 
@@ -3850,120 +2273,12 @@ function renderFeedback() {
    FEEDBACK → RECOMMENDATIONS
 ===================================================== */
 
-function giveFeedback(
-    eventId,
-    type
-) {
-
-    feedback[eventId] =
-        type;
+/* giveFeedback removed — feedback is no longer tracked locally */
 
 
-    localStorage.setItem(
-        "vectoredFeedback",
-        JSON.stringify(
-            feedback
-        )
-    );
 
+/* Registration is external — no local bookmark/feedback state needed */
 
-    renderFeedback();
-
-    renderRecommendations();
-
-    renderDashboard();
-
-
-    if (currentUserId) {
-        api.saveInteraction(currentUserId, eventId, type.toUpperCase())
-            .catch((error) => {
-                console.error("Could not save feedback interaction.", error);
-            });
-    }
-
-
-    if(type === "like") {
-
-        showToast(
-            "More similar events will be recommended."
-        );
-
-    }
-
-    else if(type === "dislike") {
-
-        showToast(
-            "Similar events will be recommended less."
-        );
-
-    }
-
-    else {
-
-        showToast(
-            "Feedback saved as moderate."
-        );
-
-    }
-
-}
-
-
-/* =====================================================
-   BOOKMARK
-===================================================== */
-
-function toggleBookmark(
-    id
-) {
-
-    if(
-        bookmarks.includes(id)
-    ) {
-
-        bookmarks =
-            bookmarks.filter(
-                eventId =>
-                    eventId !== id
-            );
-
-        showToast(
-            "Bookmark removed."
-        );
-
-    }
-
-    else {
-
-        bookmarks.push(id);
-
-        showToast(
-            "Event bookmarked."
-        );
-
-    }
-
-
-    localStorage.setItem(
-        "vectoredBookmarks",
-        JSON.stringify(
-            bookmarks
-        )
-    );
-
-
-    if (currentUserId) {
-        api.saveInteraction(currentUserId, id, "BOOKMARK").catch((error) => {
-            console.error("Could not save bookmark interaction.", error);
-        });
-    }
-
-
-    renderRecommendations();
-
-    renderAllEvents();
-
-}
 
 
 /* =====================================================
@@ -3971,34 +2286,80 @@ function toggleBookmark(
 ===================================================== */
 
 function showNotifications() {
-
     alert(
-
         "🔔 Notifications\n\n" +
-
         "• New AI event matches your interests.\n" +
-
         "• Python Coding Challenge registration is open.\n" +
-
         "• Your feedback has updated recommendations.\n" +
-
         "• New certificate available."
-
     );
-
 }
 
 
 /* =====================================================
-   CERTIFICATE
+   CERTIFICATES
+   -----------------------------------------------------
+   NOTE: this assumes the API exposes
+   api.getUserCertificates(userId). If your api.js uses a
+   different method name, change the call below —
+   everything else (empty state, rendering) will work as-is.
 ===================================================== */
 
-function certificate() {
+async function renderCertificates() {
 
-    alert(
-        "Certificate preview will be connected to the backend."
-    );
+    const container = document.getElementById("certificateGrid");
+    if (!container) return;
 
+    if (!currentUserId) {
+        container.innerHTML = `<div style="color:#777;">Log in to see your certificates.</div>`;
+        document.getElementById("certificateCount").innerText = 0;
+        return;
+    }
+
+    let certs = [];
+
+    try {
+        const response = await api.getUserCertificates(currentUserId);
+        certs = response;
+
+        if (response && response.success && Array.isArray(response.data)) {
+            certs = response.data;
+        }
+
+        if (!Array.isArray(certs)) certs = [];
+    } catch (error) {
+        console.error("Could not load certificates.", error);
+        certs = [];
+    }
+
+    document.getElementById("certificateCount").innerText = certs.length;
+
+    if (certs.length === 0) {
+        container.innerHTML = `
+            <div style="color:#777;padding:20px;">
+                You haven't earned any certificates yet.
+            </div>
+        `;
+        return;
+    }
+
+    container.innerHTML = certs.map(cert => `
+        <div class="certificate">
+            <div class="certificate-icon">🏆</div>
+            <div>
+                <h3>${cert.eventTitle || cert.title || "Certificate"}</h3>
+                <p style="color:#777;margin:5px 0 12px;">
+                    Completed${cert.date ? " • " + new Date(cert.date).toLocaleDateString("en-US", { month: "long", year: "numeric" }) : ""}
+                </p>
+                <button class="primary-btn" onclick="certificate(${cert.id})">View Certificate</button>
+            </div>
+        </div>
+    `).join("");
+
+}
+
+function certificate(certId) {
+    alert("Certificate preview will be connected to the backend.");
 }
 
 
@@ -4008,34 +2369,16 @@ function certificate() {
 
 function logout() {
 
-    const answer =
-        confirm(
-            "Are you sure you want to logout?"
-        );
+    const answer = confirm("Are you sure you want to logout?");
+    if (!answer) return;
 
-
-    if(!answer)
-        return;
-
-
-    showToast(
-        "Logged out successfully."
-    );
-
+    showToast("Logged out successfully.");
 
     Session.clear();
 
-    localStorage.removeItem("vectoredUser");
-
-
-    setTimeout(
-        () => {
-
-            window.location.href = "login.html";
-
-        },
-        700
-    );
+    setTimeout(() => {
+        window.location.href = "login.html";
+    }, 700);
 
 }
 
@@ -4047,7 +2390,6 @@ function logout() {
 function deleteAccount() {
 
     const warning = `
-
 ⚠ DELETE ACCOUNT
 
 This action is permanent.
@@ -4056,67 +2398,32 @@ Deleting your account will remove:
 
 • Your profile
 • Selected recommendation domains
-• Event registrations
-• Feedback
-• Bookmarks
 • Recommendation preferences
 
 The account cannot be recovered.
 
 Do you want to continue?
-
 `;
 
-
-    const first =
-        confirm(warning);
-
-
-    if(!first)
-        return;
-
-
-    const second =
-        confirm(
-            "FINAL WARNING!\n\n" +
-            "Delete your Vectored account permanently?"
-        );
-
-
-    if(!second)
-        return;
-
-
-    localStorage.removeItem(
-        "vectoredUser"
-    );
-
-    localStorage.removeItem(
-        "vectoredRegistrations"
-    );
-
-    localStorage.removeItem(
-        "vectoredFeedback"
-    );
-
-    localStorage.removeItem(
-        "vectoredBookmarks"
-    );
+    if (!confirm(warning)) return;
+    if (!confirm("FINAL WARNING!\n\nDelete your Vectored account permanently?")) return;
 
     if (currentUserId) {
-        api.deleteUser
+        const cleanup = api.deleteUser
             ? api.deleteUser(currentUserId)
             : fetch(`${API_BASE}/users/${currentUserId}`, { method: "DELETE" });
+
+        Promise.resolve(cleanup).catch(error => {
+            console.error("Could not delete account on backend.", error);
+        }).finally(() => {
+            Session.clear();
+            window.location.href = "login.html";
+        });
+
+        return;
     }
 
     Session.clear();
-
-
-    alert(
-        "Your account has been deleted."
-    );
-
-
     window.location.href = "login.html";
 
 }
@@ -4126,35 +2433,17 @@ Do you want to continue?
    TOAST
 ===================================================== */
 
-function showToast(
-    message
-) {
+function showToast(message) {
 
-    const toast =
-        document.getElementById(
-            "toast"
-        );
+    const toast = document.getElementById("toast");
 
+    toast.innerText = message;
+    toast.classList.add("show");
 
-    toast.innerText =
-        message;
-
-
-    toast.classList.add(
-        "show"
-    );
-
-
-    setTimeout(
-        () => {
-
-            toast.classList.remove(
-                "show"
-            );
-
-        },
-        2500
-    );
+    clearTimeout(window.__toastTimer);
+    window.__toastTimer = setTimeout(() => {
+        toast.classList.remove("show");
+    }, 2500);
 
 }
 
@@ -4163,37 +2452,13 @@ function showToast(
    CLOSE MODALS
 ===================================================== */
 
-window.onclick =
-function(event) {
+window.onclick = function(event) {
 
-    const domainModal =
-        document.getElementById(
-            "domainModal"
-        );
+    const domainModal = document.getElementById("domainModal");
+    const eventModal = document.getElementById("eventModal");
 
-
-    const eventModal =
-        document.getElementById(
-            "eventModal"
-        );
-
-
-    if(
-        event.target === domainModal
-    ) {
-
-        closeDomainModal();
-
-    }
-
-
-    if(
-        event.target === eventModal
-    ) {
-
-        closeEventModal();
-
-    }
+    if (event.target === domainModal) closeDomainModal();
+    if (event.target === eventModal) closeEventModal();
 
 };
 
