@@ -845,6 +845,10 @@
             <button class="btn btn-primary" style="margin-top:15px;" onclick="showPage('profile')">
               Edit Profile
             </button>
+
+            <button class="btn btn-danger" style="margin-top:10px;" id="clearEventsBtn">
+              Clear All Events
+            </button>
           </div>
 
           <div class="info-card">
@@ -944,6 +948,53 @@
                   <option>Viluppuram</option>
                   <option>Virudhunagar</option>
                 </select>
+              </div>
+
+            </div>
+          </div>
+
+
+          <div class="form-section">
+            <h3>ML Recommendation Fields</h3>
+            <p style="font-size:12px;color:#7a849e;margin-bottom:15px;">These fields are used by the AI model to recommend this event to the right students.</p>
+
+            <div class="form-grid">
+
+              <div class="form-group">
+                <label>Event Type <span class="required">*</span></label>
+                <select id="eventType" required>
+                  <option value="">Select type</option>
+                  <option>Hackathon</option>
+                  <option>Workshop</option>
+                  <option>Competition</option>
+                  <option>Bootcamp</option>
+                  <option>Seminar</option>
+                  <option>Webinar</option>
+                  <option>Tech Talk</option>
+                  <option>Conference</option>
+                  <option>Career Fair</option>
+                  <option>Project Exhibition</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Mode <span class="required">*</span></label>
+                <select id="eventMode" required>
+                  <option value="">Select mode</option>
+                  <option>Online</option>
+                  <option>Offline</option>
+                  <option>Hybrid</option>
+                </select>
+              </div>
+
+              <div class="form-group full">
+                <label>Required Skills <span class="required">*</span> <span style="font-weight:normal;color:#7a849e;font-size:11px;">(comma separated, e.g. Python, Machine Learning, SQL)</span></label>
+                <input type="text" id="eventSkills" placeholder="Python, Machine Learning, Data Science" required>
+              </div>
+
+              <div class="form-group full">
+                <label>Related Interests <span class="required">*</span> <span style="font-weight:normal;color:#7a849e;font-size:11px;">(comma separated, e.g. Artificial Intelligence, Data Science)</span></label>
+                <input type="text" id="eventInterests" placeholder="Artificial Intelligence, Machine Learning" required>
               </div>
 
             </div>
@@ -1231,6 +1282,16 @@
 <script src="assets/api.js"></script>
 <script>
   /* =========================
+     SESSION GUARD
+  ========================= */
+  (function() {
+    const s = Session.get();
+    if (!s || !s.id || s.role !== "ADMIN") {
+      window.location.href = "login.html";
+    }
+  })();
+
+  /* =========================
      DATA
   ========================= */
 
@@ -1280,6 +1341,10 @@
       title: adminEvent.name,
       date: adminEvent.date ? new Date(adminEvent.date).toISOString() : null,
       location: adminEvent.location,
+      eventType: adminEvent.eventType || "Workshop",
+      mode: adminEvent.mode || "Online",
+      skills: adminEvent.skills || [],
+      interests: adminEvent.interests || [],
       cashPrize: Number(adminEvent.cashPrize) || 0,
       certificateAvailable: !!adminEvent.certificate,
       startTime: adminEvent.startTime,
@@ -1411,25 +1476,28 @@
       return;
     }
 
-    profile = {
-      id: profile.id,
-      name: name,
-      email: email
-    };
-
-    if (profile.id) {
-      try {
-        const updated = await api.updateUser(profile.id, { name, email });
-        Session.save(updated);
-      } catch (error) {
-        console.error("Could not update admin profile on backend.", error);
-        showToast(error.message || "Could not save profile to backend.");
-        return;
-      }
+    if (!profile.id) {
+      showToast("No admin session found. Please log in again.");
+      return;
     }
 
-    updateProfileUI();
-    showToast("Profile updated successfully.");
+    const saveBtn = this.querySelector("button[type=submit]");
+    if (saveBtn) saveBtn.disabled = true;
+
+    try {
+      const updated = await api.updateUser(profile.id, { name, email });
+      // updateUser returns a plain user object (no { success, data } wrapper)
+      const savedUser = (updated && updated.id) ? updated : { ...profile, name, email };
+      Session.save(savedUser);
+      profile = { id: savedUser.id, name: savedUser.name, email: savedUser.email };
+      updateProfileUI();
+      showToast("Profile updated successfully.");
+    } catch (error) {
+      console.error("Could not update admin profile on backend.", error);
+      showToast("Save failed: " + (error.message || "Could not reach backend."));
+    } finally {
+      if (saveBtn) saveBtn.disabled = false;
+    }
   });
 
 
@@ -1502,6 +1570,10 @@
       name: document.getElementById("eventName").value.trim(),
       date: document.getElementById("eventDate").value,
       location: document.getElementById("eventLocation").value.trim(),
+      eventType: document.getElementById("eventType").value,
+      mode: document.getElementById("eventMode").value,
+      skills: document.getElementById("eventSkills").value.split(",").map(s => s.trim()).filter(Boolean),
+      interests: document.getElementById("eventInterests").value.split(",").map(s => s.trim()).filter(Boolean),
       cashPrize: document.getElementById("cashPrize").value || "0",
       certificate: document.getElementById("certificate").checked,
       startTime: startTime,
@@ -1842,6 +1914,27 @@
 
   document.getElementById("menuBtn").addEventListener("click", function() {
     document.getElementById("sidebar").classList.toggle("open");
+  });
+
+
+  /* =========================
+     CLEAR ALL EVENTS
+  ========================= */
+
+  document.getElementById("clearEventsBtn").addEventListener("click", async function() {
+    if (!confirm("Delete ALL events from the database?\n\nThis removes all events, registrations, feedback and interactions.\nAdmin accounts are NOT affected.")) return;
+    if (!confirm("FINAL WARNING: This cannot be undone. Continue?")) return;
+
+    try {
+      await api.clearAllEvents();
+      events = [];
+      updateDashboard();
+      renderEventsTable();
+      showToast("All events cleared successfully.");
+    } catch (error) {
+      console.error("Could not clear events.", error);
+      showToast(error.message || "Failed to clear events.");
+    }
   });
 
 

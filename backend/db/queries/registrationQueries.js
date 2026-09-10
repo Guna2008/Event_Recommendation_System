@@ -60,9 +60,26 @@ const markAttendance = async (userId, eventId) => {
   });
 };
 
+// Get attended registrations (certificates)
+const getUserCertificates = async (userId) => {
+  return await prisma.registration.findMany({
+    where: {
+      userId: Number(userId),
+      status: "ATTENDED"
+    },
+    include: {
+      event: true
+    },
+    orderBy: {
+      attendedAt: "desc"
+    }
+  });
+};
+
 module.exports = {
   createRegistration,
   getRegistration,
   getUserRegistrations,
-  markAttendance
+  markAttendance,
+  getUserCertificates
 };

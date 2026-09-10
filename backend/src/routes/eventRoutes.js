@@ -24,6 +24,20 @@ router.post("/", createEventController);
 
 router.put("/:id", updateEventController);
 
+router.delete("/", async (req, res) => {
+  const prisma = require("../../db/connection");
+  try {
+    await prisma.interaction.deleteMany();
+    await prisma.feedback.deleteMany();
+    await prisma.registration.deleteMany();
+    await prisma.event.deleteMany();
+    res.json({ success: true, message: "All events cleared." });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Failed to clear events." });
+  }
+});
+
 router.delete("/:id", deleteEventController);
 
 module.exports = router;

@@ -1,158 +1,393 @@
-/* ==========================================================
-   VECTORED — shared API client
-   Talks to the Express backend (backend/src/server.js).
-   Change API_BASE if the backend runs somewhere other than
-   http://localhost:5000.
-========================================================== */
-
 const API_BASE =
   window.VECTORED_API_BASE || "http://localhost:5000";
 
+
+/* =========================================================
+   COMMON API REQUEST
+========================================================= */
+
 async function apiRequest(path, options = {}) {
-  const response = await fetch(`${API_BASE}${path}`, {
-    headers: { "Content-Type": "application/json" },
-    ...options
-  });
+
+  const response = await fetch(
+    `${API_BASE}${path}`,
+    {
+      ...options,
+
+      headers: {
+        "Content-Type": "application/json",
+        ...(options.headers || {})
+      }
+    }
+  );
+
 
   let body = null;
+
   try {
     body = await response.json();
   } catch (_) {
-    /* no JSON body */
+    // Response did not contain JSON
   }
+
 
   if (!response.ok) {
-    const message =
-      (body && (body.message || body.error)) ||
-      `Request failed (${response.status})`;
-    const error = new Error(message);
-    error.status = response.status;
-    error.body = body;
-    throw error;
-  }
 
-  return body;
+  console.error("API ERROR");
+  console.error("Status:", response.status);
+  console.error("Response body:", body);
+
+  const message =
+    body?.message ||
+    body?.error ||
+    body?.detail ||
+    `Request failed (${response.status})`;
+
+  const error = new Error(message);
+
+  error.status = response.status;
+  error.body = body;
+
+  throw error;
+}
 }
 
+
+/* =========================================================
+   API
+========================================================= */
+
 const api = {
-  // ---------------- Users / auth ----------------
+
+
+  /* =========================
+     USERS
+  ========================== */
+
   signup: (userData) =>
-    apiRequest("/users", {
-      method: "POST",
-      body: JSON.stringify(userData)
-    }),
+    apiRequest(
+      "/users",
+      {
+        method: "POST",
+        body: JSON.stringify(userData)
+      }
+    ),
+
 
   login: (email, password) =>
-    apiRequest("/users/login", {
-      method: "POST",
-      body: JSON.stringify({ email, password })
-    }),
+    apiRequest(
+      "/users/login",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          email,
+          password
+        })
+      }
+    ),
 
-  getUser: (id) => apiRequest(`/users/${id}`),
+
+  getUser: (id) =>
+    apiRequest(
+      `/users/${id}`
+    ),
+
 
   updateUser: (id, userData) =>
-    apiRequest(`/users/${id}`, {
-      method: "PUT",
-      body: JSON.stringify(userData)
-    }),
+    apiRequest(
+      `/users/${id}`,
+      {
+        method: "PUT",
+        body: JSON.stringify(userData)
+      }
+    ),
 
-  deleteUser: (id) => apiRequest(`/users/${id}`, { method: "DELETE" }),
 
-  // ---------------- Events ----------------
-  getEvents: () => apiRequest("/events"),
+  deleteUser: (id) =>
+    apiRequest(
+      `/users/${id}`,
+      {
+        method: "DELETE"
+      }
+    ),
 
-  getEvent: (id) => apiRequest(`/events/${id}`),
+
+
+  /* =========================
+     EVENTS
+  ========================== */
+
+  getEvents: () =>
+    apiRequest(
+      "/events"
+    ),
+
+
+  getEvent: (id) =>
+    apiRequest(
+      `/events/${id}`
+    ),
+
 
   searchEvents: (query) =>
-    apiRequest(`/events/search?q=${encodeURIComponent(query)}`),
+    apiRequest(
+      `/events/search?q=${encodeURIComponent(query)}`
+    ),
+
 
   getEventsByCategory: (category) =>
-    apiRequest(`/events/category/${encodeURIComponent(category)}`),
+    apiRequest(
+      `/events/category/${encodeURIComponent(category)}`
+    ),
+
 
   createEvent: (eventData) =>
-    apiRequest("/events", {
-      method: "POST",
-      body: JSON.stringify(eventData)
-    }),
+    apiRequest(
+      "/events",
+      {
+        method: "POST",
+        body: JSON.stringify(eventData)
+      }
+    ),
+
 
   updateEvent: (id, eventData) =>
-    apiRequest(`/events/${id}`, {
-      method: "PUT",
-      body: JSON.stringify(eventData)
-    }),
+    apiRequest(
+      `/events/${id}`,
+      {
+        method: "PUT",
+        body: JSON.stringify(eventData)
+      }
+    ),
+
 
   deleteEvent: (id) =>
-    apiRequest(`/events/${id}`, { method: "DELETE" }),
+    apiRequest(
+      `/events/${id}`,
+      {
+        method: "DELETE"
+      }
+    ),
 
-  // ---------------- Registrations ----------------
-  registerForEvent: (userId, eventId) =>
-    apiRequest("/registrations", {
-      method: "POST",
-      body: JSON.stringify({ userId, eventId })
-    }),
 
-  getUserRegistrations: (userId) =>
-    apiRequest(`/registrations/user/${userId}`),
 
-  markAttendance: (userId, eventId) =>
-    apiRequest("/registrations/attendance", {
-      method: "PUT",
-      body: JSON.stringify({ userId, eventId })
-    }),
+  /* =========================
+     REGISTRATIONS
+  ========================== */
 
-  // ---------------- Feedback ----------------
-  submitFeedback: (registrationId, userId, eventId, experience) =>
-    apiRequest("/feedback", {
-      method: "POST",
-      body: JSON.stringify({ registrationId, userId, eventId, experience })
-    }),
+  registerForEvent: (
+    userId,
+    eventId
+  ) =>
+    apiRequest(
+      "/registrations",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          userId,
+          eventId
+        })
+      }
+    ),
 
-  getUserFeedback: (userId) => apiRequest(`/feedback/user/${userId}`),
 
-  // ---------------- Interactions ----------------
-  saveInteraction: (userId, eventId, type) =>
-    apiRequest("/interactions", {
-      method: "POST",
-      body: JSON.stringify({ userId, eventId, type })
-    }),
+  getUserRegistrations: (
+    userId
+  ) =>
+    apiRequest(
+      `/registrations/user/${userId}`
+    ),
 
-  // ---------------- Search history ----------------
-  saveSearch: (userId, query) =>
-    apiRequest("/search", {
-      method: "POST",
-      body: JSON.stringify({ userId, query })
-    }),
 
-  getRecentSearches: (userId, limit = 10) =>
-    apiRequest(`/search/user/${userId}/recent?limit=${limit}`),
+  markAttendance: (
+    userId,
+    eventId
+  ) =>
+    apiRequest(
+      "/registrations/attendance",
+      {
+        method: "PUT",
+        body: JSON.stringify({
+          userId,
+          eventId
+        })
+      }
+    ),
 
-  // ---------------- Recommendations ----------------
-  getRecommendations: (userId) => apiRequest(`/recommendations/${userId}`)
+
+
+  /* =========================
+     FEEDBACK
+  ========================== */
+
+  submitFeedback: (
+    registrationId,
+    userId,
+    eventId,
+    experience
+  ) =>
+    apiRequest(
+      "/feedback",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          registrationId,
+          userId,
+          eventId,
+          experience
+        })
+      }
+    ),
+
+
+  getUserFeedback: (
+    userId
+  ) =>
+    apiRequest(
+      `/feedback/user/${userId}`
+    ),
+
+
+
+  /* =========================
+     INTERACTIONS
+  ========================== */
+
+  saveInteraction: (
+    userId,
+    eventId,
+    type
+  ) =>
+    apiRequest(
+      "/interactions",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          userId,
+          eventId,
+          type
+        })
+      }
+    ),
+
+
+
+  /* =========================
+     SEARCH HISTORY
+  ========================== */
+
+  saveSearch: (
+    userId,
+    query
+  ) =>
+    apiRequest(
+      "/search",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          userId,
+          query
+        })
+      }
+    ),
+
+
+  getRecentSearches: (
+    userId,
+    limit = 10
+  ) =>
+    apiRequest(
+      `/search/user/${userId}/recent?limit=${limit}`
+    ),
+
+
+
+  /* =========================
+     ML RECOMMENDATIONS
+  ========================== */
+
+  getRecommendations: (
+    userId
+  ) =>
+    apiRequest(
+      `/recommendations/${userId}`
+    ),
+
+
+  /* =========================
+     CERTIFICATES
+     (registrations with attendance = proxy for certificates)
+  ========================== */
+
+  getUserCertificates: (
+    userId
+  ) =>
+    apiRequest(
+      `/registrations/user/${userId}/certificates`
+    ),
+
+
+  /* =========================
+     ADMIN UTILITIES
+  ========================== */
+
+  clearAllEvents: () =>
+    apiRequest(
+      "/events",
+      { method: "DELETE" }
+    )
+
 };
 
-/* ==========================================================
-   Session helpers (who is currently logged in).
-   The backend has no session/JWT layer, so we just cache the
-   logged-in user's public profile in localStorage after a
-   successful /users/login or /users (signup) call.
-========================================================== */
+
+/* =========================================================
+   SESSION
+========================================================= */
 
 const Session = {
+
   KEY: "vectoredSession",
 
+
   save(user) {
-    localStorage.setItem(Session.KEY, JSON.stringify(user));
+
+    localStorage.setItem(
+      this.KEY,
+      JSON.stringify(user)
+    );
+
   },
+
 
   get() {
+
     try {
-      return JSON.parse(localStorage.getItem(Session.KEY) || "null");
-    } catch (_) {
+
+      return JSON.parse(
+        localStorage.getItem(
+          this.KEY
+        ) || "null"
+      );
+
+    } catch (error) {
+
+      console.error(
+        "Failed to read session:",
+        error
+      );
+
       return null;
+
     }
+
   },
 
+
   clear() {
-    localStorage.removeItem(Session.KEY);
+
+    localStorage.removeItem(
+      this.KEY
+    );
+
   }
+
 };
